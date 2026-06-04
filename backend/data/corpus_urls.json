@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "product": "INDMoney",
+    "amc": "ICICI Prudential Mutual Fund",
+    "total_urls": 15,
+    "last_updated": null
+  },
+  "funds": [
+    {
+      "id": "icici-pru-smallcap-direct-growth",
+      "name": "ICICI Prudential Small Cap Fund – Direct Plan Growth",
+      "category": "Small Cap Fund",
+      "group": "Equity Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-smallcap-fund-direct-plan-growth-3588"
+    },
+    {
+      "id": "icici-pru-large-midcap-direct-growth",
+      "name": "ICICI Prudential Large & Mid Cap Fund – Direct Plan Growth",
+      "category": "Large & Mid Cap Fund",
+      "group": "Equity Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-large-mid-cap-fund-direct-plan-growth-2878"
+    },
+    {
+      "id": "icici-pru-flexicap-direct-growth",
+      "name": "ICICI Prudential Flexi Cap Fund – Direct Growth",
+      "category": "Flexi Cap Fund",
+      "group": "Equity Funds",
+      "plan": "Direct Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-flexicap-fund-direct-growth-1006609"
+    },
+    {
+      "id": "icici-pru-focused-equity-direct-growth",
+      "name": "ICICI Prudential Focused Equity Fund – Direct Plan Growth",
+      "category": "Focused Fund",
+      "group": "Equity Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-focused-equity-fund-direct-plan-growth-2797"
+    },
+    {
+      "id": "icici-pru-midcap-direct-growth",
+      "name": "ICICI Prudential Mid Cap Fund – Direct Plan Growth",
+      "category": "Mid Cap Fund",
+      "group": "Equity Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-midcap-fund-direct-plan-growth-3190"
+    },
+    {
+      "id": "icici-pru-multicap-direct-growth",
+      "name": "ICICI Prudential Multi Cap Fund – Direct Plan Growth",
+      "category": "Multi Cap Fund",
+      "group": "Equity Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-multicap-fund-direct-plan-growth-3194"
+    },
+    {
+      "id": "icici-pru-largecap-direct-growth",
+      "name": "ICICI Prudential Large Cap Fund – Direct Plan Growth",
+      "category": "Large Cap Fund",
+      "group": "Equity Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-large-cap-fund-direct-plan-growth-2995"
+    },
+    {
+      "id": "icici-pru-elss-direct-growth",
+      "name": "ICICI Prudential ELSS Tax Saver Fund – Direct Plan Growth",
+      "category": "ELSS (Tax Saving Fund)",
+      "group": "Tax Saving Fund",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-elss-tax-saver-fund-direct-plan-growth-2693"
+    },
+    {
+      "id": "icici-pru-equity-savings-direct-growth",
+      "name": "ICICI Prudential Equity Savings Fund – Direct Growth",
+      "category": "Equity Savings Fund",
+      "group": "Hybrid Funds",
+      "plan": "Direct Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-equity-savings-fund-direct-growth-4572"
+    },
+    {
+      "id": "icici-pru-equity-debt-direct-growth",
+      "name": "ICICI Prudential Equity & Debt Fund – Direct Plan Growth",
+      "category": "Aggressive Hybrid Fund",
+      "group": "Hybrid Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-equity-debt-fund-direct-plan-growth-4108"
+    },
+    {
+      "id": "icici-pru-regular-savings-direct-growth",
+      "name": "ICICI Prudential Regular Savings Fund – Direct Plan Growth",
+      "category": "Regular Savings Fund",
+      "group": "Hybrid Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-regular-savings-fund-direct-plan-growth-4394"
+    },
+    {
+      "id": "icici-pru-multi-asset-direct-growth",
+      "name": "ICICI Prudential Multi Asset Fund – Direct Plan Growth",
+      "category": "Multi Asset Fund",
+      "group": "Hybrid Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-multi-asset-fund-direct-plan-growth-4646"
+    },
+    {
+      "id": "icici-pru-nifty50-index-direct-growth",
+      "name": "ICICI Prudential Nifty 50 Index Fund – Direct Growth",
+      "category": "Index Fund",
+      "group": "Index Fund",
+      "plan": "Direct Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-nifty-50-index-plan-direct-growth-5536"
+    },
+    {
+      "id": "icici-pru-gold-etf-fof-direct-growth",
+      "name": "ICICI Prudential Gold ETF Fund of Fund – Direct Plan Growth",
+      "category": "Gold Fund of Funds",
+      "group": "ETF Fund of Funds",
+      "plan": "Direct Plan Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-gold-etf-fof-direct-plan-growth-5382"
+    },
+    {
+      "id": "icici-pru-silver-etf-fof-direct-growth",
+      "name": "ICICI Prudential Silver ETF Fund of Fund – Direct Growth",
+      "category": "Silver Fund of Funds",
+      "group": "ETF Fund of Funds",
+      "plan": "Direct Growth",
+      "url": "https://www.indmoney.com/mutual-funds/icici-prudential-silver-etf-fof-direct-growth-1040428"
+    }
+  ]
+}

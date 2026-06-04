@@ -1,0 +1,145 @@
+Problem Statement
+Problem Statement: Mutual Fund FAQ Assistant (Facts-Only Q&A)
+Overview
+The objective of this project is to build a facts-only FAQ assistant for mutual fund schemes, using INDMoney as the reference product context. The assistant will answer objective, verifiable queries related to mutual funds for Retrieval-Augmented Generation (RAG), only official public documents from the following sources are ingested:
+Scheme Factsheets
+Key Information Memorandums (KIMs)
+Scheme Information Documents (SIDs)
+ICICI Prudential FAQs and Help Pages
+AMFI Investor Education Resources
+SEBI Investor Education Resources
+The system must strictly avoid providing investment advice, opinions, or recommendations. Every response must include a single, clear source link and adhere to defined constraints around clarity, accuracy, and compliance.
+
+Objective
+Design and implement a lightweight Retrieval-Augmented Generation (RAG)-based assistant that:
+Answers factual queries about mutual fund schemes
+Uses a curated corpus of official documents
+Provides concise, source-backed responses
+
+Target Users
+Retail investors comparing mutual fund schemes
+Customer support and content teams handling repetitive mutual fund queries
+
+Scope of Work
+1. Corpus Definition
+Selected Product: INDMoney
+Selected AMC: ICICI Prudential Mutual Fund
+Total Corpus Size: 15 URLs
+Collect 15 official public URLs, including:
+Scheme factsheets
+KIM (Key Information Memorandum)
+SID (Scheme Information Document)
+AMC FAQ/help pages
+AMFI/SEBI guidance pages
+Statement and tax document download guides
+
+Corpus URLs
+
+Equity Funds
+1. ICICI Prudential Small Cap Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-smallcap-fund-direct-plan-growth-3588
+2. ICICI Prudential Large & Mid Cap Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-large-mid-cap-fund-direct-plan-growth-2878
+3. ICICI Prudential Flexi Cap Fund – Direct Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-flexicap-fund-direct-growth-1006609
+4. ICICI Prudential Focused Equity Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-focused-equity-fund-direct-plan-growth-2797
+5. ICICI Prudential Mid Cap Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-midcap-fund-direct-plan-growth-3190
+6. ICICI Prudential Multi Cap Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-multicap-fund-direct-plan-growth-3194
+7. ICICI Prudential Large Cap Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-large-cap-fund-direct-plan-growth-2995
+
+Tax Saving Fund
+8. ICICI Prudential ELSS Tax Saver Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-elss-tax-saver-fund-direct-plan-growth-2693
+
+Hybrid Funds
+9. ICICI Prudential Equity Savings Fund – Direct Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-equity-savings-fund-direct-growth-4572
+10. ICICI Prudential Equity & Debt Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-equity-debt-fund-direct-plan-growth-4108
+11. ICICI Prudential Regular Savings Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-regular-savings-fund-direct-plan-growth-4394
+12. ICICI Prudential Multi Asset Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-multi-asset-fund-direct-plan-growth-4646
+
+Index Fund
+13. ICICI Prudential Nifty 50 Index Fund – Direct Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-nifty-50-index-plan-direct-growth-5536
+
+ETF Fund of Funds
+14. ICICI Prudential Gold ETF Fund of Fund – Direct Plan Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-gold-etf-fof-direct-plan-growth-5382
+15. ICICI Prudential Silver ETF Fund of Fund – Direct Growth
+https://www.indmoney.com/mutual-funds/icici-prudential-silver-etf-fof-direct-growth-1040428
+
+2. FAQ Assistant Requirements
+The assistant must:
+Answer facts-only queries, such as:
+Expense ratio of a scheme
+Exit load details
+Minimum SIP amount
+ELSS lock-in period
+Riskometer classification
+Benchmark index
+Process to download statements or capital gains reports
+Ensure:
+Each response is limited to a maximum of 3 sentences
+Each response includes exactly one citation link
+Each response includes a footer:
+ "Last updated from sources: <date>"
+
+3. Refusal Handling
+The assistant must refuse non-factual or advisory queries, such as:
+"Should I invest in this fund?"
+"Which fund is better?"
+Refusal responses should:
+Be polite and clearly worded
+Reinforce the facts-only limitation
+Provide a relevant educational link (e.g., AMFI or SEBI resource)
+
+4. User Interface (Minimal)
+The solution should include a simple interface with:
+A welcome message
+Three example questions
+A visible disclaimer:
+ "Facts-only. No investment advice."
+
+Constraints
+Data and Sources
+Use only official public sources (AMC, AMFI, SEBI)
+Do not use third-party blogs or aggregator websites
+Privacy and Security
+Do not collect, store, or process:
+PAN or Aadhaar numbers
+Account numbers
+OTPs
+Email addresses or phone numbers
+Content Restrictions
+No investment advice or recommendations
+No performance comparisons or return calculations
+For performance-related queries, provide a link to the official factsheet only
+Transparency
+Responses must be short, factual, and verifiable
+Every answer must include a source link and last updated date
+
+Expected Deliverables
+README Document
+Setup instructions
+Selected AMC and schemes
+Architecture overview (RAG approach)
+Known limitations
+Disclaimer Snippet
+"Facts-only. No investment advice."
+
+Success Criteria
+Accurate retrieval of factual mutual fund information
+Strict adherence to facts-only responses
+Consistent inclusion of valid source citations
+Proper refusal of advisory queries
+Clean, minimal, and user-friendly interface
+
+Summary
+The goal is to build a trustworthy, transparent, and compliant mutual fund FAQ assistant that prioritizes accuracy over intelligence. The system should ensure that users receive only verified, source-backed financial information, without any advisory bias or speculative content.
