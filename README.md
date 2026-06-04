@@ -74,15 +74,21 @@ npm run build
 cd ..
 ```
 
-### 5. Start Server
+### 5. Start Server (FastAPI + React UI)
 
 ```bash
 uvicorn backend.app.main:app --reload
 ```
+Navigate to `http://localhost:8000` to interact with the React web assistant.
 
-### 6. Open UI
+### 6. Run via Streamlit (Alternative UI)
 
-Navigate to `http://localhost:8000` to interact with the web assistant.
+You can run the assistant in a single command using Streamlit:
+
+```bash
+streamlit run app_streamlit.py
+```
+This will open the Streamlit interface in your browser at `http://localhost:8501`.
 
 ## Architecture
 
