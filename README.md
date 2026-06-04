@@ -8,21 +8,36 @@ A lightweight RAG-based FAQ assistant for ICICI Prudential Mutual Fund schemes, 
 
 This assistant answers **factual, verifiable queries** about mutual fund schemes using a curated corpus of 15 official public URLs. Every response is limited to 3 sentences, includes a single source citation, and never provides investment advice.
 
-## Selected AMC & Schemes
+## Selected AMC & 15 Schemes
 
 - **AMC:** ICICI Prudential Mutual Fund
-- **Product:** INDMoney
-- **Corpus:** 15 fund URLs across Equity, Hybrid, Tax Saving, Index, and ETF FoF categories
+- **Reference Brand UI:** INDMoney
+- **Supported Schemes:**
+  1. ICICI Prudential Small Cap Fund
+  2. ICICI Prudential Large & Mid Cap Fund
+  3. ICICI Prudential Flexi Cap Fund
+  4. ICICI Prudential Focused Equity Fund
+  5. ICICI Prudential Mid Cap Fund
+  6. ICICI Prudential Multi Cap Fund
+  7. ICICI Prudential Large Cap Fund
+  8. ICICI Prudential Equity Savings Fund
+  9. ICICI Prudential Equity & Debt Fund
+  10. ICICI Prudential Regular Savings Fund
+  11. ICICI Prudential Multi Asset Fund
+  12. ICICI Prudential ELSS Tax Saver Fund
+  13. ICICI Prudential Nifty 50 Index Fund
+  14. ICICI Prudential Gold ETF FoF
+  15. ICICI Prudential Silver ETF FoF
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | HTML + CSS + JavaScript |
+| Frontend | React + Vite + Vanilla CSS (Warm Cafe Light Theme) |
 | Backend | Python (FastAPI) |
-| Embeddings | OpenAI text-embedding-3-small |
-| Vector Store | ChromaDB (local) |
-| LLM | OpenAI GPT-4o-mini |
+| Embeddings | `BAAI/bge-large-en-v1.5` (Local HuggingFace Transformers) |
+| Vector Store | ChromaDB (local persistence) |
+| LLM | Groq LLaMA-3.3-70b-versatile |
 | Scheduler | GitHub Actions (daily cron) |
 
 ## Setup
@@ -30,7 +45,7 @@ This assistant answers **factual, verifiable queries** about mutual fund schemes
 ### 1. Clone & Install
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/bhavyaamahajann/Mutual_Fund_FAQ_Assistant.git
 cd "Mutual Fund FAQ Assistant"
 python -m venv venv
 source venv/bin/activate
@@ -41,7 +56,7 @@ pip install -r backend/requirements.txt
 
 ```bash
 cp .env.example .env
-# Edit .env and add your OPENAI_API_KEY
+# Edit .env and add your GROQ_API_KEY
 ```
 
 ### 3. Run Ingestion
@@ -50,15 +65,24 @@ cp .env.example .env
 python scripts/ingest.py
 ```
 
-### 4. Start Server
+### 4. Build Frontend
+
+```bash
+cd frontend
+npm install
+npm run build
+cd ..
+```
+
+### 5. Start Server
 
 ```bash
 uvicorn backend.app.main:app --reload
 ```
 
-### 5. Open UI
+### 6. Open UI
 
-Open `frontend/index.html` in your browser, or navigate to `http://localhost:8000`.
+Navigate to `http://localhost:8000` to interact with the web assistant.
 
 ## Architecture
 
