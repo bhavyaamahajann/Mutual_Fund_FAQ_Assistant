@@ -221,10 +221,10 @@ QUESTIONS_BY_FUND = {
 
 DEFAULT_QUESTIONS = [
     {"query": "What is the expense ratio of ICICI Prudential Small Cap Fund?", "label": "Expense ratio of Small Cap?"},
+    {"query": "Who manages the ICICI Prudential Small Cap Fund?", "label": "Fund Manager: Small Cap"},
     {"query": "What is the 3-year CAGR for ICICI Prudential Flexi Cap Fund?", "label": "3-year CAGR for Flexi Cap"},
     {"query": "What are the tax implications for ICICI Prudential ELSS Tax Saver Fund?", "label": "Tax implications for ELSS?"},
     {"query": "What is the risk profile of ICICI Prudential Multi Asset Fund?", "label": "Risk profile: Multi Asset"},
-    {"query": "Who manages the ICICI Prudential Small Cap Fund?", "label": "Fund Manager: Small Cap"},
     {"query": "What is the exit load for ICICI Prudential Focused Equity Fund?", "label": "Exit load for Focused Equity"}
 ]
 
@@ -1076,18 +1076,28 @@ with right_col:
     <div class="recently-asked-box">
         <ul class="recently-asked-list">
             <li>
-                <a href="?ask=What+are+the+top+holdings+of+ICICI+Prudential+Bluechip+Fund?" target="_self" class="asked-item">
-                    🔍 <span>Top holdings of Bluechip Fund?</span>
+                <a href="?ask=What+is+the+minimum+investment+amount+for+ICICI+Prudential+Large+%26+Mid+Cap+Fund%3F" target="_self" class="asked-item" title="What is the minimum investment amount for ICICI Prudential Large & Mid Cap Fund?">
+                    🔍 <span>Min investment: Large & Mid Cap</span>
                 </a>
             </li>
             <li>
-                <a href="?ask=What+is+the+difference+in+expense+ratios+between+ICICI+Prudential+mutual+funds?" target="_self" class="asked-item">
-                    🔍 <span>Expense ratio comparison</span>
+                <a href="?ask=What+is+the+AUM+of+ICICI+Prudential+Equity+%26+Debt+Fund%3F" target="_self" class="asked-item" title="What is the AUM of ICICI Prudential Equity & Debt Fund?">
+                    🔍 <span>AUM of Equity & Debt</span>
                 </a>
             </li>
             <li>
-                <a href="?ask=What+is+the+NAV+of+ICICI+Prudential+Small+Cap+Fund?" target="_self" class="asked-item">
-                    🔍 <span>NAV of Small Cap Fund</span>
+                <a href="?ask=What+is+the+lock-in+period+for+ICICI+Prudential+ELSS+Tax+Saver+Fund%3F" target="_self" class="asked-item" title="What is the lock-in period for ICICI Prudential ELSS Tax Saver Fund?">
+                    🔍 <span>Lock-in period: ELSS</span>
+                </a>
+            </li>
+            <li>
+                <a href="?ask=What+is+the+benchmark+index+of+ICICI+Prudential+Nifty+50+Index+Fund%3F" target="_self" class="asked-item" title="What is the benchmark index of ICICI Prudential Nifty 50 Index Fund?">
+                    🔍 <span>Benchmark of Nifty 50 Index</span>
+                </a>
+            </li>
+            <li>
+                <a href="?ask=What+is+the+tracking+error+of+ICICI+Prudential+Nifty+50+Index+Fund%3F" target="_self" class="asked-item" title="What is the tracking error of ICICI Prudential Nifty 50 Index Fund?">
+                    🔍 <span>Tracking error: Nifty 50 Index</span>
                 </a>
             </li>
         </ul>

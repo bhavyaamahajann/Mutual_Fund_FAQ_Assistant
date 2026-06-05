@@ -239,6 +239,14 @@ function App() {
       },
       {
         id: 'card-2',
+        category: 'Small Cap Fund',
+        query: 'Who manages the ICICI Prudential Small Cap Fund?',
+        icon: Cpu,
+        text: 'Fund Manager: Small Cap',
+        subtext: 'MANAGEMENT'
+      },
+      {
+        id: 'card-3',
         category: 'Flexi Cap Fund',
         query: 'What is the 3-year CAGR for ICICI Prudential Flexi Cap Fund?',
         icon: TrendingUp,
@@ -246,7 +254,7 @@ function App() {
         subtext: 'PERFORMANCE'
       },
       {
-        id: 'card-3',
+        id: 'card-4',
         category: 'ELSS Tax Saver Fund',
         query: 'What are the tax implications for ICICI Prudential ELSS Tax Saver Fund?',
         icon: Wallet,
@@ -254,20 +262,12 @@ function App() {
         subtext: 'TAXATION'
       },
       {
-        id: 'card-4',
+        id: 'card-5',
         category: 'Multi Asset Fund',
         query: 'What is the risk profile of ICICI Prudential Multi Asset Fund?',
         icon: Shield,
         text: 'Risk profile: Multi Asset',
         subtext: 'RISK ANALYSIS'
-      },
-      {
-        id: 'card-5',
-        category: 'Small Cap Fund',
-        query: 'Who manages the ICICI Prudential Small Cap Fund?',
-        icon: Cpu,
-        text: 'Fund Manager: Small Cap',
-        subtext: 'MANAGEMENT'
       },
       {
         id: 'card-6',
@@ -1039,24 +1039,43 @@ function App() {
           <ul className="recently-asked-list">
             <li 
               className="asked-item" 
-              onClick={() => handleAskedClick("What are the top holdings of ICICI Prudential Bluechip Fund?")}
+              onClick={() => handleAskedClick("What is the minimum investment amount for ICICI Prudential Large & Mid Cap Fund?")}
+              title="What is the minimum investment amount for ICICI Prudential Large & Mid Cap Fund?"
             >
-              <Search />
-              <span>Top holdings of Bluechip Fund?</span>
+              <Search style={{ flexShrink: 0 }} />
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Min investment: Large & Mid Cap</span>
             </li>
             <li 
               className="asked-item" 
-              onClick={() => handleAskedClick("What is the difference in expense ratios between ICICI Prudential mutual funds?")}
+              onClick={() => handleAskedClick("What is the AUM of ICICI Prudential Equity & Debt Fund?")}
+              title="What is the AUM of ICICI Prudential Equity & Debt Fund?"
             >
-              <Search />
-              <span>Expense ratio comparison</span>
+              <Search style={{ flexShrink: 0 }} />
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>AUM of Equity & Debt</span>
             </li>
             <li 
               className="asked-item" 
-              onClick={() => handleAskedClick("What is the NAV of ICICI Prudential Small Cap Fund?")}
+              onClick={() => handleAskedClick("What is the lock-in period for ICICI Prudential ELSS Tax Saver Fund?")}
+              title="What is the lock-in period for ICICI Prudential ELSS Tax Saver Fund?"
             >
-              <Search />
-              <span>NAV of Small Cap Fund</span>
+              <Search style={{ flexShrink: 0 }} />
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Lock-in period: ELSS</span>
+            </li>
+            <li 
+              className="asked-item" 
+              onClick={() => handleAskedClick("What is the benchmark index of ICICI Prudential Nifty 50 Index Fund?")}
+              title="What is the benchmark index of ICICI Prudential Nifty 50 Index Fund?"
+            >
+              <Search style={{ flexShrink: 0 }} />
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Benchmark of Nifty 50 Index</span>
+            </li>
+            <li 
+              className="asked-item" 
+              onClick={() => handleAskedClick("What is the tracking error of ICICI Prudential Nifty 50 Index Fund?")}
+              title="What is the tracking error of ICICI Prudential Nifty 50 Index Fund?"
+            >
+              <Search style={{ flexShrink: 0 }} />
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Tracking error: Nifty 50 Index</span>
             </li>
           </ul>
         </div>
