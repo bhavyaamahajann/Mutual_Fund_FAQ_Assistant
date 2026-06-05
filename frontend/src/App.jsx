@@ -82,7 +82,7 @@ const QUESTIONS_BY_FUND = {
 
 function App() {
   const [checkboxes, setCheckboxes] = useState({
-    'Small Cap Fund': true,
+    'Small Cap Fund': false,
     'Large & Mid Cap Fund': false,
     'Flexi Cap Fund': false,
     'Focused Equity Fund': false,
@@ -163,7 +163,7 @@ function App() {
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
 
-  const [activeSession, setActiveSession] = useState('session-1');
+  const [activeSession, setActiveSession] = useState(null);
   const [sessions, setSessions] = useState({
     'session-1': [
       { sender: 'user', text: 'Hi, what can this assistant help me with?' },

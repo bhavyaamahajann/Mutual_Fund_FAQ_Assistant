@@ -37,7 +37,7 @@ export const ChatArea = ({
         {(!activeSession || activeMessages.length === 0) ? (
           <div className="welcome-container" id="welcome-container">
             <div className="welcome-heading-group">
-              <h1 className="welcome-title">How can I help you today?</h1>
+              <h1 className="welcome-title">How can I help you today<span className="blinking-question">?</span></h1>
               <p className="welcome-subtitle">Ask me anything about ICICI Prudential funds, expense ratios, tax implications, or performance data.</p>
             </div>
 
