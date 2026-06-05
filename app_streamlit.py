@@ -52,6 +52,13 @@ EQUITY_FUNDS = ['Small Cap Fund', 'Large & Mid Cap', 'Flexi Cap Fund', 'Focused 
 HYBRID_FUNDS = ['Equity Savings', 'Equity & Debt', 'Regular Savings', 'Multi Asset Fund']
 INDEX_ETFS_TAX = ['ELSS Tax Saver', 'Nifty 50 Index', 'Gold ETF FoF', 'Silver ETF FoF']
 
+# Initialize checkbox state in session state before anything else
+for category in [EQUITY_FUNDS, HYBRID_FUNDS, INDEX_ETFS_TAX]:
+    for scheme in category:
+        key = f"chk-{scheme}"
+        if key not in st.session_state:
+            st.session_state[key] = (scheme == 'Small Cap Fund')
+
 # Dynamic suggestive questions
 QUESTIONS_BY_FUND = {
     'Small Cap Fund': [
@@ -144,6 +151,8 @@ st.html("""
         border: 1px solid #e5e7eb !important;
         border-radius: 9999px !important;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+        max-width: 640px !important;
+        margin: 0 auto !important;
     }
     
     /* Heading Fonts */
@@ -158,6 +167,48 @@ st.html("""
         padding-bottom: 2rem !important;
         padding-left: 2rem !important;
         padding-right: 2rem !important;
+    }
+
+    /* Column layout overrides to structure Right Sidebar */
+    div[data-testid="column"]:first-child {
+        padding-right: 1.5rem !important;
+    }
+    div[data-testid="column"]:last-child {
+        background-color: #faf9f6 !important;
+        border-left: 1px solid #e5e7eb !important;
+        padding: 1.25rem 1rem !important;
+        min-height: 100vh !important;
+        margin-top: -1.5rem !important;
+        margin-bottom: -2rem !important;
+        margin-right: -2rem !important;
+    }
+
+    /* Logo & Branding */
+    .brand-container {
+        padding: 5px 0;
+    }
+    .indmoney-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .brand-text {
+        font-size: 1.25rem;
+        color: #1d4ed8;
+        font-weight: 750;
+        letter-spacing: -0.02em;
+        font-family: 'Outfit', sans-serif;
+    }
+    .ai-badge {
+        background-color: #e0e7ff;
+        color: #1d4ed8;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        letter-spacing: 0.02em;
+        display: inline-block;
     }
 
     /* Compliance Warning Badge */
@@ -193,6 +244,13 @@ st.html("""
     }
     
     /* Suggestive Buttons */
+    .suggestive-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1rem !important;
+        max-width: 640px !important;
+        margin: 0 auto !important;
+    }
     .suggestive-btn {
         background-color: #FFFFFF !important;
         border: 1px solid #E5E7EB !important;
@@ -211,6 +269,33 @@ st.html("""
         border-color: #CBD5E1 !important;
     }
     
+    /* Selected Counter Pills */
+    .selected-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        background-color: #e0e7ff !important;
+        color: #1d4ed8 !important;
+        padding: 2px 8px !important;
+        border-radius: 12px !important;
+        font-size: 10px !important;
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        border: 1px solid #e5e7eb !important;
+        transition: all 0.15s ease !important;
+        margin-right: 6px !important;
+        margin-bottom: 6px !important;
+    }
+    .selected-pill:hover {
+        background-color: #fef2f2 !important;
+        color: #991b1b !important;
+    }
+    .pill-x {
+        font-size: 10px !important;
+        font-weight: bold !important;
+        margin-left: 2px !important;
+    }
+
     /* Citation Pills */
     .citation-pill {
         display: inline-flex !important;
@@ -231,6 +316,295 @@ st.html("""
     .last-updated-date {
         font-size: 0.65rem !important;
         color: #6B7280 !important;
+    }
+
+    /* Right Sidebar: Conversation Threads & Info Cards */
+    .btn-new-chat {
+        width: 100%;
+        background-color: #1d4ed8 !important;
+        color: #ffffff !important;
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 600 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
+        padding: 0.65rem 1rem !important;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        transition: background-color 0.15s ease !important;
+        font-size: 0.85rem !important;
+        margin-bottom: 20px !important;
+    }
+    .btn-new-chat:hover {
+        background-color: #1e40af !important;
+    }
+    .sidebar-right-title {
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 0.725rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        color: #6b7280 !important;
+        letter-spacing: 0.05em !important;
+    }
+    .thread-item {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 0.6rem !important;
+        padding: 0.55rem 0.75rem !important;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        color: #1f2937 !important;
+        transition: all 0.15s ease !important;
+        margin-bottom: 6px !important;
+    }
+    .thread-item:hover {
+        background-color: rgba(29, 78, 216, 0.03) !important;
+    }
+    .thread-item.active {
+        background-color: #e0e7ff !important;
+        color: #1d4ed8 !important;
+        font-weight: 600 !important;
+    }
+    .thread-link {
+        color: inherit !important;
+        text-decoration: none !important;
+        flex: 1 !important;
+        font-size: 0.8rem !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    .thread-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-shrink: 0 !important;
+    }
+    .thread-action-btn {
+        color: #6b7280 !important;
+        text-decoration: none !important;
+        font-size: 0.8rem !important;
+        opacity: 0.6 !important;
+        transition: opacity 0.15s ease !important;
+    }
+    .thread-action-btn:hover {
+        opacity: 1 !important;
+    }
+    .thread-action-btn.delete:hover {
+        color: #ef4444 !important;
+    }
+    .how-it-works-card {
+        background-color: #eef2f6 !important;
+        border-radius: 12px !important;
+        padding: 1.1rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.85rem !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.01) !important;
+        margin-bottom: 25px !important;
+    }
+    .how-header {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        color: #111827 !important;
+        letter-spacing: 0.03em !important;
+    }
+    .how-list {
+        list-style: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.65rem !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .how-list li {
+        display: flex !important;
+        gap: 0.5rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1.4 !important;
+        color: #1f2937 !important;
+    }
+    .how-check-icon {
+        color: #1d4ed8 !important;
+        flex-shrink: 0 !important;
+        font-weight: bold !important;
+    }
+    .how-footer {
+        font-size: 0.65rem !important;
+        color: #6b7280 !important;
+        line-height: 1.45 !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+        padding-top: 0.65rem !important;
+    }
+    .recently-asked-box {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.65rem !important;
+    }
+    .recently-asked-list {
+        list-style: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.25rem !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .asked-item {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        padding: 0.45rem 0.5rem !important;
+        font-size: 0.75rem !important;
+        color: #1f2937 !important;
+        cursor: pointer !important;
+        border-radius: 6px !important;
+        transition: all 0.1s ease !important;
+        text-decoration: none !important;
+    }
+    .asked-item:hover {
+        background-color: rgba(0, 0, 0, 0.02) !important;
+        text-decoration: underline !important;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background-color: rgba(17, 24, 39, 0.4) !important;
+        backdrop-filter: blur(3px) !important;
+        z-index: 99999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 1rem !important;
+    }
+    .modal-container {
+        background-color: #ffffff !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 16px !important;
+        max-width: 600px !important;
+        width: 100% !important;
+        max-height: 85vh !important;
+        overflow-y: auto !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+    }
+    .modal-header {
+        padding: 1rem 1.25rem !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+    .modal-title {
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 1.05rem !important;
+        font-weight: 700 !important;
+        color: #111827 !important;
+    }
+    .close-btn {
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        color: #6b7280 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.25rem !important;
+        border-radius: 6px !important;
+        text-decoration: none !important;
+        font-size: 1.5rem !important;
+        font-weight: bold !important;
+    }
+    .close-btn:hover {
+        background-color: #f1f5f9 !important;
+        color: #111827 !important;
+    }
+    .modal-body {
+        padding: 1.25rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        box-sizing: border-box !important;
+    }
+    .workflow-steps {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    .workflow-step {
+        display: flex !important;
+        gap: 0.75rem !important;
+        background-color: #faf9f6 !important;
+        border: 1px solid #e5e7eb !important;
+        padding: 0.75rem !important;
+        border-radius: 8px !important;
+    }
+    .step-icon {
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 6px !important;
+        background-color: #e0e7ff !important;
+        color: #1d4ed8 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        font-weight: bold !important;
+    }
+    .step-info h4 {
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
+        color: #111827 !important;
+        margin: 0 0 0.15rem 0 !important;
+    }
+    .step-info p {
+        font-size: 0.75rem !important;
+        color: #6b7280 !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+    }
+    .step-info code {
+        background-color: #e2e8f0 !important;
+        padding: 0.05rem 0.2rem !important;
+        border-radius: 3px !important;
+        font-size: 0.7rem !important;
+        font-family: monospace !important;
+    }
+    .compliance-box-warning {
+        background-color: #fff7e6 !important;
+        border: 1px solid #ffe8cc !important;
+        border-radius: 8px !important;
+        padding: 0.75rem !important;
+        color: #92400e !important;
+        font-size: 0.75rem !important;
+    }
+    .compliance-box-warning h5 {
+        font-family: 'Outfit', sans-serif !important;
+        font-weight: 700 !important;
+        margin: 0 0 0.25rem 0 !important;
+        color: inherit !important;
+    }
+    .compliance-box-warning ul {
+        padding-left: 1.1rem !important;
+        margin: 0 !important;
     }
 </style>
 """)
@@ -259,13 +633,11 @@ if "renaming_session" not in st.session_state:
 
 # Left Sidebar: Checkboxes and Logo
 render_html("""
-<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
-  <span style="font-size: 1.5rem; color: #1d4ed8; font-weight: 750; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
-    INDMoney
-  </span>
-  <span style="background-color: #e0e7ff; color: #1d4ed8; font-size: 0.9rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; font-family: 'Outfit', sans-serif; display: inline-block;">
-    AI
-  </span>
+<div class="brand-container" style="margin-bottom: 20px;">
+  <div class="indmoney-logo" style="display: flex; align-items: center; gap: 8px;">
+    <span class="brand-text">INDMoney</span>
+    <span class="ai-badge">AI</span>
+  </div>
 </div>
 <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #111827; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 15px;">
   📁 ICICI PRUDENTIAL MF
@@ -277,19 +649,17 @@ selected_schemes = []
 
 st.sidebar.html("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Equity Funds</span>")
 for scheme in EQUITY_FUNDS:
-    # Default Small Cap checked as per app behavior
-    default_val = (scheme == 'Small Cap Fund')
-    if st.sidebar.checkbox(scheme, value=default_val, key=f"chk-{scheme}"):
+    if st.sidebar.checkbox(scheme, key=f"chk-{scheme}"):
         selected_schemes.append(scheme)
 
 st.sidebar.html("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Hybrid Funds</span>")
 for scheme in HYBRID_FUNDS:
-    if st.sidebar.checkbox(scheme, value=False, key=f"chk-{scheme}"):
+    if st.sidebar.checkbox(scheme, key=f"chk-{scheme}"):
         selected_schemes.append(scheme)
 
 st.sidebar.html("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Index, ETFs & Tax</span>")
 for scheme in INDEX_ETFS_TAX:
-    if st.sidebar.checkbox(scheme, value=False, key=f"chk-{scheme}"):
+    if st.sidebar.checkbox(scheme, key=f"chk-{scheme}"):
         selected_schemes.append(scheme)
 
 # Map checked schemes to fund IDs
@@ -297,6 +667,15 @@ selected_fund_ids = [FUND_ID_MAP[name] for name in selected_schemes if name in F
 
 # ----------------- STATE MACHINE USING QUERY PARAMS -----------------
 params = st.query_params
+
+# Handle uncheck action from selected pills
+if "uncheck" in params:
+    uncheck_val = params["uncheck"]
+    key = f"chk-{uncheck_val}"
+    if key in st.session_state:
+        st.session_state[key] = False
+    st.query_params.clear()
+    st.rerun()
 
 # Handle New Chat Trigger
 if "new_chat" in params:
@@ -396,7 +775,7 @@ def submit_chat_message(query_text):
 with chat_col:
     # Compliance warning badge at the top-right
     render_html("""
-    <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 20px;">
+    <div style="display: flex; justify-content: flex-end; width: 100%; max-width: 640px; margin: 0 auto 20px auto;">
         <div class="warning-badge">⚠️ Facts-Only. No Investment Advice.</div>
     </div>
     """)
@@ -422,7 +801,7 @@ with chat_col:
     # Welcome screen
     if not messages:
         render_html("""
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+        <div style="text-align: center; margin: 40px auto 40px auto; max-width: 640px;">
             <h1 style="font-size: 2.1rem; font-weight: 700; color: #111827; margin-bottom: 8px;">How can I help you today?</h1>
             <p style="font-size: 0.875rem; color: #6b7280; max-width: 500px; margin: 0 auto; line-height: 1.5;">
                 Ask me anything about ICICI Prudential funds, expense ratios, tax implications, or performance data.
@@ -442,25 +821,26 @@ with chat_col:
                     
         suggestions_to_show = dynamic_suggestions[:4]
         
-        # Render cards as columns of styled HTML anchors linking to ?ask=
-        card_cols = st.columns(2)
+        # Render cards as a CSS Grid of styled HTML anchors linking to ?ask=
+        suggestions_html = '<div class="suggestive-grid">'
         for idx, card in enumerate(suggestions_to_show):
-            with card_cols[idx % 2]:
-                card_url = f"?ask={card['query'].replace(' ', '+').replace('&', '%26')}"
-                render_html(f"""
-                <a href="{card_url}" target="_self" style="text-decoration: none;">
-                    <div class="suggestive-btn">
-                        <span style="font-size: 0.85rem; font-weight: 600; color: #111827;">{card['label']}</span>
-                        <span style="font-size: 0.65rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: auto;">FUND PARAMETERS</span>
-                    </div>
-                </a>
-                """)
+            card_url = f"?ask={card['query'].replace(' ', '+').replace('&', '%26')}"
+            suggestions_html += f"""
+            <a href="{card_url}" target="_self" style="text-decoration: none;">
+                <div class="suggestive-btn">
+                    <span style="font-size: 0.85rem; font-weight: 600; color: #111827; line-height: 1.35;">{card['label']}</span>
+                    <span style="font-size: 0.65rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: auto;">FUND PARAMETERS</span>
+                </div>
+            </a>
+            """
+        suggestions_html += '</div>'
+        render_html(suggestions_html)
     else:
         # Message bubble display (HTML high-fidelity alignment)
         for msg in messages:
             if msg["sender"] == "user":
                 render_html(f"""
-                <div style="display: flex; justify-content: flex-end; margin-bottom: 16px; width: 100%;">
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 16px; width: 100%; max-width: 640px; margin-left: auto; margin-right: auto;">
                     <div style="background-color: #1d4ed8; color: #ffffff; padding: 12px 16px; border-radius: 12px; border-bottom-right-radius: 2px; max-width: 80%; font-size: 0.85rem; line-height: 1.45; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-family: sans-serif;">
                         {msg['text']}
                     </div>
@@ -479,7 +859,7 @@ with chat_col:
                         link_html = "<br><a href='https://www.sebi.gov.in' target='_blank' style='color:#92400e; font-weight:600; text-decoration:underline; font-size:0.75rem;'>Visit SEBI Portal ↗</a>"
                         
                     render_html(f"""
-                    <div class="{bg_class}" style="max-width: 80%; font-family: sans-serif; font-size: 0.85rem; margin-bottom: 16px; box-sizing: border-box;">
+                    <div class="{bg_class}" style="max-width: 640px; font-family: sans-serif; font-size: 0.85rem; margin: 0 auto 16px auto; box-sizing: border-box;">
                         <h4 style="margin: 0 0 6px 0; font-weight: 700; font-size: 0.9rem; color: inherit;">{title}</h4>
                         <p style="margin: 0; line-height: 1.4; color: inherit;">{msg['text']}</p>
                         {link_html}
@@ -511,7 +891,7 @@ with chat_col:
                         """
                         
                     render_html(f"""
-                    <div style="display: flex; justify-content: flex-start; margin-bottom: 16px; width: 100%;">
+                    <div style="display: flex; justify-content: flex-start; margin-bottom: 16px; width: 100%; max-width: 640px; margin-left: auto; margin-right: auto;">
                         <div style="background-color: #ffffff; color: #1f2937; padding: 12px 16px; border-radius: 12px; border-bottom-left-radius: 2px; border: 1px solid #e5e7eb; max-width: 80%; font-size: 0.85rem; line-height: 1.45; box-shadow: 0 1px 3px rgba(0,0,0,0.02); font-family: sans-serif; box-sizing: border-box;">
                             <p style="margin: 0;">{msg['text']}</p>
                             {citation_html}
@@ -523,14 +903,16 @@ with chat_col:
     active_count = len(selected_schemes)
     st.html("<br>")
     
-    # Generate pills in a strict single-line without leading spacing
+    # Generate pills with uncheck links matching React UI hover/style behaviour
     pill_html = "".join([
-        f'<span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e0e7ff; color: #1d4ed8; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; border: 1px solid #e5e7eb; margin-right: 6px; margin-bottom: 6px;">{name}</span>'
+        f'<a href="?uncheck={name.replace(" ", "+")}" target="_self" style="text-decoration: none;" title="Click to remove {name}">'
+        f'<span class="selected-pill">{name} <span class="pill-x">×</span></span>'
+        f'</a>'
         for name in selected_schemes
     ])
         
     render_html(f"""
-    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; max-width: 640px; margin-left: auto; margin-right: auto;">
         <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ {active_count} ]</span>
         {pill_html}
     </div>
@@ -549,12 +931,12 @@ with chat_col:
 
     # Footer links rows
     render_html("""
-    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #6b7280; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 10px; font-family: sans-serif;">
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #6b7280; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 10px; font-family: sans-serif; max-width: 640px; margin-left: auto; margin-right: auto;">
         <span>🕒 Last updated from official AMC sources.</span>
         <div>
-            <span style="cursor: pointer; text-decoration: underline;">System Architecture</span>
+            <a href="?modal=arch" target="_self" style="color: inherit; text-decoration: underline;">System Architecture</a>
             <span style="margin: 0 4px;">•</span>
-            <span style="cursor: pointer; text-decoration: underline;">Privacy Policy</span>
+            <a href="?modal=privacy" target="_self" style="color: inherit; text-decoration: underline;">Privacy Policy</a>
         </div>
     </div>
     """)
@@ -564,31 +946,31 @@ with right_col:
     # New Chat Button (Styled royal blue card link)
     render_html("""
     <a href="?new_chat=true" target="_self" style="text-decoration: none;">
-        <div style="background-color: #1d4ed8; color: #ffffff; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85rem; text-align: center; border-radius: 8px; padding: 10px 16px; margin-bottom: 20px; transition: background-color 0.2s;">
-            + New Chat
+        <div class="btn-new-chat">
+            <span>+</span> <span>New Chat</span>
         </div>
     </a>
     """)
     
     # Recent Conversations Section
-    st.html("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recent Conversations</span>")
+    st.html("<span class='sidebar-right-title' style='display:block; margin-bottom:10px;'>Recent Conversations</span>")
     
     # Render Threads using high fidelity list formatting
-    threads_html = "<div style='display: flex; flex-direction: column; gap: 6px; margin-bottom: 25px; font-family: sans-serif;'>"
+    threads_html = "<div style='display: flex; flex-direction: column; gap: 6px; margin-bottom: 25px;'>"
     for idx, s_id in enumerate(list(st.session_state.sessions.keys())):
         s_name = st.session_state.session_names.get(s_id, s_id)
         is_active = (active_sess == s_id)
         
-        bg_style = "background-color: #e0e7ff; color: #1d4ed8; font-weight: 600;" if is_active else "background-color: transparent; color: #1f2937;"
+        bg_active_class = "active" if is_active else ""
         
         threads_html += f"""
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; {bg_style} transition: background-color 0.15s;">
-            <a href="?session={s_id}" target="_self" style="color: inherit; text-decoration: none; flex: 1; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        <div class="thread-item {bg_active_class}">
+            <a href="?session={s_id}" target="_self" class="thread-link">
                 💬 {s_name}
             </a>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <a href="?trigger_rename={s_id}" target="_self" style="color: inherit; text-decoration: none; font-size: 0.75rem;" title="Rename">✏️</a>
-                <a href="?delete={s_id}" target="_self" style="color: #ef4444; text-decoration: none; font-size: 0.85rem;" title="Delete">🗑️</a>
+            <div class="thread-actions">
+                <a href="?trigger_rename={s_id}" target="_self" class="thread-action-btn" title="Rename conversation">✏️</a>
+                <a href="?delete={s_id}" target="_self" class="thread-action-btn delete" title="Delete conversation">🗑️</a>
             </div>
         </div>
         """
@@ -597,46 +979,55 @@ with right_col:
     
     # HOW IT WORKS? Card
     render_html("""
-    <div style="background-color: #eef2f6; border-radius: 12px; padding: 16px; margin-bottom: 25px; font-family: sans-serif;">
-        <div style="font-family: 'Outfit', sans-serif; color: #111827; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.03em; display: flex; align-items: center; gap: 6px; margin-bottom: 10px;">
-            ℹ️ HOW IT WORKS?
+    <div class="how-it-works-card">
+        <div class="how-header">
+            <span class="how-info-icon">ℹ️</span> <span>HOW IT WORKS?</span>
         </div>
-        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
-            <li style="display: flex; gap: 6px; font-size: 0.725rem; color: #1f2937; line-height: 1.4;">
-                <span style="color: #1d4ed8;">✓</span> Factual answers only (NAV, AUM, returns, holdings, etc.)
+        <ul class="how-list">
+            <li>
+                <span class="how-check-icon">✓</span>
+                <span>Factual answers only (NAV, AUM, returns, holdings, etc.)</span>
             </li>
-            <li style="display: flex; gap: 6px; font-size: 0.725rem; color: #1f2937; line-height: 1.4;">
-                <span style="color: #1d4ed8;">✓</span> No advice or comparisons; short replies with sources
+            <li>
+                <span class="how-check-icon">✓</span>
+                <span>No advice or comparisons; short replies with sources</span>
             </li>
-            <li style="display: flex; gap: 6px; font-size: 0.725rem; color: #1f2937; line-height: 1.4;">
-                <span style="color: #1d4ed8;">✓</span> Rejects PII and opinion questions
+            <li>
+                <span class="how-check-icon">✓</span>
+                <span>Rejects PII and opinion questions</span>
             </li>
         </ul>
-        <div style="color: #6b7280; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px; margin-top: 10px; font-size: 0.625rem; line-height: 1.45;">
+        <div class="how-footer">
             AI-generated responses. Verify with cited sources. Free-tier API: wait a few minutes if limits are hit.
         </div>
     </div>
     """)
     
     # RECENTLY ASKED list
-    st.html("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recently Asked</span>")
+    st.html("<span class='sidebar-right-title' style='display:block; margin-bottom:10px;'>Recently Asked</span>")
     
-    recently_asked_queries = [
-        {"q": "What are the top holdings of ICICI Prudential Bluechip Fund?", "label": "Top holdings of Bluechip Fund?"},
-        {"q": "What is the difference in expense ratios between ICICI Prudential mutual funds?", "label": "Expense ratio comparison"},
-        {"q": "What is the NAV of ICICI Prudential Small Cap Fund?", "label": "NAV of Small Cap Fund"}
-    ]
-    
-    for idx, item in enumerate(recently_asked_queries):
-        ask_url = f"?ask={item['q'].replace(' ', '+').replace('&', '%26')}"
-        render_html(f"""
-        <div style="margin-bottom: 8px; font-family: sans-serif;">
-            <a href="{ask_url}" target="_self" style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: #1f2937; font-size: 0.75rem; padding: 4px 0;">
-                🔍 <span style="cursor: pointer; transition: color 0.15s;">{item['label']}</span>
-            </a>
-        </div>
-        """)
-        
+    render_html("""
+    <div class="recently-asked-box">
+        <ul class="recently-asked-list">
+            <li>
+                <a href="?ask=What+are+the+top+holdings+of+ICICI+Prudential+Bluechip+Fund?" target="_self" class="asked-item">
+                    🔍 <span>Top holdings of Bluechip Fund?</span>
+                </a>
+            </li>
+            <li>
+                <a href="?ask=What+is+the+difference+in+expense+ratios+between+ICICI+Prudential+mutual+funds?" target="_self" class="asked-item">
+                    🔍 <span>Expense ratio comparison</span>
+                </a>
+            </li>
+            <li>
+                <a href="?ask=What+is+the+NAV+of+ICICI+Prudential+Small+Cap+Fund?" target="_self" class="asked-item">
+                    🔍 <span>NAV of Small Cap Fund</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    """)
+
     # Adding CSS support for hover decoration on link text
     st.html("""
     <style>
@@ -645,4 +1036,113 @@ with right_col:
             color: #1d4ed8 !important;
         }
     </style>
+    """)
+
+# ----------------- SYSTEM OVERLAYS (MODALS) -----------------
+modal_param = st.query_params.get("modal")
+if modal_param == "arch":
+    render_html("""
+    <div class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">System Architecture (Facts-Only RAG)</h2>
+                <a href="?" target="_self" class="close-btn">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-icon">☁️</div>
+                        <div class="step-info">
+                            <h4>1. Scraper & Parser</h4>
+                            <p>Fetches client props from 15 INDMoney URLs using <code>curl-cffi</code> Chrome impersonation. Extracts 13 key parameters directly from <code>__NEXT_DATA__</code>.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-icon">🔢</div>
+                        <div class="step-info">
+                            <h4>2. Chunking & Embeddings</h4>
+                            <p>Chunks metadata with context-aware prefixes (Scheme + Plan). Generates 1024-dimension embeddings via local <code>BAAI/bge-large-en-v1.5</code>.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-icon">🗄️</div>
+                        <div class="step-info">
+                            <h4>3. Vector DB Retrieval</h4>
+                            <p>Stores vectors in ChromaDB. Uses cosine similarity with strict L2 distance threshold filters to omit irrelevant sources.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-icon">🛡️</div>
+                        <div class="step-info">
+                            <h4>4. Query Classification</h4>
+                            <p>Pre-evaluates input for PII leaks (PAN, Aadhaar), advisory intent, performance comparisons, and greetings using strict regex and classifiers.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-icon">⚙️</div>
+                        <div class="step-info">
+                            <h4>5. Generation (Groq LLaMA 3.3)</h4>
+                            <p>Forwards retrieved facts to <code>llama-3.3-70b-versatile</code>. Enforces a strict response limit of ≤3 sentences, no investment advice, and 1 source citation.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-icon">✅</div>
+                        <div class="step-info">
+                            <h4>6. Output Validation</h4>
+                            <p>Validates sentence limit, citation inclusion, and scraper timestamp. Truncates and auto-corrects before serving response.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="compliance-box-warning">
+                    <h5>Compliance Rules Guardrail</h5>
+                    <ul>
+                        <li>No comparisons: Triggers polite refusals.</li>
+                        <li>No advisory: Prompts redirect to AMFI educational portal.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    """)
+elif modal_param == "privacy":
+    render_html("""
+    <div class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Privacy Policy & Security Guardrails</h2>
+                <a href="?" target="_self" class="close-btn">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="compliance-box-warning" style="background-color: #ECFDF3; border-color: #A7F3D0; color: #047857;">
+                    <h5 style="font-family: 'Outfit', sans-serif; font-weight: 700;">Strict Regulatory Compliance & Safety Shield</h5>
+                    <p style="font-size: 0.8rem; line-height: 1.45; margin-top: 0.25rem; color: inherit;">
+                        In strict alignment with SEBI, AMFI, and INDMoney security guidelines, this Facts-Only FAQ Assistant enforces the following data protection protocols:
+                    </p>
+                </div>
+                <div class="workflow-steps" style="margin-top: 0.5rem;">
+                    <div class="workflow-step" style="background-color: #FFFFFF;">
+                        <div class="step-icon" style="background-color: #FEE2E2; color: #991B1B;">🛡️</div>
+                        <div class="step-info">
+                            <h4 style="color: #991B1B;">Zero PII Retention</h4>
+                            <p>Our pipeline incorporates query classifier filters that identify and block Personal Identifiable Information (PAN cards, Aadhaar cards, phone numbers, email addresses, and OTP codes) prior to processing.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step" style="background-color: #FFFFFF;">
+                        <div class="step-icon" style="background-color: #E0F2FE; color: #0369A1;">🗄️</div>
+                        <div class="step-info">
+                            <h4 style="color: #0369A1;">No Data Caching or Logs</h4>
+                            <p>All query interactions are processed in volatile memory. No user inputs, vector queries, or financial profile attributes are ever cached, saved, or logged to disk.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step" style="background-color: #FFFFFF;">
+                        <div class="step-icon" style="background-color: #FEF3C7; color: #D97706;">ℹ️</div>
+                        <div class="step-info">
+                            <h4 style="color: #D97706;">Official Facts Isolation</h4>
+                            <p>Retrieval focuses exclusively on verified factsheets directly matched from official public AMC URLs. The system does not possess any links to client portfolios or transaction gateways.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     """)
