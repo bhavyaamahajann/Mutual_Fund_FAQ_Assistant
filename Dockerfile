@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+ENV PYTHONPATH=/app
 
 # Copy requirements first to leverage Docker cache
 COPY requirements.txt .
