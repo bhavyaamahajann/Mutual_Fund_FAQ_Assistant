@@ -173,3 +173,22 @@ Do **not** collect, store, or process:
 ## 12. Summary
 
 > The goal is to build a **trustworthy, transparent, and compliant** mutual fund FAQ assistant that prioritizes **accuracy over intelligence**. The system ensures users receive only verified, source-backed financial information — without any advisory bias or speculative content.
+
+---
+
+## 13. Technical Implementation Details
+
+### API Usage
+- **Groq API**: The system uses exactly **one** external API (Groq API) at runtime for LLM response generation.
+- **Local Components**: Embedding generation (`BAAI/bge-large-en-v1.5`) and vector search (ChromaDB) run completely locally in-memory, requiring no external APIs.
+
+### Data Ingestion & Sourcing
+- **Scraper**: A custom Python script (`scraper.py`) scrapes mutual fund web pages using `curl_cffi` browser impersonation to fetch data directly. No external scraping or web extraction APIs are utilized.
+
+### Chunking Strategy
+- **Recursive Chunking**: Text is split using LangChain's `RecursiveCharacterTextSplitter` with a `chunk_size` of 500 characters and a `chunk_overlap` of 50 characters, splitting hierarchically (paragraphs `\n\n`, newlines `\n`, sentence endings `. ? !`, words `" "`, then characters `""`).
+- **Why Recursive Chunking is Used**:
+  - **Structure & Coherence**: It preserves paragraph and sentence structures, ensuring complete facts and related context are not severed or split mid-sentence.
+  - **Improved Retrieval (RAG)**: Keeping semantic units whole guarantees that when a chunk is retrieved, it contains the full information required to answer the query, reducing LLM hallucinations.
+  - **Strict Size Guardrails**: It enforces size limits gracefully by falling back to smaller boundaries only when necessary.
+

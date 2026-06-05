@@ -52,12 +52,121 @@ EQUITY_FUNDS = ['Small Cap Fund', 'Large & Mid Cap', 'Flexi Cap Fund', 'Focused 
 HYBRID_FUNDS = ['Equity Savings', 'Equity & Debt', 'Regular Savings', 'Multi Asset Fund']
 INDEX_ETFS_TAX = ['ELSS Tax Saver', 'Nifty 50 Index', 'Gold ETF FoF', 'Silver ETF FoF']
 
+# Initialize Session State
+if "sessions" not in st.session_state:
+    st.session_state.sessions = {
+        "session-1": [
+            {"sender": "user", "text": "Hi, what can this assistant help me with?"},
+            {
+                "sender": "assistant",
+                "text": "I am a facts-only assistant for ICICI Prudential Mutual Funds. I can provide verified details like NAV, expense ratios, exit loads, fund managers, and minimum SIP amounts based on official sources. I do not provide investment recommendations or comparisons.",
+                "status": "success",
+                "type": "greeting"
+            }
+        ]
+    }
+if "session_names" not in st.session_state:
+    st.session_state.session_names = {
+        "session-1": "Chat 1"
+    }
+if "active_session" not in st.session_state:
+    st.session_state.active_session = "session-1"
+if "renaming_session" not in st.session_state:
+    st.session_state.renaming_session = None
+
 # Initialize checkbox state in session state before anything else
 for category in [EQUITY_FUNDS, HYBRID_FUNDS, INDEX_ETFS_TAX]:
     for scheme in category:
         key = f"chk-{scheme}"
         if key not in st.session_state:
             st.session_state[key] = (scheme == 'Small Cap Fund')
+
+# Collect Checked Schemes from session state directly
+selected_schemes = []
+for category in [EQUITY_FUNDS, HYBRID_FUNDS, INDEX_ETFS_TAX]:
+    for scheme in category:
+        key = f"chk-{scheme}"
+        if st.session_state.get(key, False):
+            selected_schemes.append(scheme)
+
+# Map checked schemes to fund IDs
+selected_fund_ids = [FUND_ID_MAP[name] for name in selected_schemes if name in FUND_ID_MAP]
+
+# ----------------- STATE MACHINE USING QUERY PARAMS -----------------
+params = st.query_params
+
+# Handle uncheck action from selected pills
+if "uncheck" in params:
+    uncheck_val = params["uncheck"]
+    key = f"chk-{uncheck_val}"
+    if key in st.session_state:
+        st.session_state[key] = False
+    st.query_params.clear()
+    st.rerun()
+
+# Handle New Chat Trigger
+if "new_chat" in params:
+    new_id = f"session-{int(datetime.now().timestamp() * 1000)}"
+    st.session_state.sessions[new_id] = []
+    st.session_state.session_names[new_id] = f"Chat {len(st.session_state.sessions) + 1}"
+    st.session_state.active_session = new_id
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Select Session Trigger
+if "session" in params:
+    sess_val = params["session"]
+    if sess_val in st.session_state.sessions:
+        st.session_state.active_session = sess_val
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Delete Session Trigger
+if "delete" in params:
+    del_val = params["delete"]
+    if del_val in st.session_state.sessions:
+        del st.session_state.sessions[del_val]
+        if del_val in st.session_state.session_names:
+            del st.session_state.session_names[del_val]
+        if st.session_state.active_session == del_val:
+            keys = list(st.session_state.sessions.keys())
+            st.session_state.active_session = keys[-1] if keys else None
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Rename Trigger
+if "trigger_rename" in params:
+    st.session_state.renaming_session = params["trigger_rename"]
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Ask Question Trigger (Suggestive prompts or recently asked)
+if "ask" in params:
+    ask_val = params["ask"]
+    if not st.session_state.active_session:
+        new_id = f"session-{int(datetime.now().timestamp() * 1000)}"
+        st.session_state.sessions[new_id] = []
+        st.session_state.session_names[new_id] = "Chat 1"
+        st.session_state.active_session = new_id
+    
+    active_sess = st.session_state.active_session
+    st.session_state.sessions[active_sess].append({"sender": "user", "text": ask_val})
+    
+    # Run pipeline
+    pass_filter = selected_fund_ids if selected_fund_ids else None
+    response_data = pipeline.generate_response(ask_val, selected_funds=pass_filter)
+    
+    st.session_state.sessions[active_sess].append({
+        "sender": "assistant",
+        "text": response_data.get("answer", ""),
+        "status": response_data.get("status", "success"),
+        "type": response_data.get("type", "factual"),
+        "citation": response_data.get("citation"),
+        "last_updated": response_data.get("last_updated")
+    })
+    st.query_params.clear()
+    st.rerun()
+
 
 # Dynamic suggestive questions
 QUESTIONS_BY_FUND = {
@@ -114,7 +223,9 @@ DEFAULT_QUESTIONS = [
     {"query": "What is the expense ratio of ICICI Prudential Small Cap Fund?", "label": "Expense ratio of Small Cap?"},
     {"query": "What is the 3-year CAGR for ICICI Prudential Flexi Cap Fund?", "label": "3-year CAGR for Flexi Cap"},
     {"query": "What are the tax implications for ICICI Prudential ELSS Tax Saver Fund?", "label": "Tax implications for ELSS?"},
-    {"query": "What is the risk profile of ICICI Prudential Multi Asset Fund?", "label": "Risk profile: Multi Asset"}
+    {"query": "What is the risk profile of ICICI Prudential Multi Asset Fund?", "label": "Risk profile: Multi Asset"},
+    {"query": "Who manages the ICICI Prudential Small Cap Fund?", "label": "Fund Manager: Small Cap"},
+    {"query": "What is the exit load for ICICI Prudential Focused Equity Fund?", "label": "Exit load for Focused Equity"}
 ]
 
 # Helper function to render raw HTML safely using st.html
@@ -167,6 +278,41 @@ st.html("""
         padding-bottom: 2rem !important;
         padding-left: 2rem !important;
         padding-right: 2rem !important;
+    }
+
+    /* Expander styling to match Cafe Light theme */
+    div[data-testid="stExpander"], .stExpander {
+        background-color: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        border-radius: 0px !important;
+        box-shadow: none !important;
+        margin-bottom: 10px !important;
+        padding: 0 !important;
+    }
+    div[data-testid="stExpander"] details, .stExpander details {
+        border: none !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+    }
+    div[data-testid="stExpander"] [data-testid="stExpanderToggle"], .stExpander [data-testid="stExpanderToggle"] {
+        padding: 6px 0 !important;
+        margin: 0 !important;
+    }
+    div[data-testid="stExpander"] summary, .stExpander summary {
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        color: #6b7280 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+    }
+    div[data-testid="stExpander"] summary:hover, .stExpander summary:hover {
+        color: #1d4ed8 !important;
+    }
+    div[data-testid="stExpander"] [data-testid="stExpanderDetails"], .stExpander [data-testid="stExpanderDetails"] {
+        padding: 10px 0 5px 0 !important;
+        background-color: transparent !important;
     }
 
     /* Column layout overrides to structure Right Sidebar */
@@ -609,29 +755,7 @@ st.html("""
 </style>
 """)
 
-# Initialize Session State
-if "sessions" not in st.session_state:
-    st.session_state.sessions = {
-        "session-1": [
-            {"sender": "user", "text": "Hi, what can this assistant help me with?"},
-            {
-                "sender": "assistant",
-                "text": "I am a facts-only assistant for ICICI Prudential Mutual Funds. I can provide verified details like NAV, expense ratios, exit loads, fund managers, and minimum SIP amounts based on official sources. I do not provide investment recommendations or comparisons.",
-                "status": "success",
-                "type": "greeting"
-            }
-        ]
-    }
-if "session_names" not in st.session_state:
-    st.session_state.session_names = {
-        "session-1": "Chat 1"
-    }
-if "active_session" not in st.session_state:
-    st.session_state.active_session = "session-1"
-if "renaming_session" not in st.session_state:
-    st.session_state.renaming_session = None
-
-# Left Sidebar: Checkboxes and Logo
+# Left Sidebar: Logo and Header
 render_html("""
 <div class="brand-container" style="margin-bottom: 20px;">
   <div class="indmoney-logo" style="display: flex; align-items: center; gap: 8px;">
@@ -644,102 +768,45 @@ render_html("""
 </div>
 """, sidebar=True)
 
-# Collect Checked Schemes
-selected_schemes = []
+# Show selected funds count/summary on top of the sidebar
+if selected_schemes:
+    pills_sidebar = "".join([
+        f'<span style="background-color:#e0e7ff; color:#1d4ed8; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:600; margin-right:4px; margin-bottom:4px; display:inline-block;">{name}</span>'
+        for name in selected_schemes
+    ])
+    st.sidebar.html(f"""
+    <div style="margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+        <span style="font-size:0.7rem; font-weight:700; color:#6b7280; text-transform:uppercase; display:block; margin-bottom:6px;">Selected ({len(selected_schemes)})</span>
+        <div style="display:flex; flex-wrap:wrap;">{pills_sidebar}</div>
+    </div>
+    """)
+else:
+    st.sidebar.html("""
+    <div style="margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+        <span style="font-size:0.7rem; font-weight:700; color:#6b7280; text-transform:uppercase; display:block; margin-bottom:6px;">Selected (All 15)</span>
+        <span style="font-size:0.725rem; color:#6b7280; font-style:italic;">All funds selected by default</span>
+    </div>
+    """)
 
-st.sidebar.html("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Equity Funds</span>")
-for scheme in EQUITY_FUNDS:
-    if st.sidebar.checkbox(scheme, key=f"chk-{scheme}"):
-        selected_schemes.append(scheme)
+# Default behavior notice
+st.sidebar.html("""
+<div style="font-size: 0.7rem; color: #6b7280; background-color: #f3f4f6; border-radius: 6px; padding: 6px 8px; margin-bottom: 15px; line-height: 1.3;">
+  💡 <b>Default behavior:</b> All 15 funds are selected for context if none are checked.
+</div>
+""")
 
-st.sidebar.html("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Hybrid Funds</span>")
-for scheme in HYBRID_FUNDS:
-    if st.sidebar.checkbox(scheme, key=f"chk-{scheme}"):
-        selected_schemes.append(scheme)
+# Fund selection categories (collapsible expanders)
+with st.sidebar.expander("EQUITY FUNDS", expanded=True):
+    for scheme in EQUITY_FUNDS:
+        st.checkbox(scheme, key=f"chk-{scheme}")
 
-st.sidebar.html("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Index, ETFs & Tax</span>")
-for scheme in INDEX_ETFS_TAX:
-    if st.sidebar.checkbox(scheme, key=f"chk-{scheme}"):
-        selected_schemes.append(scheme)
+with st.sidebar.expander("HYBRID FUNDS", expanded=True):
+    for scheme in HYBRID_FUNDS:
+        st.checkbox(scheme, key=f"chk-{scheme}")
 
-# Map checked schemes to fund IDs
-selected_fund_ids = [FUND_ID_MAP[name] for name in selected_schemes if name in FUND_ID_MAP]
-
-# ----------------- STATE MACHINE USING QUERY PARAMS -----------------
-params = st.query_params
-
-# Handle uncheck action from selected pills
-if "uncheck" in params:
-    uncheck_val = params["uncheck"]
-    key = f"chk-{uncheck_val}"
-    if key in st.session_state:
-        st.session_state[key] = False
-    st.query_params.clear()
-    st.rerun()
-
-# Handle New Chat Trigger
-if "new_chat" in params:
-    new_id = f"session-{int(datetime.now().timestamp() * 1000)}"
-    st.session_state.sessions[new_id] = []
-    st.session_state.session_names[new_id] = f"Chat {len(st.session_state.sessions) + 1}"
-    st.session_state.active_session = new_id
-    st.query_params.clear()
-    st.rerun()
-
-# Handle Select Session Trigger
-if "session" in params:
-    sess_val = params["session"]
-    if sess_val in st.session_state.sessions:
-        st.session_state.active_session = sess_val
-    st.query_params.clear()
-    st.rerun()
-
-# Handle Delete Session Trigger
-if "delete" in params:
-    del_val = params["delete"]
-    if del_val in st.session_state.sessions:
-        del st.session_state.sessions[del_val]
-        if del_val in st.session_state.session_names:
-            del st.session_state.session_names[del_val]
-        if st.session_state.active_session == del_val:
-            keys = list(st.session_state.sessions.keys())
-            st.session_state.active_session = keys[-1] if keys else None
-    st.query_params.clear()
-    st.rerun()
-
-# Handle Rename Trigger
-if "trigger_rename" in params:
-    st.session_state.renaming_session = params["trigger_rename"]
-    st.query_params.clear()
-    st.rerun()
-
-# Handle Ask Question Trigger (Suggestive prompts or recently asked)
-if "ask" in params:
-    ask_val = params["ask"]
-    if not st.session_state.active_session:
-        # Create fallback session if none active
-        new_id = f"session-{int(datetime.now().timestamp() * 1000)}"
-        st.session_state.sessions[new_id] = []
-        st.session_state.session_names[new_id] = "Chat 1"
-        st.session_state.active_session = new_id
-    
-    active_sess = st.session_state.active_session
-    st.session_state.sessions[active_sess].append({"sender": "user", "text": ask_val})
-    
-    # Run pipeline
-    pass_filter = selected_fund_ids if selected_fund_ids else None
-    response_data = pipeline.generate_response(ask_val, selected_funds=pass_filter)
-    
-    st.session_state.sessions[active_sess].append({
-        "sender": "assistant",
-        "text": response_data.get("answer", ""),
-        "status": response_data.get("status", "success"),
-        "type": response_data.get("type", "factual"),
-        "citation": response_data.get("citation"),
-        "last_updated": response_data.get("last_updated")
-    })
-    st.query_params.clear()
-    st.rerun()
+with st.sidebar.expander("INDEX, ETFS & TAX", expanded=True):
+    for scheme in INDEX_ETFS_TAX:
+        st.checkbox(scheme, key=f"chk-{scheme}")
 
 # ----------------- MAIN LAYOUT IN 2 COLUMNS -----------------
 # This creates a 3-column layout combined with the left sidebar
@@ -780,6 +847,29 @@ with chat_col:
     </div>
     """)
     
+    # Active Selected Funds count and pills display (placed stacked on top of chat area)
+    active_count = len(selected_schemes)
+    if active_count == 0:
+        render_html(f"""
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; max-width: 640px; margin-left: auto; margin-right: auto; padding: 4px 0; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;">
+            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ All 15 Funds ] (Default)</span>
+        </div>
+        """)
+    else:
+        # Generate pills with uncheck links matching React UI hover/style behaviour
+        pill_html = "".join([
+            f'<a href="?uncheck={name.replace(" ", "+")}" target="_self" style="text-decoration: none;" title="Click to remove {name}">'
+            f'<span class="selected-pill">{name} <span class="pill-x">×</span></span>'
+            f'</a>'
+            for name in selected_schemes
+        ])
+        render_html(f"""
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; max-width: 640px; margin-left: auto; margin-right: auto; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;">
+            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ {active_count} ]</span>
+            {pill_html}
+        </div>
+        """)
+    
     # Thread Inline Rename form (if triggered)
     if st.session_state.renaming_session:
         ren_id = st.session_state.renaming_session
@@ -813,13 +903,20 @@ with chat_col:
         # Get active selection questions
         dynamic_suggestions = []
         if len(selected_schemes) == 0 or len(selected_schemes) == len(FUND_ID_MAP):
-            dynamic_suggestions = DEFAULT_QUESTIONS
+            dynamic_suggestions = DEFAULT_QUESTIONS.copy()
         else:
             for name in selected_schemes:
                 if name in QUESTIONS_BY_FUND:
-                    dynamic_suggestions.extend(QUESTIONS_BY_FUND[name])
+                    for q in QUESTIONS_BY_FUND[name]:
+                        if q not in dynamic_suggestions:
+                            dynamic_suggestions.append(q)
+            # Backfill to ensure exactly 6 questions
+            if len(dynamic_suggestions) < 6:
+                for q in DEFAULT_QUESTIONS:
+                    if q not in dynamic_suggestions and len(dynamic_suggestions) < 6:
+                        dynamic_suggestions.append(q)
                     
-        suggestions_to_show = dynamic_suggestions[:4]
+        suggestions_to_show = dynamic_suggestions[:6]
         
         # Render cards as a CSS Grid of styled HTML anchors linking to ?ask=
         suggestions_html = '<div class="suggestive-grid">'
@@ -899,24 +996,8 @@ with chat_col:
                     </div>
                     """)
 
-    # Active Selected Funds count and pills display (placed stacked above input field)
-    active_count = len(selected_schemes)
+    # Space above input
     st.html("<br>")
-    
-    # Generate pills with uncheck links matching React UI hover/style behaviour
-    pill_html = "".join([
-        f'<a href="?uncheck={name.replace(" ", "+")}" target="_self" style="text-decoration: none;" title="Click to remove {name}">'
-        f'<span class="selected-pill">{name} <span class="pill-x">×</span></span>'
-        f'</a>'
-        for name in selected_schemes
-    ])
-        
-    render_html(f"""
-    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; max-width: 640px; margin-left: auto; margin-right: auto;">
-        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ {active_count} ]</span>
-        {pill_html}
-    </div>
-    """)
 
     # Chat Input field
     input_text = st.chat_input("Type your financial question here...")
