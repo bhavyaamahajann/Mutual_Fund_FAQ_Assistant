@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     groq_api_key: str = ""
 
     # ---- Model configuration ----
-    embedding_model: str = "BAAI/bge-large-en-v1.5"
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
     llm_model: str = "llama-3.3-70b-versatile"
 
 
