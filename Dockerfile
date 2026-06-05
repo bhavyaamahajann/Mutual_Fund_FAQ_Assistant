@@ -16,8 +16,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Copy all codebase files
 COPY . .
 
-# Expose port 7860 (Hugging Face standard port)
-EXPOSE 7860
+# Expose port 8000
+EXPOSE 8000
 
 # Run FastAPI using Uvicorn
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
