@@ -63,7 +63,7 @@ const QUESTIONS_BY_FUND = {
     { query: 'Who manages the ICICI Prudential Regular Savings Fund?', icon: Cpu, text: 'Fund Manager: Regular Savings', subtext: 'MANAGEMENT' }
   ],
   'Multi Asset Fund': [
-    { query: 'What is the riskometer classification of Multi Asset Fund?', icon: Shield, text: 'What is the riskometer classification of Multi Asset Fund?', subtext: 'RISK PROFILE' }
+    { query: 'What is the riskometer of Multi Asset Fund?', icon: Shield, text: 'What is the riskometer of Multi Asset Fund?', subtext: 'RISK PROFILE' }
   ],
   'ELSS Tax Saver Fund': [
     { query: 'What are the tax implications for ICICI Prudential ELSS Tax Saver Fund?', icon: Wallet, text: 'Tax implications for ELSS?', subtext: 'TAXATION' },
@@ -120,7 +120,7 @@ function App() {
       { id: 'card-2', category: 'Small Cap Fund', query: 'What is the expense ratio of Small Cap Fund?', icon: BarChart2, text: 'What is the expense ratio of Small Cap Fund?', subtext: 'FUND PARAMETERS' },
       { id: 'card-3', category: 'Flexi Cap Fund', query: 'What is the sector-wise allocation of Flexi Cap Fund?', icon: TrendingUp, text: 'What is the sector-wise allocation of Flexi Cap Fund?', subtext: 'PORTFOLIO ANALYSIS' },
       { id: 'card-4', category: 'Large Cap Fund', query: 'Who is the fund manager of Large Cap Fund?', icon: Cpu, text: 'Who is the fund manager of Large Cap Fund?', subtext: 'MANAGEMENT' },
-      { id: 'card-5', category: 'Multi Asset Fund', query: 'What is the riskometer classification of Multi Asset Fund?', icon: Shield, text: 'What is the riskometer classification of Multi Asset Fund?', subtext: 'RISK PROFILE' },
+      { id: 'card-5', category: 'Multi Asset Fund', query: 'What is the riskometer of Multi Asset Fund?', icon: Shield, text: 'What is the riskometer of Multi Asset Fund?', subtext: 'RISK PROFILE' },
       { id: 'card-6', category: 'Focused Equity Fund', query: 'What is the exit load of Focused Equity Fund?', icon: Shield, text: 'What is the exit load of Focused Equity Fund?', subtext: 'REDEMPTION' }
     ];
 
@@ -164,25 +164,9 @@ function App() {
   const [isRightOpen, setIsRightOpen] = useState(false);
 
   const [activeSession, setActiveSession] = useState(null);
-  const [sessions, setSessions] = useState({
-    'session-1': [
-      { sender: 'user', text: 'Hi, what can this assistant help me with?' },
-      { sender: 'assistant', text: 'I am a facts-only assistant for ICICI Prudential Mutual Funds. I can provide verified details like NAV, expense ratios, exit loads, fund managers, and minimum SIP amounts based on official sources. I do not provide investment recommendations or comparisons.', status: 'success', type: 'greeting' },
-      { sender: 'user', text: 'Who manages the ICICI Prudential Small Cap Fund?' },
-      { sender: 'assistant', text: 'The ICICI Prudential Small Cap Fund is managed by Rajat Chandak and Anish Tawakley.', status: 'success', type: 'factual', citation: { label: 'ICICI Prudential Small Cap Fund Factsheet', url: 'https://www.indmoney.com/mutual-funds/icici-prudential-smallcap-fund-direct-plan-growth-3588' }, last_updated: '2026-06-04' }
-    ],
-    'session-2': [
-      { sender: 'user', text: 'What is the expense ratio for ICICI Prudential Small Cap and ELSS Tax Saver?' },
-      { sender: 'assistant', text: 'The ICICI Prudential Small Cap Fund has an expense ratio of 0.7%. The ICICI Prudential ELSS Tax Saver Fund has an expense ratio of 0.9%.', status: 'success', type: 'factual', citation: { label: 'ICICI Prudential Small Cap Fund Factsheet', url: 'https://www.indmoney.com/mutual-funds/icici-prudential-smallcap-fund-direct-plan-growth-3588' }, last_updated: '2026-06-04' },
-      { sender: 'user', text: 'Should I invest in them to save taxes?' },
-      { sender: 'assistant', text: 'We detected advisory intent. As a facts-only assistant, we cannot provide investment advice. Please refer to the AMFI educational portal or a SEBI registered adviser.', status: 'refused', type: 'advisory' }
-    ]
-  });
+  const [sessions, setSessions] = useState({});
 
-  const [sessionNames, setSessionNames] = useState({
-    'session-1': 'Chat 1',
-    'session-2': 'Chat 2'
-  });
+  const [sessionNames, setSessionNames] = useState({});
   const [editingSessionId, setEditingSessionId] = useState(null);
   const [editingNameVal, setEditingNameVal] = useState('');
 

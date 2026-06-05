@@ -14,6 +14,9 @@ ENV PYTHONPATH=/app
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
+# Pre-download the Hugging Face embedding model during build time to avoid startup timeout
+RUN python3 -c "from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction; SentenceTransformerEmbeddingFunction(model_name='BAAI/bge-large-en-v1.5')"
+
 # Copy all codebase files
 COPY . .
 

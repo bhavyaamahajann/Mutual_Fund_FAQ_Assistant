@@ -344,8 +344,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .blinking-question {
   animation: blink 1s infinite;
-  color: var(--text-navy);
-  font-size: 1.15em;
+  color: #000000;
+  font-size: 1.25em;
   font-weight: 900;
   display: inline-block;
   margin-left: 4px;
@@ -367,8 +367,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .question-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: #EFF6FF;
+  border: 1px solid #DBEAFE;
   border-radius: 12px;
   padding: 1rem;
   cursor: pointer;
@@ -383,7 +383,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .question-card:hover {
   transform: translateY(-1.5px);
-  border-color: #CBD5E1;
+  border-color: #BFDBFE;
+  background-color: #DBEAFE;
 }
 
 .question-card.selected {
