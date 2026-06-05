@@ -367,8 +367,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .question-card {
-  background-color: #EFF6FF;
-  border: 1px solid #DBEAFE;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 1rem;
   cursor: pointer;
@@ -383,8 +383,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .question-card:hover {
   transform: translateY(-1.5px);
-  border-color: #BFDBFE;
-  background-color: #DBEAFE;
+  border-color: var(--primary-blue);
+  background-color: #FFFFFF;
 }
 
 .question-card.selected {
@@ -403,7 +403,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--text-navy);
+  color: var(--primary-blue);
 }
 
 .question-card.selected .card-icon-box {
