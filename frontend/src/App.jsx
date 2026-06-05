@@ -584,29 +584,9 @@ function App() {
           paddingBottom: '12px',
           paddingLeft: '4px'
         }}>
-          <span style={{ fontSize: '0.7rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-navy)', textTransform: 'uppercase', display: 'block' }}>
             Selected ({activeSelectedKeys.length > 0 ? activeSelectedKeys.length : 'All 15'})
           </span>
-          {activeSelectedKeys.length > 0 ? (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-              {activeSelectedKeys.map(key => (
-                <span key={key} style={{
-                  backgroundColor: 'var(--bg-active-pill)',
-                  color: 'var(--text-active-pill)',
-                  padding: '2px 6px',
-                  borderRadius: '4px',
-                  fontSize: '10px',
-                  fontWeight: '600'
-                }}>
-                  {key.replace(' Fund', '')}
-                </span>
-              ))}
-            </div>
-          ) : (
-            <span style={{ fontSize: '0.725rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-              All funds selected by default
-            </span>
-          )}
         </div>
 
         {/* Default Behavior Note */}
@@ -747,55 +727,7 @@ function App() {
           </div>
         </div>
 
-        {/* Selected Funds count and pills display (pinned on top of chat area) */}
-        <div className="chat-selected-summary" style={{
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '8px',
-          marginBottom: '16px',
-          paddingBottom: '8px',
-          borderBottom: '1px dashed var(--border-color)',
-          maxWidth: '640px',
-          width: '100%',
-          margin: '0 auto 16px auto',
-          paddingLeft: '4px'
-        }}>
-          <span style={{ fontFamily: 'var(--font-heading)', fontWeight: '700', fontSize: '0.8rem', color: 'var(--text-muted)', marginRight: '4px' }}>
-            Selected: [ {activeSelectedKeys.length === 0 ? 'All 15 Funds' : activeSelectedKeys.length} ] {activeSelectedKeys.length === 0 && '(Default)'}
-          </span>
-          {activeSelectedKeys.map(key => (
-            <span 
-              key={key} 
-              onClick={() => handleCheckboxChange(key)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                backgroundColor: 'var(--bg-active-pill)',
-                color: 'var(--text-active-pill)',
-                padding: '2px 8px',
-                borderRadius: '12px',
-                fontSize: '10px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                border: '1px solid var(--border-color)',
-                transition: 'all 0.15s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--error-bg)';
-                e.currentTarget.style.color = 'var(--error-text)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--bg-active-pill)';
-                e.currentTarget.style.color = 'var(--text-active-pill)';
-              }}
-              title={`Click to remove ${key}`}
-            >
-              {key} <X style={{ width: '10px', height: '10px' }} />
-            </span>
-          ))}
-        </div>
+
 
         {/* Chat Pane */}
         <section className="chat-pane" ref={chatPaneRef} id="chat-pane">
@@ -922,6 +854,51 @@ function App() {
         <footer className="center-footer">
           <form className="chat-form" onSubmit={handleFormSubmit}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', marginBottom: '4px' }}>
+              {/* Active Selected Funds count and pills display (placed stacked above input field) */}
+              <div className="chat-selected-summary-bottom" style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px',
+                paddingLeft: '4px',
+                userSelect: 'none',
+                marginBottom: '8px'
+              }}>
+                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: '700', fontSize: '0.8rem', color: 'var(--text-muted)', marginRight: '4px' }}>
+                  Selected: [ {activeSelectedKeys.length === 0 ? 'All 15 Funds' : activeSelectedKeys.length} ] {activeSelectedKeys.length === 0 && '(Default)'}
+                </span>
+                {activeSelectedKeys.map(key => (
+                  <span 
+                    key={key} 
+                    onClick={() => handleCheckboxChange(key)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      backgroundColor: 'var(--bg-active-pill)',
+                      color: 'var(--text-active-pill)',
+                      padding: '2px 8px',
+                      borderRadius: '12px',
+                      fontSize: '10px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      border: '1px solid var(--border-color)',
+                      transition: 'all 0.15s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--error-bg)';
+                      e.currentTarget.style.color = 'var(--error-text)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--bg-active-pill)';
+                      e.currentTarget.style.color = 'var(--text-active-pill)';
+                    }}
+                    title={`Click to remove ${key}`}
+                  >
+                    {key} <X style={{ width: '10px', height: '10px' }} />
+                  </span>
+                ))}
+              </div>
               <div className="input-box-wrapper" style={{ width: '100%' }}>
                 <input 
                   type="text" 

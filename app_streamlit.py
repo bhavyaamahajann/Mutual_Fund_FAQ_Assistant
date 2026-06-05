@@ -769,24 +769,12 @@ render_html("""
 """, sidebar=True)
 
 # Show selected funds count/summary on top of the sidebar
-if selected_schemes:
-    pills_sidebar = "".join([
-        f'<span style="background-color:#e0e7ff; color:#1d4ed8; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:600; margin-right:4px; margin-bottom:4px; display:inline-block;">{name}</span>'
-        for name in selected_schemes
-    ])
-    st.sidebar.html(f"""
-    <div style="margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
-        <span style="font-size:0.7rem; font-weight:700; color:#6b7280; text-transform:uppercase; display:block; margin-bottom:6px;">Selected ({len(selected_schemes)})</span>
-        <div style="display:flex; flex-wrap:wrap;">{pills_sidebar}</div>
-    </div>
-    """)
-else:
-    st.sidebar.html("""
-    <div style="margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
-        <span style="font-size:0.7rem; font-weight:700; color:#6b7280; text-transform:uppercase; display:block; margin-bottom:6px;">Selected (All 15)</span>
-        <span style="font-size:0.725rem; color:#6b7280; font-style:italic;">All funds selected by default</span>
-    </div>
-    """)
+sidebar_label = f"Selected ({len(selected_schemes)})" if selected_schemes else "Selected (All 15)"
+st.sidebar.html(f"""
+<div style="margin-bottom: 15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+    <span style="font-family: 'Outfit', sans-serif; font-size:0.75rem; font-weight:700; color:#111827; text-transform:uppercase; display:block;">{sidebar_label}</span>
+</div>
+""")
 
 # Default behavior notice
 st.sidebar.html("""
@@ -846,29 +834,6 @@ with chat_col:
         <div class="warning-badge">⚠️ Facts-Only. No Investment Advice.</div>
     </div>
     """)
-    
-    # Active Selected Funds count and pills display (placed stacked on top of chat area)
-    active_count = len(selected_schemes)
-    if active_count == 0:
-        render_html(f"""
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; max-width: 640px; margin-left: auto; margin-right: auto; padding: 4px 0; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;">
-            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ All 15 Funds ] (Default)</span>
-        </div>
-        """)
-    else:
-        # Generate pills with uncheck links matching React UI hover/style behaviour
-        pill_html = "".join([
-            f'<a href="?uncheck={name.replace(" ", "+")}" target="_self" style="text-decoration: none;" title="Click to remove {name}">'
-            f'<span class="selected-pill">{name} <span class="pill-x">×</span></span>'
-            f'</a>'
-            for name in selected_schemes
-        ])
-        render_html(f"""
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; max-width: 640px; margin-left: auto; margin-right: auto; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;">
-            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ {active_count} ]</span>
-            {pill_html}
-        </div>
-        """)
     
     # Thread Inline Rename form (if triggered)
     if st.session_state.renaming_session:
@@ -996,8 +961,28 @@ with chat_col:
                     </div>
                     """)
 
-    # Space above input
-    st.html("<br>")
+    # Active Selected Funds count and pills display (placed stacked above input field)
+    active_count = len(selected_schemes)
+    if active_count == 0:
+        render_html(f"""
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; max-width: 640px; margin-left: auto; margin-right: auto; padding: 4px 0;">
+            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ All 15 Funds ] (Default)</span>
+        </div>
+        """)
+    else:
+        # Generate pills with uncheck links matching React UI hover/style behaviour
+        pill_html = "".join([
+            f'<a href="?uncheck={name.replace(" ", "+")}" target="_self" style="text-decoration: none;" title="Click to remove {name}">'
+            f'<span class="selected-pill">{name} <span class="pill-x">×</span></span>'
+            f'</a>'
+            for name in selected_schemes
+        ])
+        render_html(f"""
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; max-width: 640px; margin-left: auto; margin-right: auto;">
+            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ {active_count} ]</span>
+            {pill_html}
+        </div>
+        """)
 
     # Chat Input field
     input_text = st.chat_input("Type your financial question here...")
