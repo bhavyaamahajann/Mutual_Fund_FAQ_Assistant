@@ -25,7 +25,9 @@ import {
   Menu,
   ShieldAlert,
   Trash2,
-  Edit2
+  Edit2,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -208,51 +210,83 @@ function App() {
     'Silver ETF FoF': false,
   });
 
+  const [expandedCategories, setExpandedCategories] = useState({
+    equity: true,
+    hybrid: true,
+    indexEtfTax: true
+  });
+
+  const toggleCategory = (cat) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [cat]: !prev[cat]
+    }));
+  };
+
   // Get active selected checkboxes keys
   const activeSelectedKeys = Object.keys(checkboxes).filter(k => checkboxes[k]);
 
   // Compute dynamic suggestions
   const getDynamicSuggestions = () => {
+    const defaultSet = [
+      {
+        id: 'card-1',
+        category: 'Small Cap Fund',
+        query: 'What is the expense ratio of ICICI Prudential Small Cap Fund?',
+        icon: BarChart2,
+        text: 'Expense ratio of Small Cap?',
+        subtext: 'FUND PARAMETERS'
+      },
+      {
+        id: 'card-2',
+        category: 'Flexi Cap Fund',
+        query: 'What is the 3-year CAGR for ICICI Prudential Flexi Cap Fund?',
+        icon: TrendingUp,
+        text: '3-year CAGR for Flexi Cap',
+        subtext: 'PERFORMANCE'
+      },
+      {
+        id: 'card-3',
+        category: 'ELSS Tax Saver Fund',
+        query: 'What are the tax implications for ICICI Prudential ELSS Tax Saver Fund?',
+        icon: Wallet,
+        text: 'Tax implications for ELSS?',
+        subtext: 'TAXATION'
+      },
+      {
+        id: 'card-4',
+        category: 'Multi Asset Fund',
+        query: 'What is the risk profile of ICICI Prudential Multi Asset Fund?',
+        icon: Shield,
+        text: 'Risk profile: Multi Asset',
+        subtext: 'RISK ANALYSIS'
+      },
+      {
+        id: 'card-5',
+        category: 'Small Cap Fund',
+        query: 'Who manages the ICICI Prudential Small Cap Fund?',
+        icon: Cpu,
+        text: 'Fund Manager: Small Cap',
+        subtext: 'MANAGEMENT'
+      },
+      {
+        id: 'card-6',
+        category: 'Focused Equity Fund',
+        query: 'What is the exit load for ICICI Prudential Focused Equity Fund?',
+        icon: Shield,
+        text: 'Exit load for Focused Equity',
+        subtext: 'REDEMPTION'
+      }
+    ];
+
     const displayAll = activeSelectedKeys.length === 0;
     if (displayAll || activeSelectedKeys.length === Object.keys(checkboxes).length) {
-      // Default set of 4 diverse questions
-      return [
-        {
-          id: 'card-1',
-          category: 'Small Cap Fund',
-          query: 'What is the expense ratio of ICICI Prudential Small Cap Fund?',
-          icon: BarChart2,
-          text: 'Expense ratio of Small Cap?',
-          subtext: 'FUND PARAMETERS'
-        },
-        {
-          id: 'card-2',
-          category: 'Flexicap Fund',
-          query: 'What is the 3-year CAGR for ICICI Prudential Flexi Cap Fund?',
-          icon: TrendingUp,
-          text: '3-year CAGR for Flexi Cap',
-          subtext: 'PERFORMANCE'
-        },
-        {
-          id: 'card-3',
-          category: 'ELSS Tax Saver',
-          query: 'What are the tax implications for ICICI Prudential ELSS Tax Saver Fund?',
-          icon: Wallet,
-          text: 'Tax implications for ELSS?',
-          subtext: 'TAXATION'
-        },
-        {
-          id: 'card-4',
-          category: 'Multi Asset Fund',
-          query: 'What is the risk profile of ICICI Prudential Multi Asset Fund?',
-          icon: Shield,
-          text: 'Risk profile: Multi Asset',
-          subtext: 'RISK ANALYSIS'
-        }
-      ];
+      return defaultSet;
     }
     
     let list = [];
+    const queryTracker = new Set();
+
     activeSelectedKeys.forEach(key => {
       if (QUESTIONS_BY_FUND[key]) {
         QUESTIONS_BY_FUND[key].forEach((q, idx) => {
@@ -261,10 +295,21 @@ function App() {
             category: key,
             ...q
           });
+          queryTracker.add(q.query);
         });
       }
     });
-    return list.slice(0, 4);
+
+    if (list.length < 6) {
+      defaultSet.forEach(item => {
+        if (list.length < 6 && !queryTracker.has(item.query)) {
+          list.push(item);
+          queryTracker.add(item.query);
+        }
+      });
+    }
+
+    return list.slice(0, 6);
   };
   
   const dynamicSuggestiveQuestions = getDynamicSuggestions();
@@ -532,89 +577,162 @@ function App() {
           <span>ICICI PRUDENTIAL MF</span>
         </div>
 
+        {/* Selected Funds Summary at the top of the Left Sidebar */}
+        <div className="sidebar-selected-summary" style={{
+          marginBottom: '15px',
+          borderBottom: '1px solid var(--border-color)',
+          paddingBottom: '12px',
+          paddingLeft: '4px'
+        }}>
+          <span style={{ fontSize: '0.7rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>
+            Selected ({activeSelectedKeys.length > 0 ? activeSelectedKeys.length : 'All 15'})
+          </span>
+          {activeSelectedKeys.length > 0 ? (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+              {activeSelectedKeys.map(key => (
+                <span key={key} style={{
+                  backgroundColor: 'var(--bg-active-pill)',
+                  color: 'var(--text-active-pill)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  fontSize: '10px',
+                  fontWeight: '600'
+                }}>
+                  {key.replace(' Fund', '')}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <span style={{ fontSize: '0.725rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+              All funds selected by default
+            </span>
+          )}
+        </div>
+
+        {/* Default Behavior Note */}
+        <div style={{
+          fontSize: '0.7rem',
+          color: 'var(--text-muted)',
+          backgroundColor: 'var(--bg-sidebar)',
+          border: '1px solid var(--border-color)',
+          borderRadius: '6px',
+          padding: '6px 8px',
+          marginBottom: '15px',
+          lineHeight: '1.3'
+        }}>
+          💡 <b>Default behavior:</b> All 15 funds are selected for context if none are checked.
+        </div>
+
         <div className="filters-container">
           {/* Category 1: Equity Funds (7) */}
           <div className="filter-section">
-            <h3 className="filter-section-title">Equity Funds</h3>
-            <ul className="filter-list">
-              {[
-                { label: 'Small Cap Fund', val: 'Small Cap Fund' },
-                { label: 'Large & Mid Cap', val: 'Large & Mid Cap Fund' },
-                { label: 'Flexi Cap Fund', val: 'Flexi Cap Fund' },
-                { label: 'Focused Equity', val: 'Focused Equity Fund' },
-                { label: 'Mid Cap Fund', val: 'Mid Cap Fund' },
-                { label: 'Multi Cap Fund', val: 'Multi Cap Fund' },
-                { label: 'Large Cap Fund', val: 'Large Cap Fund' }
-              ].map((item) => (
-                <li key={item.val}>
-                  <label className="checkbox-container">
-                    <input 
-                      type="checkbox" 
-                      name="scheme" 
-                      value={item.val} 
-                      checked={checkboxes[item.val] || false}
-                      onChange={() => handleCheckboxChange(item.val)} 
-                    />
-                    <span className="checkmark"></span>
-                    <span className="label-text">{item.label}</span>
-                  </label>
-                </li>
-              ))}
-            </ul>
+            <h3 
+              className="filter-section-title"
+              onClick={() => toggleCategory('equity')}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+            >
+              <span>Equity Funds</span>
+              {expandedCategories.equity ? <ChevronDown style={{ width: '14px', height: '14px' }} /> : <ChevronRight style={{ width: '14px', height: '14px' }} />}
+            </h3>
+            {expandedCategories.equity && (
+              <ul className="filter-list">
+                {[
+                  { label: 'Small Cap Fund', val: 'Small Cap Fund' },
+                  { label: 'Large & Mid Cap', val: 'Large & Mid Cap Fund' },
+                  { label: 'Flexi Cap Fund', val: 'Flexi Cap Fund' },
+                  { label: 'Focused Equity', val: 'Focused Equity Fund' },
+                  { label: 'Mid Cap Fund', val: 'Mid Cap Fund' },
+                  { label: 'Multi Cap Fund', val: 'Multi Cap Fund' },
+                  { label: 'Large Cap Fund', val: 'Large Cap Fund' }
+                ].map((item) => (
+                  <li key={item.val}>
+                    <label className="checkbox-container">
+                      <input 
+                        type="checkbox" 
+                        name="scheme" 
+                        value={item.val} 
+                        checked={checkboxes[item.val] || false}
+                        onChange={() => handleCheckboxChange(item.val)} 
+                      />
+                      <span className="checkmark"></span>
+                      <span className="label-text">{item.label}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Category 2: Hybrid Funds (4) */}
           <div className="filter-section">
-            <h3 className="filter-section-title">Hybrid Funds</h3>
-            <ul className="filter-list">
-              {[
-                { label: 'Equity Savings', val: 'Equity Savings Fund' },
-                { label: 'Equity & Debt', val: 'Equity & Debt Fund' },
-                { label: 'Regular Savings', val: 'Regular Savings Fund' },
-                { label: 'Multi Asset Fund', val: 'Multi Asset Fund' }
-              ].map((item) => (
-                <li key={item.val}>
-                  <label className="checkbox-container">
-                    <input 
-                      type="checkbox" 
-                      name="scheme" 
-                      value={item.val} 
-                      checked={checkboxes[item.val] || false}
-                      onChange={() => handleCheckboxChange(item.val)}
-                    />
-                    <span className="checkmark"></span>
-                    <span className="label-text">{item.label}</span>
-                  </label>
-                </li>
-              ))}
-            </ul>
+            <h3 
+              className="filter-section-title"
+              onClick={() => toggleCategory('hybrid')}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+            >
+              <span>Hybrid Funds</span>
+              {expandedCategories.hybrid ? <ChevronDown style={{ width: '14px', height: '14px' }} /> : <ChevronRight style={{ width: '14px', height: '14px' }} />}
+            </h3>
+            {expandedCategories.hybrid && (
+              <ul className="filter-list">
+                {[
+                  { label: 'Equity Savings', val: 'Equity Savings Fund' },
+                  { label: 'Equity & Debt', val: 'Equity & Debt Fund' },
+                  { label: 'Regular Savings', val: 'Regular Savings Fund' },
+                  { label: 'Multi Asset Fund', val: 'Multi Asset Fund' }
+                ].map((item) => (
+                  <li key={item.val}>
+                    <label className="checkbox-container">
+                      <input 
+                        type="checkbox" 
+                        name="scheme" 
+                        value={item.val} 
+                        checked={checkboxes[item.val] || false}
+                        onChange={() => handleCheckboxChange(item.val)}
+                      />
+                      <span className="checkmark"></span>
+                      <span className="label-text">{item.label}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Category 3: Index & ETFs & Tax (4) */}
           <div className="filter-section">
-            <h3 className="filter-section-title">Index, ETFs & Tax</h3>
-            <ul className="filter-list">
-              {[
-                { label: 'ELSS Tax Saver', val: 'ELSS Tax Saver Fund' },
-                { label: 'Nifty 50 Index', val: 'Nifty 50 Index Fund' },
-                { label: 'Gold ETF FoF', val: 'Gold ETF FoF' },
-                { label: 'Silver ETF FoF', val: 'Silver ETF FoF' }
-              ].map((item) => (
-                <li key={item.val}>
-                  <label className="checkbox-container">
-                    <input 
-                      type="checkbox" 
-                      name="scheme" 
-                      value={item.val} 
-                      checked={checkboxes[item.val] || false}
-                      onChange={() => handleCheckboxChange(item.val)}
-                    />
-                    <span className="checkmark"></span>
-                    <span className="label-text">{item.label}</span>
-                  </label>
-                </li>
-              ))}
-            </ul>
+            <h3 
+              className="filter-section-title"
+              onClick={() => toggleCategory('indexEtfTax')}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+            >
+              <span>Index, ETFs & Tax</span>
+              {expandedCategories.indexEtfTax ? <ChevronDown style={{ width: '14px', height: '14px' }} /> : <ChevronRight style={{ width: '14px', height: '14px' }} />}
+            </h3>
+            {expandedCategories.indexEtfTax && (
+              <ul className="filter-list">
+                {[
+                  { label: 'ELSS Tax Saver', val: 'ELSS Tax Saver Fund' },
+                  { label: 'Nifty 50 Index', val: 'Nifty 50 Index Fund' },
+                  { label: 'Gold ETF FoF', val: 'Gold ETF FoF' },
+                  { label: 'Silver ETF FoF', val: 'Silver ETF FoF' }
+                ].map((item) => (
+                  <li key={item.val}>
+                    <label className="checkbox-container">
+                      <input 
+                        type="checkbox" 
+                        name="scheme" 
+                        value={item.val} 
+                        checked={checkboxes[item.val] || false}
+                        onChange={() => handleCheckboxChange(item.val)}
+                      />
+                      <span className="checkmark"></span>
+                      <span className="label-text">{item.label}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
@@ -627,6 +745,56 @@ function App() {
             <AlertTriangle className="warning-badge-icon" />
             <span>Facts-Only. No Investment Advice.</span>
           </div>
+        </div>
+
+        {/* Selected Funds count and pills display (pinned on top of chat area) */}
+        <div className="chat-selected-summary" style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '8px',
+          marginBottom: '16px',
+          paddingBottom: '8px',
+          borderBottom: '1px dashed var(--border-color)',
+          maxWidth: '640px',
+          width: '100%',
+          margin: '0 auto 16px auto',
+          paddingLeft: '4px'
+        }}>
+          <span style={{ fontFamily: 'var(--font-heading)', fontWeight: '700', fontSize: '0.8rem', color: 'var(--text-muted)', marginRight: '4px' }}>
+            Selected: [ {activeSelectedKeys.length === 0 ? 'All 15 Funds' : activeSelectedKeys.length} ] {activeSelectedKeys.length === 0 && '(Default)'}
+          </span>
+          {activeSelectedKeys.map(key => (
+            <span 
+              key={key} 
+              onClick={() => handleCheckboxChange(key)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                backgroundColor: 'var(--bg-active-pill)',
+                color: 'var(--text-active-pill)',
+                padding: '2px 8px',
+                borderRadius: '12px',
+                fontSize: '10px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                border: '1px solid var(--border-color)',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--error-bg)';
+                e.currentTarget.style.color = 'var(--error-text)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--bg-active-pill)';
+                e.currentTarget.style.color = 'var(--text-active-pill)';
+              }}
+              title={`Click to remove ${key}`}
+            >
+              {key} <X style={{ width: '10px', height: '10px' }} />
+            </span>
+          ))}
         </div>
 
         {/* Chat Pane */}
@@ -754,51 +922,6 @@ function App() {
         <footer className="center-footer">
           <form className="chat-form" onSubmit={handleFormSubmit}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', marginBottom: '4px' }}>
-              <div className="selected-counter-bottom" style={{
-                fontSize: '11px',
-                color: 'var(--text-muted)',
-                fontFamily: 'var(--font-heading)',
-                fontWeight: '600',
-                userSelect: 'none',
-                paddingLeft: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '8px'
-              }}>
-                <span>Selected: [ {activeSelectedKeys.length} ]</span>
-                {activeSelectedKeys.map(key => (
-                  <span 
-                    key={key} 
-                    onClick={() => handleCheckboxChange(key)}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      backgroundColor: 'var(--bg-active-pill)',
-                      color: 'var(--text-active-pill)',
-                      padding: '2px 8px',
-                      borderRadius: '12px',
-                      fontSize: '10px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      border: '1px solid var(--border-color)',
-                      transition: 'all 0.15s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--error-bg)';
-                      e.currentTarget.style.color = 'var(--error-text)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--bg-active-pill)';
-                      e.currentTarget.style.color = 'var(--text-active-pill)';
-                    }}
-                    title={`Click to remove ${key}`}
-                  >
-                    {key} <X style={{ width: '10px', height: '10px' }} />
-                  </span>
-                ))}
-              </div>
               <div className="input-box-wrapper" style={{ width: '100%' }}>
                 <input 
                   type="text" 
