@@ -100,9 +100,9 @@ function App() {
   });
 
   const [expandedCategories, setExpandedCategories] = useState({
-    equity: true,
-    hybrid: true,
-    indexEtfTax: true
+    equity: false,
+    hybrid: false,
+    indexEtfTax: false
   });
 
   const toggleCategory = (cat) => {

@@ -344,10 +344,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .blinking-question {
   animation: blink 1s infinite;
-  color: var(--primary-blue);
-  font-weight: 800;
+  color: var(--text-navy);
+  font-size: 1.15em;
+  font-weight: 900;
   display: inline-block;
-  margin-left: 2px;
+  margin-left: 4px;
 }
 
 .welcome-subtitle {
@@ -377,6 +378,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: flex-start;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   min-height: 84px;
+  height: 100%;
 }
 
 .question-card:hover {
