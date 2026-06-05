@@ -5,9 +5,10 @@ import { SidebarRight } from './ui/SidebarRight';
 import { ChatArea } from './ui/ChatArea';
 import { Modals } from './ui/Modals';
 
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:8000/api/chat'
-  : '/api/chat';
+const API_URL = import.meta.env.VITE_API_URL || 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000/api/chat'
+    : '/api/chat');
 
 // Mapping of checkbox keys to backend fund ID identifiers
 const fundIdMap = {
