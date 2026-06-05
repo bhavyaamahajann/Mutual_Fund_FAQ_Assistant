@@ -164,12 +164,12 @@ def run_tests():
             last_updated = data.get("last_updated", "")
             
             # Verify footer presence
-            parts = answer.split("\n\n")
-            if len(parts) < 2 or "Last updated from sources:" not in parts[1]:
+            parts = [p.strip() for p in answer.split("\n\n") if p.strip()]
+            if len(parts) < 2 or "Last updated from sources:" not in parts[-1]:
                 print(f"  {RED}[FAIL] Answer missing mandatory updated timestamp footer: '{answer}'{RESET}")
                 continue
             
-            body = parts[0]
+            body = "\n\n".join(parts[:-1])
             # Verify URL citation presence
             body_parts = body.split("Source:")
             if len(body_parts) < 2:

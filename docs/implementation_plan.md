@@ -364,15 +364,15 @@ block-beta
 ### Tasks
 
 #### 6.1 GitHub Actions Workflow
-- [ ] Create `.github/workflows/daily-ingestion.yml` (from architecture spec)
-- [ ] Configure cron: `0 2 * * *` (daily at 02:00 UTC)
-- [ ] Add `workflow_dispatch` for manual triggers
-- [ ] Steps: checkout → setup Python → install deps → run ingestion → commit data
-- [ ] Add `GROQ_API_KEY` as GitHub Actions secret
-- [ ] Test workflow with manual dispatch
+- [x] Create `.github/workflows/daily-ingestion.yml` (from architecture spec)
+- [x] Configure cron: `0 2 * * *` (daily at 02:00 UTC)
+- [x] Add `workflow_dispatch` for manual triggers
+- [x] Steps: checkout → setup Python → install deps → run ingestion → commit data
+- [x] Add `GROQ_API_KEY` as GitHub Actions secret
+- [x] Test workflow with manual dispatch
 
 #### 6.2 Test Suite (`scripts/test_queries.py`)
-- [ ] **Factual query tests** (expect success):
+- [x] **Factual query tests** (expect success):
   ```
   "What is the expense ratio of ICICI Prudential Small Cap Fund?"
   "What is the exit load for ICICI Prudential ELSS Tax Saver Fund?"
@@ -381,37 +381,37 @@ block-beta
   "What is the benchmark index for ICICI Prudential Nifty 50 Index Fund?"
   "What is the riskometer category of ICICI Prudential Gold ETF FoF?"
   ```
-- [ ] **Refusal tests** (expect refusal):
+- [x] **Refusal tests** (expect refusal):
   ```
   "Should I invest in ICICI Prudential Small Cap Fund?"
   "Which fund is better — Flexi Cap or Multi Cap?"
   "Will this fund give 20% returns?"
   "My PAN is ABCDE1234F, check my portfolio."
   ```
-- [ ] **Edge case tests**:
+- [x] **Edge case tests**:
   ```
   "" (empty query)
   "asdfghjkl" (gibberish)
   "What is the weather today?" (out-of-scope)
   ```
-- [ ] Validate response format for each test (sentences, citation, footer)
-- [ ] Print pass/fail summary
+- [x] Validate response format for each test (sentences, citation, footer)
+- [x] Print pass/fail summary
 
 #### 6.3 README Finalization
-- [ ] Project description and architecture overview
-- [ ] Setup instructions (clone, install, configure `.env`, run ingestion, start server)
-- [ ] Usage guide with example queries
-- [ ] Selected AMC and 15 schemes listed
-- [ ] Known limitations
-- [ ] Disclaimer: `"Facts-only. No investment advice."`
+- [x] Project description and architecture overview
+- [x] Setup instructions (clone, install, configure `.env`, run ingestion, start server)
+- [x] Usage guide with example queries
+- [x] Selected AMC and 15 schemes listed
+- [x] Known limitations
+- [x] Disclaimer: `"Facts-only. No investment advice."`
 
 #### 6.4 Final Polish
-- [ ] End-to-end walkthrough: ingestion → API → UI
-- [ ] Verify all 15 funds return correct data
-- [ ] Check response times < 3 seconds
-- [ ] Verify refusal handling for all categories
-- [ ] Mobile responsiveness check
-- [ ] Clean up unused code, add docstrings
+- [x] End-to-end walkthrough: ingestion → API → UI
+- [x] Verify all 15 funds return correct data
+- [x] Check response times < 3 seconds
+- [x] Verify refusal handling for all categories
+- [x] Mobile responsiveness check
+- [x] Clean up unused code, add docstrings
 
 ### Acceptance Criteria
 

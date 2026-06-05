@@ -187,8 +187,10 @@ class TestRAGPipeline(unittest.TestCase):
         
         self.assertEqual(res["status"], "refused")
         self.assertEqual(res["type"], "advisory")
-        self.assertEqual(res["answer"], REFUSAL_ADVISORY)
-        self.assertIsNone(res["citation"])
+        self.assertIn(REFUSAL_ADVISORY, res["answer"])
+        self.assertIsNotNone(res["citation"])
+        self.assertIn("Source:", res["answer"])
+        self.assertIn("Last updated from sources:", res["answer"])
 
     def test_pipeline_refusal_pii(self):
         """Verify that queries containing PII are intercepted and return privacy refusals."""
@@ -199,6 +201,30 @@ class TestRAGPipeline(unittest.TestCase):
         self.assertEqual(res["type"], "pii")
         self.assertEqual(res["answer"], REFUSAL_PII)
         self.assertIsNone(res["citation"])
+
+    def test_pipeline_missing_scheme(self):
+        """Verify that factual queries without scheme names trigger a clarification prompt."""
+        pipeline = RAGPipeline()
+        res = pipeline.generate_response("What is the expense ratio?")
+        self.assertEqual(res["status"], "success")
+        self.assertEqual(res["type"], "factual")
+        self.assertIn("Please specify the mutual fund scheme for which you would like the expense ratio.", res["answer"])
+        self.assertIsNotNone(res["citation"])
+        
+        res_cagr = pipeline.generate_response("Show 5-year CAGR.")
+        self.assertIn("Which mutual fund scheme would you like the 5-year CAGR information for?", res_cagr["answer"])
+
+    def test_pipeline_multi_fund_aum(self):
+        """Verify that multi-fund AUM queries return a formatted markdown table."""
+        pipeline = RAGPipeline()
+        res = pipeline.generate_response("What is the AUM of all the funds?")
+        self.assertEqual(res["status"], "success")
+        self.assertEqual(res["type"], "factual")
+        self.assertIn("| Scheme | AUM (₹ Crore) | As Of |", res["answer"])
+        self.assertIn("ICICI Prudential Smallcap Fund", res["answer"])
+        self.assertIn("Source:", res["answer"])
+        self.assertIn("Last updated from sources:", res["answer"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -81,18 +81,30 @@ uvicorn backend.app.main:app --reload
 ```
 Navigate to `http://localhost:8000` to interact with the React web assistant.
 
-### 6. Run via Streamlit (Alternative UI)
 
-You can run the assistant in a single command using Streamlit:
+## Usage Guide
 
-```bash
-streamlit run app_streamlit.py
-```
-This will open the Streamlit interface in your browser at `http://localhost:8501`.
+Once the server is running, you can access the frontend via your browser at `http://localhost:8000`.
+
+### Example Factual Queries
+- "What is the expense ratio of ICICI Prudential Small Cap Fund?"
+- "What is the exit load for ICICI Prudential ELSS Tax Saver Fund?"
+- "Who is the fund manager of ICICI Prudential Mid Cap Fund?"
+
+### Example Refusals (Out of Scope / Advisory)
+- "Should I invest in ICICI Prudential Small Cap Fund?"
+- "Which fund is better — Flexi Cap or Multi Cap?"
+- "My PAN is ABCDE1234F, check my portfolio."
 
 ## Architecture
 
 See [docs/architecture.md](docs/architecture.md) for the full system design.
+
+## Known Limitations
+
+- **Source Limitations:** The assistant strictly answers from the parsed text of the 15 selected INDMoney pages. If the specific fact (e.g. tracking error) is not on the source page, it cannot provide an answer.
+- **LLM Hallucination Safeguards:** While the LLM is prompted strictly to stick to context, edge cases in phrasing might sometimes trigger default reasoning.
+- **Web Scraping Stability:** If INDMoney changes their page DOM structure or Cloudflare blocks the request, the ingestion scraper may fail and require updates to the parser.
 
 ## Disclaimer
 

@@ -32,7 +32,8 @@ COMPARISON_KEYWORDS = [
 IN_SCOPE_KEYWORDS = [
     "fund", "nav", "expense", "exit load", "sip", "lumpsum", "benchmark", "riskometer",
     "lock-in", "manager", "aum", "house", "icici", "prudential", "smallcap", "largecap",
-    "midcap", "flexicap", "focused", "multicap", "elss", "savings", "debt", "index", "gold", "silver"
+    "midcap", "flexicap", "focused", "multicap", "elss", "savings", "debt", "index", "gold", "silver",
+    "cagr", "returns", "return", "sector", "allocation", "performance"
 ]
 
 # Greetings to handle gracefully

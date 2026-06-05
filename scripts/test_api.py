@@ -54,7 +54,7 @@ class TestAPIEndpoints(unittest.TestCase):
         data = response.json()
         self.assertEqual(data["status"], "refused")
         self.assertEqual(data["type"], "advisory")
-        self.assertIn("cannot provide investment advice", data["answer"])
+        self.assertIn("cannot offer investment advice", data["answer"])
 
     @patch('backend.rag.generator.Groq')
     def test_chat_factual_mocked(self, mock_groq_class):
