@@ -110,8 +110,15 @@ DEFAULT_QUESTIONS = [
     {"query": "What is the risk profile of ICICI Prudential Multi Asset Fund?", "label": "Risk profile: Multi Asset"}
 ]
 
+# Helper function to render raw HTML safely using st.html
+def render_html(html_str: str, sidebar: bool = False):
+    if sidebar:
+        st.sidebar.html(html_str)
+    else:
+        st.html(html_str)
+
 # Custom CSS styling for Cafe Light Theme and structure overrides
-st.markdown("""
+st.html("""
 <style>
     /* Premium Cafe Light Theme */
     .stApp {
@@ -152,8 +159,81 @@ st.markdown("""
         padding-left: 2rem !important;
         padding-right: 2rem !important;
     }
+
+    /* Compliance Warning Badge */
+    .warning-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.4rem !important;
+        background-color: #FFF7E6 !important;
+        border: 1.5px solid #FFE8CC !important;
+        color: #92400E !important;
+        padding: 0.25rem 0.75rem !important;
+        border-radius: 9999px !important;
+        font-size: 0.725rem !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.01em !important;
+        font-family: 'Inter', sans-serif !important;
+    }
+    
+    /* Refusal Cards */
+    .refusal-error {
+        background-color: #FEF2F2 !important;
+        border: 1px solid #FCA5A5 !important;
+        color: #991B1B !important;
+        border-radius: 12px !important;
+        padding: 0.85rem 1rem !important;
+    }
+    .refusal-block {
+        background-color: #FFF7E6 !important;
+        border: 1px solid #FFE8CC !important;
+        color: #92400E !important;
+        border-radius: 12px !important;
+        padding: 0.85rem 1rem !important;
+    }
+    
+    /* Suggestive Buttons */
+    .suggestive-btn {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E5E7EB !important;
+        border-radius: 12px !important;
+        padding: 1rem !important;
+        cursor: pointer !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.2rem !important;
+        min-height: 84px !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-sizing: border-box !important;
+    }
+    .suggestive-btn:hover {
+        transform: translateY(-1.5px) !important;
+        border-color: #CBD5E1 !important;
+    }
+    
+    /* Citation Pills */
+    .citation-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.3rem !important;
+        background-color: #E0E7FF !important;
+        color: #1D4ED8 !important;
+        font-weight: 600 !important;
+        font-size: 0.7rem !important;
+        padding: 0.2rem 0.5rem !important;
+        border-radius: 9999px !important;
+        text-decoration: none !important;
+    }
+    .citation-pill:hover {
+        background-color: #1D4ED8 !important;
+        color: #FFFFFF !important;
+    }
+    .last-updated-date {
+        font-size: 0.65rem !important;
+        color: #6B7280 !important;
+    }
 </style>
-""", unsafe_allow_html=True)
+""")
 
 # Initialize Session State
 if "sessions" not in st.session_state:
@@ -178,7 +258,7 @@ if "renaming_session" not in st.session_state:
     st.session_state.renaming_session = None
 
 # Left Sidebar: Checkboxes and Logo
-st.sidebar.markdown("""
+render_html("""
 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
   <span style="font-size: 1.5rem; color: #1d4ed8; font-weight: 750; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
     INDMoney
@@ -190,24 +270,24 @@ st.sidebar.markdown("""
 <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #111827; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 15px;">
   📁 ICICI PRUDENTIAL MF
 </div>
-""", unsafe_allow_html=True)
+""", sidebar=True)
 
 # Collect Checked Schemes
 selected_schemes = []
 
-st.sidebar.markdown("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Equity Funds</span>", unsafe_allow_html=True)
+st.sidebar.html("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Equity Funds</span>")
 for scheme in EQUITY_FUNDS:
     # Default Small Cap checked as per app behavior
     default_val = (scheme == 'Small Cap Fund')
     if st.sidebar.checkbox(scheme, value=default_val, key=f"chk-{scheme}"):
         selected_schemes.append(scheme)
 
-st.sidebar.markdown("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Hybrid Funds</span>", unsafe_allow_html=True)
+st.sidebar.html("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Hybrid Funds</span>")
 for scheme in HYBRID_FUNDS:
     if st.sidebar.checkbox(scheme, value=False, key=f"chk-{scheme}"):
         selected_schemes.append(scheme)
 
-st.sidebar.markdown("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Index, ETFs & Tax</span>", unsafe_allow_html=True)
+st.sidebar.html("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Index, ETFs & Tax</span>")
 for scheme in INDEX_ETFS_TAX:
     if st.sidebar.checkbox(scheme, value=False, key=f"chk-{scheme}"):
         selected_schemes.append(scheme)
@@ -315,11 +395,11 @@ def submit_chat_message(query_text):
 # ----------------- CENTER COLUMN: Chat Area -----------------
 with chat_col:
     # Compliance warning badge at the top-right
-    st.markdown("""
+    render_html("""
     <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 20px;">
         <div class="warning-badge">⚠️ Facts-Only. No Investment Advice.</div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     # Thread Inline Rename form (if triggered)
     if st.session_state.renaming_session:
@@ -341,14 +421,14 @@ with chat_col:
 
     # Welcome screen
     if not messages:
-        st.markdown("""
+        render_html("""
         <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
             <h1 style="font-size: 2.1rem; font-weight: 700; color: #111827; margin-bottom: 8px;">How can I help you today?</h1>
             <p style="font-size: 0.875rem; color: #6b7280; max-width: 500px; margin: 0 auto; line-height: 1.5;">
                 Ask me anything about ICICI Prudential funds, expense ratios, tax implications, or performance data.
             </p>
         </div>
-        """, unsafe_allow_html=True)
+        """)
         
         # Suggestive Prompt Cards Grid
         # Get active selection questions
@@ -367,25 +447,25 @@ with chat_col:
         for idx, card in enumerate(suggestions_to_show):
             with card_cols[idx % 2]:
                 card_url = f"?ask={card['query'].replace(' ', '+').replace('&', '%26')}"
-                st.markdown(f"""
+                render_html(f"""
                 <a href="{card_url}" target="_self" style="text-decoration: none;">
                     <div class="suggestive-btn">
                         <span style="font-size: 0.85rem; font-weight: 600; color: #111827;">{card['label']}</span>
                         <span style="font-size: 0.65rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: auto;">FUND PARAMETERS</span>
                     </div>
                 </a>
-                """, unsafe_allow_html=True)
+                """)
     else:
         # Message bubble display (HTML high-fidelity alignment)
         for msg in messages:
             if msg["sender"] == "user":
-                st.markdown(f"""
+                render_html(f"""
                 <div style="display: flex; justify-content: flex-end; margin-bottom: 16px; width: 100%;">
                     <div style="background-color: #1d4ed8; color: #ffffff; padding: 12px 16px; border-radius: 12px; border-bottom-right-radius: 2px; max-width: 80%; font-size: 0.85rem; line-height: 1.45; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-family: sans-serif;">
                         {msg['text']}
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
+                """)
             else:
                 # Assistant message bubble
                 if msg.get("status") == "refused":
@@ -398,13 +478,13 @@ with chat_col:
                     elif msg.get("type") == "comparison":
                         link_html = "<br><a href='https://www.sebi.gov.in' target='_blank' style='color:#92400e; font-weight:600; text-decoration:underline; font-size:0.75rem;'>Visit SEBI Portal ↗</a>"
                         
-                    st.markdown(f"""
-                    <div class="{bg_class}" style="max-width: 80%; font-family: sans-serif; font-size: 0.85rem; margin-bottom: 16px;">
+                    render_html(f"""
+                    <div class="{bg_class}" style="max-width: 80%; font-family: sans-serif; font-size: 0.85rem; margin-bottom: 16px; box-sizing: border-box;">
                         <h4 style="margin: 0 0 6px 0; font-weight: 700; font-size: 0.9rem; color: inherit;">{title}</h4>
                         <p style="margin: 0; line-height: 1.4; color: inherit;">{msg['text']}</p>
                         {link_html}
                     </div>
-                    """, unsafe_allow_html=True)
+                    """)
                 else:
                     # Clean fact response card
                     citation = msg.get("citation")
@@ -430,33 +510,31 @@ with chat_col:
                         </div>
                         """
                         
-                    st.markdown(f"""
+                    render_html(f"""
                     <div style="display: flex; justify-content: flex-start; margin-bottom: 16px; width: 100%;">
-                        <div style="background-color: #ffffff; color: #1f2937; padding: 12px 16px; border-radius: 12px; border-bottom-left-radius: 2px; border: 1px solid #e5e7eb; max-width: 80%; font-size: 0.85rem; line-height: 1.45; box-shadow: 0 1px 3px rgba(0,0,0,0.02); font-family: sans-serif;">
+                        <div style="background-color: #ffffff; color: #1f2937; padding: 12px 16px; border-radius: 12px; border-bottom-left-radius: 2px; border: 1px solid #e5e7eb; max-width: 80%; font-size: 0.85rem; line-height: 1.45; box-shadow: 0 1px 3px rgba(0,0,0,0.02); font-family: sans-serif; box-sizing: border-box;">
                             <p style="margin: 0;">{msg['text']}</p>
                             {citation_html}
                         </div>
                     </div>
-                    """, unsafe_allow_html=True)
+                    """)
 
     # Active Selected Funds count and pills display (placed stacked above input field)
     active_count = len(selected_schemes)
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.html("<br>")
     
-    pill_html = ""
-    for name in selected_schemes:
-        pill_html += f"""
-        <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e0e7ff; color: #1d4ed8; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; border: 1px solid #e5e7eb; margin-right: 6px; margin-bottom: 6px;">
-            {name}
-        </span>
-        """
+    # Generate pills in a strict single-line without leading spacing
+    pill_html = "".join([
+        f'<span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e0e7ff; color: #1d4ed8; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; border: 1px solid #e5e7eb; margin-right: 6px; margin-bottom: 6px;">{name}</span>'
+        for name in selected_schemes
+    ])
         
-    st.markdown(f"""
+    render_html(f"""
     <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
         <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ {active_count} ]</span>
         {pill_html}
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     # Chat Input field
     input_text = st.chat_input("Type your financial question here...")
@@ -470,7 +548,7 @@ with chat_col:
         submit_chat_message(input_text)
 
     # Footer links rows
-    st.markdown(f"""
+    render_html("""
     <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #6b7280; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 10px; font-family: sans-serif;">
         <span>🕒 Last updated from official AMC sources.</span>
         <div>
@@ -479,21 +557,21 @@ with chat_col:
             <span style="cursor: pointer; text-decoration: underline;">Privacy Policy</span>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
 # ----------------- RIGHT COLUMN: Threads and info widgets -----------------
 with right_col:
     # New Chat Button (Styled royal blue card link)
-    st.markdown("""
+    render_html("""
     <a href="?new_chat=true" target="_self" style="text-decoration: none;">
         <div style="background-color: #1d4ed8; color: #ffffff; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85rem; text-align: center; border-radius: 8px; padding: 10px 16px; margin-bottom: 20px; transition: background-color 0.2s;">
             + New Chat
         </div>
     </a>
-    """, unsafe_allow_html=True)
+    """)
     
     # Recent Conversations Section
-    st.markdown("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recent Conversations</span>", unsafe_allow_html=True)
+    st.html("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recent Conversations</span>")
     
     # Render Threads using high fidelity list formatting
     threads_html = "<div style='display: flex; flex-direction: column; gap: 6px; margin-bottom: 25px; font-family: sans-serif;'>"
@@ -515,10 +593,10 @@ with right_col:
         </div>
         """
     threads_html += "</div>"
-    st.markdown(threads_html, unsafe_allow_html=True)
+    render_html(threads_html)
     
     # HOW IT WORKS? Card
-    st.markdown("""
+    render_html("""
     <div style="background-color: #eef2f6; border-radius: 12px; padding: 16px; margin-bottom: 25px; font-family: sans-serif;">
         <div style="font-family: 'Outfit', sans-serif; color: #111827; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.03em; display: flex; align-items: center; gap: 6px; margin-bottom: 10px;">
             ℹ️ HOW IT WORKS?
@@ -538,10 +616,10 @@ with right_col:
             AI-generated responses. Verify with cited sources. Free-tier API: wait a few minutes if limits are hit.
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     # RECENTLY ASKED list
-    st.markdown("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recently Asked</span>", unsafe_allow_html=True)
+    st.html("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recently Asked</span>")
     
     recently_asked_queries = [
         {"q": "What are the top holdings of ICICI Prudential Bluechip Fund?", "label": "Top holdings of Bluechip Fund?"},
@@ -551,19 +629,20 @@ with right_col:
     
     for idx, item in enumerate(recently_asked_queries):
         ask_url = f"?ask={item['q'].replace(' ', '+').replace('&', '%26')}"
-        st.markdown(f"""
+        render_html(f"""
         <div style="margin-bottom: 8px; font-family: sans-serif;">
             <a href="{ask_url}" target="_self" style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: #1f2937; font-size: 0.75rem; padding: 4px 0;">
                 🔍 <span style="cursor: pointer; transition: color 0.15s;">{item['label']}</span>
             </a>
         </div>
-        """, unsafe_allow_html=True)
-        # Adding CSS support for hover decoration on link text
-        st.markdown("""
-        <style>
-            a:hover span {
-                text-decoration: underline !important;
-                color: #1d4ed8 !important;
-            }
-        </style>
-        """, unsafe_allow_html=True)
+        """)
+        
+    # Adding CSS support for hover decoration on link text
+    st.html("""
+    <style>
+        a:hover span {
+            text-decoration: underline !important;
+            color: #1d4ed8 !important;
+        }
+    </style>
+    """)
