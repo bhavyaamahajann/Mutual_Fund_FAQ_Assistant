@@ -13,7 +13,7 @@ sys.path.append(str(Path(__file__).resolve().parent))
 
 from backend.rag.generator import RAGPipeline
 
-# Page Config
+# Page Config (Cafe Light theme settings)
 st.set_page_config(
     page_title="INDMoney AI — Mutual Fund FAQ Assistant",
     page_icon="https://www.indmoney.com/favicon.ico",
@@ -21,7 +21,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Load RAG Pipeline (Cached to avoid loading sentence-transformers model repeatedly)
+# Load RAG Pipeline (Cached)
 @st.cache_resource
 def load_pipeline():
     return RAGPipeline()
@@ -110,116 +110,47 @@ DEFAULT_QUESTIONS = [
     {"query": "What is the risk profile of ICICI Prudential Multi Asset Fund?", "label": "Risk profile: Multi Asset"}
 ]
 
-# Custom CSS styling for Cafe Light theme and spacing
+# Custom CSS styling for Cafe Light Theme and structure overrides
 st.markdown("""
 <style>
-    /* Warm Cafe Theme styling */
+    /* Premium Cafe Light Theme */
     .stApp {
         background-color: #f5f2eb !important;
         color: #1f2937 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
-    /* Header area styling */
+    /* Header background removal */
     [data-testid="stHeader"] {
         background-color: transparent !important;
     }
     
-    /* Sidebar styling */
+    /* Sidebar styling overrides */
     section[data-testid="stSidebar"] {
         background-color: #faf9f6 !important;
         border-right: 1px solid #e5e7eb;
     }
     
-    /* Heading typography */
+    /* Input field styling */
+    [data-testid="stChatInput"] {
+        background-color: #ffffff !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 9999px !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+    }
+    
+    /* Heading Fonts */
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif !important;
         color: #111827 !important;
     }
     
-    /* Compliance warning badge */
-    .warning-badge {
-        background-color: #fff7e6;
-        border: 1.5px solid #ffe8cc;
-        color: #92400e;
-        border-radius: 9999px;
-        padding: 5px 14px;
-        font-size: 0.725rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 20px;
-    }
-    
-    /* Suggestive Prompt Cards */
-    .suggestive-btn {
-        background-color: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 14px;
-        text-align: left;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-    .suggestive-btn:hover {
-        border-color: #cbd5e1;
-        transform: translateY(-1.5px);
-    }
-    
-    /* Citation pill */
-    .citation-pill {
-        background-color: #e0e7ff;
-        color: #1d4ed8;
-        border-radius: 9999px;
-        padding: 3px 10px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        margin-top: 8px;
-    }
-    .citation-pill:hover {
-        background-color: #1d4ed8;
-        color: #ffffff !important;
-    }
-    
-    /* Last Scraped Date */
-    .last-updated-date {
-        color: #6b7280;
-        font-size: 0.65rem;
-        margin-top: 4px;
-    }
-    
-    /* Refusal warning block */
-    .refusal-block {
-        background-color: #fff7e6;
-        border: 1px solid #ffe8cc;
-        color: #92400e;
-        border-radius: 12px;
-        padding: 14px;
-        margin-bottom: 12px;
-    }
-    
-    /* Refusal error block (PII) */
-    .refusal-error {
-        background-color: #fef2f2;
-        border: 1px solid #fca5a5;
-        color: #991b1b;
-        border-radius: 12px;
-        padding: 14px;
-        margin-bottom: 12px;
-    }
-    
-    /* Clean chat input styles */
-    [data-testid="stChatInput"] {
-        border-radius: 9999px;
+    /* Remove padding around main container */
+    .block-container {
+        padding-top: 1.5rem !important;
+        padding-bottom: 2rem !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -243,119 +174,134 @@ if "session_names" not in st.session_state:
     }
 if "active_session" not in st.session_state:
     st.session_state.active_session = "session-1"
+if "renaming_session" not in st.session_state:
+    st.session_state.renaming_session = None
 
-# Sidebar Branding Logo (matching request exactly: royal blue text, light blue/lavender AI badge, no SVG)
+# Left Sidebar: Checkboxes and Logo
 st.sidebar.markdown("""
-<div style="display: flex; align-items: center; gap: 8px; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid #e5e7eb;">
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
   <span style="font-size: 1.5rem; color: #1d4ed8; font-weight: 750; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
     INDMoney
   </span>
-  <span style="background-color: #e0e7ff; color: #1d4ed8; font-size: 0.95rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; font-family: 'Outfit', sans-serif; display: inline-block;">
+  <span style="background-color: #e0e7ff; color: #1d4ed8; font-size: 0.9rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; font-family: 'Outfit', sans-serif; display: inline-block;">
     AI
   </span>
 </div>
+<div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #111827; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 15px;">
+  📁 ICICI PRUDENTIAL MF
+</div>
 """, unsafe_allow_html=True)
 
-# New Chat Button
-if st.sidebar.button("➕ New Chat", use_container_width=True):
-    new_id = f"session-{int(datetime.now().timestamp() * 1000)}"
-    st.session_state.sessions[new_id] = []
-    st.session_state.session_names[new_id] = f"Chat {len(st.session_state.sessions)}"
-    st.session_state.active_session = new_id
-    st.rerun()
-
-# Recent Conversations Thread List
-st.sidebar.subheader("Recent Conversations")
-for sess_id in list(st.session_state.sessions.keys()):
-    col1, col2, col3 = st.sidebar.columns([6, 2, 2])
-    
-    # Session Selection
-    current_name = st.session_state.session_names.get(sess_id, sess_id)
-    is_active = (st.session_state.active_session == sess_id)
-    
-    with col1:
-        if is_active:
-            st.markdown(f"**💬 {current_name}**")
-        else:
-            if st.button(f"💬 {current_name}", key=f"btn-select-{sess_id}", help="Switch to chat"):
-                st.session_state.active_session = sess_id
-                st.rerun()
-                
-    # Rename & Delete
-    with col2:
-        # Use an expander for inline rename to fit Streamlit structure cleanly
-        with st.popover("✏️", help="Rename conversation"):
-            new_name = st.text_input("New Name", value=current_name, key=f"rename-in-{sess_id}")
-            if st.button("Save", key=f"save-name-{sess_id}"):
-                if new_name.strip():
-                    st.session_state.session_names[sess_id] = new_name.strip()
-                    st.rerun()
-                    
-    with col3:
-        if st.button("🗑️", key=f"btn-del-{sess_id}", help="Delete conversation"):
-            del st.session_state.sessions[sess_id]
-            if sess_id in st.session_state.session_names:
-                del st.session_state.session_names[sess_id]
-            if st.session_state.active_session == sess_id:
-                keys = list(st.session_state.sessions.keys())
-                st.session_state.active_session = keys[-1] if keys else None
-            st.rerun()
-
-# 15 Mutual Fund Checkboxes (Left Sidebar Filters)
-st.sidebar.markdown("<br><hr style='margin: 10px 0;'>", unsafe_allow_html=True)
-st.sidebar.subheader("📁 ICICI PRUDENTIAL MF")
-
-# Collect Checked schemes
+# Collect Checked Schemes
 selected_schemes = []
 
-with st.sidebar.expander("Equity Funds", expanded=True):
-    for scheme in EQUITY_FUNDS:
-        # Default Small Cap checked as per app behavior
-        default_val = (scheme == 'Small Cap Fund')
-        if st.checkbox(scheme, value=default_val, key=f"chk-{scheme}"):
-            selected_schemes.append(scheme)
+st.sidebar.markdown("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Equity Funds</span>", unsafe_allow_html=True)
+for scheme in EQUITY_FUNDS:
+    # Default Small Cap checked as per app behavior
+    default_val = (scheme == 'Small Cap Fund')
+    if st.sidebar.checkbox(scheme, value=default_val, key=f"chk-{scheme}"):
+        selected_schemes.append(scheme)
 
-with st.sidebar.expander("Hybrid Funds", expanded=False):
-    for scheme in HYBRID_FUNDS:
-        if st.checkbox(scheme, value=False, key=f"chk-{scheme}"):
-            selected_schemes.append(scheme)
+st.sidebar.markdown("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Hybrid Funds</span>", unsafe_allow_html=True)
+for scheme in HYBRID_FUNDS:
+    if st.sidebar.checkbox(scheme, value=False, key=f"chk-{scheme}"):
+        selected_schemes.append(scheme)
 
-with st.sidebar.expander("Index, ETFs & Tax", expanded=False):
-    for scheme in INDEX_ETFS_TAX:
-        if st.checkbox(scheme, value=False, key=f"chk-{scheme}"):
-            selected_schemes.append(scheme)
+st.sidebar.markdown("<br><span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;'>Index, ETFs & Tax</span>", unsafe_allow_html=True)
+for scheme in INDEX_ETFS_TAX:
+    if st.sidebar.checkbox(scheme, value=False, key=f"chk-{scheme}"):
+        selected_schemes.append(scheme)
 
 # Map checked schemes to fund IDs
 selected_fund_ids = [FUND_ID_MAP[name] for name in selected_schemes if name in FUND_ID_MAP]
 
-# Main Area Header / Compliance warning badge (aligned right)
-h_col1, h_col2 = st.columns([7, 3])
-with h_col2:
-    st.markdown("""
-    <div style="text-align: right;">
-        <span class="warning-badge">⚠️ Facts-Only. No Investment Advice.</span>
-    </div>
-    """, unsafe_allow_html=True)
+# ----------------- STATE MACHINE USING QUERY PARAMS -----------------
+params = st.query_params
 
-# Main Chat display
+# Handle New Chat Trigger
+if "new_chat" in params:
+    new_id = f"session-{int(datetime.now().timestamp() * 1000)}"
+    st.session_state.sessions[new_id] = []
+    st.session_state.session_names[new_id] = f"Chat {len(st.session_state.sessions) + 1}"
+    st.session_state.active_session = new_id
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Select Session Trigger
+if "session" in params:
+    sess_val = params["session"]
+    if sess_val in st.session_state.sessions:
+        st.session_state.active_session = sess_val
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Delete Session Trigger
+if "delete" in params:
+    del_val = params["delete"]
+    if del_val in st.session_state.sessions:
+        del st.session_state.sessions[del_val]
+        if del_val in st.session_state.session_names:
+            del st.session_state.session_names[del_val]
+        if st.session_state.active_session == del_val:
+            keys = list(st.session_state.sessions.keys())
+            st.session_state.active_session = keys[-1] if keys else None
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Rename Trigger
+if "trigger_rename" in params:
+    st.session_state.renaming_session = params["trigger_rename"]
+    st.query_params.clear()
+    st.rerun()
+
+# Handle Ask Question Trigger (Suggestive prompts or recently asked)
+if "ask" in params:
+    ask_val = params["ask"]
+    if not st.session_state.active_session:
+        # Create fallback session if none active
+        new_id = f"session-{int(datetime.now().timestamp() * 1000)}"
+        st.session_state.sessions[new_id] = []
+        st.session_state.session_names[new_id] = "Chat 1"
+        st.session_state.active_session = new_id
+    
+    active_sess = st.session_state.active_session
+    st.session_state.sessions[active_sess].append({"sender": "user", "text": ask_val})
+    
+    # Run pipeline
+    pass_filter = selected_fund_ids if selected_fund_ids else None
+    response_data = pipeline.generate_response(ask_val, selected_funds=pass_filter)
+    
+    st.session_state.sessions[active_sess].append({
+        "sender": "assistant",
+        "text": response_data.get("answer", ""),
+        "status": response_data.get("status", "success"),
+        "type": response_data.get("type", "factual"),
+        "citation": response_data.get("citation"),
+        "last_updated": response_data.get("last_updated")
+    })
+    st.query_params.clear()
+    st.rerun()
+
+# ----------------- MAIN LAYOUT IN 2 COLUMNS -----------------
+# This creates a 3-column layout combined with the left sidebar
+chat_col, right_col = st.columns([7.5, 2.5])
+
 active_sess = st.session_state.active_session
 messages = st.session_state.sessions.get(active_sess, []) if active_sess else []
 
-# Function to submit queries to the RAG pipeline
-def submit_query(query_text):
+# Function to submit message from standard chat input box
+def submit_chat_message(query_text):
     if not query_text.strip():
         return
     
-    # 1. Add user query to conversation
+    # Add user message
     st.session_state.sessions[active_sess].append({"sender": "user", "text": query_text})
     
-    # 2. Query RAG pipeline
-    with st.spinner("Analyzing factsheets..."):
-        # If no schemes checked, pass None (defaults to all)
-        pass_filter = selected_fund_ids if selected_fund_ids else None
-        response_data = pipeline.generate_response(query_text, selected_funds=pass_filter)
-        
-    # 3. Add assistant response
+    # Run RAG
+    pass_filter = selected_fund_ids if selected_fund_ids else None
+    response_data = pipeline.generate_response(query_text, selected_funds=pass_filter)
+    
+    # Add assistant response
     st.session_state.sessions[active_sess].append({
         "sender": "assistant",
         "text": response_data.get("answer", ""),
@@ -366,129 +312,258 @@ def submit_query(query_text):
     })
     st.rerun()
 
-# Welcome screen if session is empty
-if not messages:
-    st.markdown("<h1 style='text-align: center;'>How can I help you today?</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #6b7280; font-size: 1rem;'>Ask me anything about ICICI Prudential funds, expense ratios, tax implications, or performance data.</p><br>", unsafe_allow_html=True)
+# ----------------- CENTER COLUMN: Chat Area -----------------
+with chat_col:
+    # Compliance warning badge at the top-right
+    st.markdown("""
+    <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 20px;">
+        <div class="warning-badge">⚠️ Facts-Only. No Investment Advice.</div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    # Dynamic Suggestive Prompt Grid
-    # Collect suggestions for active selections
-    dynamic_suggestions = []
-    if len(selected_schemes) == 0 or len(selected_schemes) == len(FUND_ID_MAP):
-        dynamic_suggestions = DEFAULT_QUESTIONS
-    else:
-        for name in selected_schemes:
-            if name in QUESTIONS_BY_FUND:
-                dynamic_suggestions.extend(QUESTIONS_BY_FUND[name])
-                
-    # Limit to 4 cards
-    suggestions_to_show = dynamic_suggestions[:4]
-    
-    # Draw suggestive prompt grid buttons in columns
-    cols = st.columns(2)
-    for idx, card in enumerate(suggestions_to_show):
-        with cols[idx % 2]:
-            # Styled card button
-            st.markdown(f"""
-            <div style="background-color: #ffffff; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 16px; min-height: 90px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-                <p style="font-family: 'Inter', sans-serif; font-weight: 600; color: #111827; margin: 0 0 4px 0; font-size: 0.9rem;">{card['label']}</p>
-                <span style="font-size: 0.65rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">SUGGESTION</span>
-            </div>
-            """, unsafe_allow_html=True)
-            if st.button("Ask Query", key=f"prompt-card-{idx}", use_container_width=True):
-                submit_query(card['query'])
-else:
-    # Render chat log
-    for msg in messages:
-        if msg["sender"] == "user":
-            with st.chat_message("user"):
-                st.write(msg["text"])
+    # Thread Inline Rename form (if triggered)
+    if st.session_state.renaming_session:
+        ren_id = st.session_state.renaming_session
+        curr_name = st.session_state.session_names.get(ren_id, "Chat")
+        st.markdown(f"**Rename conversation:**")
+        new_name = st.text_input("New Name", value=curr_name, key="rename-txt-in")
+        r_col1, r_col2 = st.columns(2)
+        with r_col1:
+            if st.button("Save", key="btn-save-rn"):
+                if new_name.strip():
+                    st.session_state.session_names[ren_id] = new_name.strip()
+                st.session_state.renaming_session = None
+                st.rerun()
+        with r_col2:
+            if st.button("Cancel", key="btn-cancel-rn"):
+                st.session_state.renaming_session = None
+                st.rerun()
+
+    # Welcome screen
+    if not messages:
+        st.markdown("""
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+            <h1 style="font-size: 2.1rem; font-weight: 700; color: #111827; margin-bottom: 8px;">How can I help you today?</h1>
+            <p style="font-size: 0.875rem; color: #6b7280; max-width: 500px; margin: 0 auto; line-height: 1.5;">
+                Ask me anything about ICICI Prudential funds, expense ratios, tax implications, or performance data.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Suggestive Prompt Cards Grid
+        # Get active selection questions
+        dynamic_suggestions = []
+        if len(selected_schemes) == 0 or len(selected_schemes) == len(FUND_ID_MAP):
+            dynamic_suggestions = DEFAULT_QUESTIONS
         else:
-            with st.chat_message("assistant"):
+            for name in selected_schemes:
+                if name in QUESTIONS_BY_FUND:
+                    dynamic_suggestions.extend(QUESTIONS_BY_FUND[name])
+                    
+        suggestions_to_show = dynamic_suggestions[:4]
+        
+        # Render cards as columns of styled HTML anchors linking to ?ask=
+        card_cols = st.columns(2)
+        for idx, card in enumerate(suggestions_to_show):
+            with card_cols[idx % 2]:
+                card_url = f"?ask={card['query'].replace(' ', '+').replace('&', '%26')}"
+                st.markdown(f"""
+                <a href="{card_url}" target="_self" style="text-decoration: none;">
+                    <div class="suggestive-btn">
+                        <span style="font-size: 0.85rem; font-weight: 600; color: #111827;">{card['label']}</span>
+                        <span style="font-size: 0.65rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: auto;">FUND PARAMETERS</span>
+                    </div>
+                </a>
+                """, unsafe_allow_html=True)
+    else:
+        # Message bubble display (HTML high-fidelity alignment)
+        for msg in messages:
+            if msg["sender"] == "user":
+                st.markdown(f"""
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 16px; width: 100%;">
+                    <div style="background-color: #1d4ed8; color: #ffffff; padding: 12px 16px; border-radius: 12px; border-bottom-right-radius: 2px; max-width: 80%; font-size: 0.85rem; line-height: 1.45; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-family: sans-serif;">
+                        {msg['text']}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                # Assistant message bubble
                 if msg.get("status") == "refused":
-                    # Refusal UI mapping (colored warning panel layout)
+                    # Colored refusal cards
                     bg_class = "refusal-error" if msg.get("type") == "pii" else "refusal-block"
-                    title = "PII Security Block" if msg.get("type") == "pii" else "Regulatory Notice"
+                    title = "🛡️ PII Security Block" if msg.get("type") == "pii" else "⚠️ Regulatory Notice"
+                    link_html = ""
+                    if msg.get("type") == "advisory":
+                        link_html = "<br><a href='https://www.amfiindia.com/investor-corner/education/interest-rates.html' target='_blank' style='color:#92400e; font-weight:600; text-decoration:underline; font-size:0.75rem;'>Visit AMFI Investor Education ↗</a>"
+                    elif msg.get("type") == "comparison":
+                        link_html = "<br><a href='https://www.sebi.gov.in' target='_blank' style='color:#92400e; font-weight:600; text-decoration:underline; font-size:0.75rem;'>Visit SEBI Portal ↗</a>"
+                        
                     st.markdown(f"""
-                    <div class="{bg_class}">
-                        <h4 style="margin: 0 0 6px 0; font-weight: 700; font-size: 0.9rem;">{title}</h4>
-                        <p style="margin: 0; font-size: 0.8rem; line-height: 1.4;">{msg['text']}</p>
+                    <div class="{bg_class}" style="max-width: 80%; font-family: sans-serif; font-size: 0.85rem; margin-bottom: 16px;">
+                        <h4 style="margin: 0 0 6px 0; font-weight: 700; font-size: 0.9rem; color: inherit;">{title}</h4>
+                        <p style="margin: 0; line-height: 1.4; color: inherit;">{msg['text']}</p>
+                        {link_html}
                     </div>
                     """, unsafe_allow_html=True)
-                    
-                    # Refusal Action educational redirect links
-                    if msg.get("type") == "advisory":
-                        st.markdown("[Visit AMFI Investor Education ↗](https://www.amfiindia.com/investor-corner/education/interest-rates.html)")
-                    elif msg.get("type") == "comparison":
-                        st.markdown("[Visit SEBI Portal ↗](https://www.sebi.gov.in)")
                 else:
-                    # Clean fact response text
-                    st.write(msg["text"])
-                    
-                    # Sourced citation card and last updated stamp
+                    # Clean fact response card
                     citation = msg.get("citation")
                     last_updated = msg.get("last_updated")
+                    
+                    citation_html = ""
                     if citation or last_updated:
-                        meta_cols = st.columns([6, 4])
-                        with meta_cols[0]:
-                            if citation:
-                                label = citation.get("label", "Factsheet Source")
-                                url = citation.get("url", "https://www.indmoney.com")
-                                st.markdown(f"<a href='{url}' target='_blank' class='citation-pill'>📁 {label}</a>", unsafe_allow_html=True)
-                        with meta_cols[1]:
-                            if last_updated and last_updated != "Not available":
-                                try:
-                                    dt = datetime.fromisoformat(last_updated)
-                                    friendly_date = dt.strftime("%d %b %Y")
-                                except Exception:
-                                    friendly_date = last_scraped[:10]
-                                st.markdown(f"<div style='text-align: right;' class='last-updated-date'>Updated: {friendly_date}</div>", unsafe_allow_html=True)
+                        label = citation.get("label", "Factsheet Source") if citation else "Factsheet Source"
+                        url = citation.get("url", "https://www.indmoney.com") if citation else "https://www.indmoney.com"
+                        
+                        friendly_date = "Not available"
+                        if last_updated and last_updated != "Not available":
+                            try:
+                                dt = datetime.fromisoformat(last_updated)
+                                friendly_date = dt.strftime("%d %b %Y")
+                            except Exception:
+                                friendly_date = last_updated[:10]
+                                
+                        citation_html = f"""
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #e5e7eb; margin-top: 10px; padding-top: 8px; flex-wrap: wrap; gap: 8px;">
+                            <a href="{url}" target="_blank" class="citation-pill">📁 {label}</a>
+                            <span class="last-updated-date">Updated: {friendly_date}</span>
+                        </div>
+                        """
+                        
+                    st.markdown(f"""
+                    <div style="display: flex; justify-content: flex-start; margin-bottom: 16px; width: 100%;">
+                        <div style="background-color: #ffffff; color: #1f2937; padding: 12px 16px; border-radius: 12px; border-bottom-left-radius: 2px; border: 1px solid #e5e7eb; max-width: 80%; font-size: 0.85rem; line-height: 1.45; box-shadow: 0 1px 3px rgba(0,0,0,0.02); font-family: sans-serif;">
+                            <p style="margin: 0;">{msg['text']}</p>
+                            {citation_html}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
 
-# Stacked selection pill container (shows selected count and pills dynamically)
-active_count = len(selected_schemes)
-st.markdown("<br><hr style='margin: 10px 0;'>", unsafe_allow_html=True)
-
-# Horizontal display of active selected badge options
-pill_cols = st.columns([1.5, 8.5])
-with pill_cols[0]:
-    st.markdown(f"**Selected: [ {active_count} ]**")
-with pill_cols[1]:
-    # Display pills. Clicking a pill removes it (unchecks checkbox via session state)
+    # Active Selected Funds count and pills display (placed stacked above input field)
+    active_count = len(selected_schemes)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
     pill_html = ""
     for name in selected_schemes:
         pill_html += f"""
-        <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e0e7ff; color: #1d4ed8; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; border: 1px solid #e5e7eb; margin-right: 6px;">
+        <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e0e7ff; color: #1d4ed8; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; border: 1px solid #e5e7eb; margin-right: 6px; margin-bottom: 6px;">
             {name}
         </span>
         """
-    st.markdown(pill_html, unsafe_allow_html=True)
+        
+    st.markdown(f"""
+    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: #6b7280; margin-right: 4px;">Selected: [ {active_count} ]</span>
+        {pill_html}
+    </div>
+    """, unsafe_allow_html=True)
 
-# Chat Input at the bottom
-query_input = st.chat_input("Type your financial question here...")
-if query_input:
-    if not active_sess:
-        # Create a fallback chat session if none active
-        active_sess = f"session-{int(datetime.now().timestamp() * 1000)}"
-        st.session_state.sessions[active_sess] = []
-        st.session_state.session_names[active_sess] = "Chat 1"
-        st.session_state.active_session = active_sess
-    submit_query(query_input)
+    # Chat Input field
+    input_text = st.chat_input("Type your financial question here...")
+    if input_text:
+        if not active_sess:
+            # Setup session if empty
+            active_sess = f"session-{int(datetime.now().timestamp() * 1000)}"
+            st.session_state.sessions[active_sess] = []
+            st.session_state.session_names[active_sess] = "Chat 1"
+            st.session_state.active_session = active_sess
+        submit_chat_message(input_text)
 
-# Footer row with link modals/expanders
-st.markdown("<br>", unsafe_allow_html=True)
-foot_col1, foot_col2 = st.columns([5, 5])
-with foot_col1:
-    st.markdown("<span style='color: #6b7280; font-size: 0.725rem;'>🕒 Last updated from official AMC sources.</span>", unsafe_allow_html=True)
-with foot_col2:
-    # Compliance modal tabs
-    with st.expander("ℹ️ Compliance & Privacy Details"):
+    # Footer links rows
+    st.markdown(f"""
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #6b7280; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 10px; font-family: sans-serif;">
+        <span>🕒 Last updated from official AMC sources.</span>
+        <div>
+            <span style="cursor: pointer; text-decoration: underline;">System Architecture</span>
+            <span style="margin: 0 4px;">•</span>
+            <span style="cursor: pointer; text-decoration: underline;">Privacy Policy</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ----------------- RIGHT COLUMN: Threads and info widgets -----------------
+with right_col:
+    # New Chat Button (Styled royal blue card link)
+    st.markdown("""
+    <a href="?new_chat=true" target="_self" style="text-decoration: none;">
+        <div style="background-color: #1d4ed8; color: #ffffff; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85rem; text-align: center; border-radius: 8px; padding: 10px 16px; margin-bottom: 20px; transition: background-color 0.2s;">
+            + New Chat
+        </div>
+    </a>
+    """, unsafe_allow_html=True)
+    
+    # Recent Conversations Section
+    st.markdown("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recent Conversations</span>", unsafe_allow_html=True)
+    
+    # Render Threads using high fidelity list formatting
+    threads_html = "<div style='display: flex; flex-direction: column; gap: 6px; margin-bottom: 25px; font-family: sans-serif;'>"
+    for idx, s_id in enumerate(list(st.session_state.sessions.keys())):
+        s_name = st.session_state.session_names.get(s_id, s_id)
+        is_active = (active_sess == s_id)
+        
+        bg_style = "background-color: #e0e7ff; color: #1d4ed8; font-weight: 600;" if is_active else "background-color: transparent; color: #1f2937;"
+        
+        threads_html += f"""
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; {bg_style} transition: background-color 0.15s;">
+            <a href="?session={s_id}" target="_self" style="color: inherit; text-decoration: none; flex: 1; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                💬 {s_name}
+            </a>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <a href="?trigger_rename={s_id}" target="_self" style="color: inherit; text-decoration: none; font-size: 0.75rem;" title="Rename">✏️</a>
+                <a href="?delete={s_id}" target="_self" style="color: #ef4444; text-decoration: none; font-size: 0.85rem;" title="Delete">🗑️</a>
+            </div>
+        </div>
+        """
+    threads_html += "</div>"
+    st.markdown(threads_html, unsafe_allow_html=True)
+    
+    # HOW IT WORKS? Card
+    st.markdown("""
+    <div style="background-color: #eef2f6; border-radius: 12px; padding: 16px; margin-bottom: 25px; font-family: sans-serif;">
+        <div style="font-family: 'Outfit', sans-serif; color: #111827; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.03em; display: flex; align-items: center; gap: 6px; margin-bottom: 10px;">
+            ℹ️ HOW IT WORKS?
+        </div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li style="display: flex; gap: 6px; font-size: 0.725rem; color: #1f2937; line-height: 1.4;">
+                <span style="color: #1d4ed8;">✓</span> Factual answers only (NAV, AUM, returns, holdings, etc.)
+            </li>
+            <li style="display: flex; gap: 6px; font-size: 0.725rem; color: #1f2937; line-height: 1.4;">
+                <span style="color: #1d4ed8;">✓</span> No advice or comparisons; short replies with sources
+            </li>
+            <li style="display: flex; gap: 6px; font-size: 0.725rem; color: #1f2937; line-height: 1.4;">
+                <span style="color: #1d4ed8;">✓</span> Rejects PII and opinion questions
+            </li>
+        </ul>
+        <div style="color: #6b7280; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px; margin-top: 10px; font-size: 0.625rem; line-height: 1.45;">
+            AI-generated responses. Verify with cited sources. Free-tier API: wait a few minutes if limits are hit.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # RECENTLY ASKED list
+    st.markdown("<span style='font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;'>Recently Asked</span>", unsafe_allow_html=True)
+    
+    recently_asked_queries = [
+        {"q": "What are the top holdings of ICICI Prudential Bluechip Fund?", "label": "Top holdings of Bluechip Fund?"},
+        {"q": "What is the difference in expense ratios between ICICI Prudential mutual funds?", "label": "Expense ratio comparison"},
+        {"q": "What is the NAV of ICICI Prudential Small Cap Fund?", "label": "NAV of Small Cap Fund"}
+    ]
+    
+    for idx, item in enumerate(recently_asked_queries):
+        ask_url = f"?ask={item['q'].replace(' ', '+').replace('&', '%26')}"
+        st.markdown(f"""
+        <div style="margin-bottom: 8px; font-family: sans-serif;">
+            <a href="{ask_url}" target="_self" style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: #1f2937; font-size: 0.75rem; padding: 4px 0;">
+                🔍 <span style="cursor: pointer; transition: color 0.15s;">{item['label']}</span>
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+        # Adding CSS support for hover decoration on link text
         st.markdown("""
-        **1. Zero PII Retention Guardrail**
-        * PAN/Aadhaar/Phone numbers are identified and immediately quarantined before reaching the language models.
-        
-        **2. Strict Isolation**
-        * Retrieval strictly accesses official public factsheet context parsed from verified URLs. No portfolio transaction connections exist.
-        
-        **3. Facts-Only Limit**
-        * All completions are strictly restricted to factual answers under 3 sentences. Advisory/speculative investment checks trigger refusals.
-        """)
+        <style>
+            a:hover span {
+                text-decoration: underline !important;
+                color: #1d4ed8 !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
