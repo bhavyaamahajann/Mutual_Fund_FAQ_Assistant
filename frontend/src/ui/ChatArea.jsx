@@ -68,7 +68,17 @@ export const ChatArea = ({
               const isUser = msg.sender === 'user';
               return (
                 <div key={index} className={`message-wrapper ${isUser ? 'user' : 'assistant'}`}>
-                  {msg.status === 'refused' ? (
+                  {msg.status === 'error' ? (
+                    <div className="refusal-panel warning">
+                      <div className="refusal-icon-container">
+                        <AlertTriangle />
+                      </div>
+                      <div className="refusal-content">
+                        <h4 className="refusal-title">Server Unavailable</h4>
+                        <p className="refusal-text">{msg.answer}</p>
+                      </div>
+                    </div>
+                  ) : msg.status === 'refused' ? (
                     <div className={`refusal-panel ${msg.type === 'pii' ? 'error' : 'warning'}`}>
                       <div className="refusal-icon-container">
                         {msg.type === 'pii' ? <ShieldAlert /> : <AlertTriangle />}

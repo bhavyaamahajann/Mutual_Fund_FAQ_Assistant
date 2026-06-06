@@ -5,10 +5,11 @@ import { SidebarRight } from './ui/SidebarRight';
 import { ChatArea } from './ui/ChatArea';
 import { Modals } from './ui/Modals';
 
+const RENDER_BACKEND = 'https://mutual-fund-faq-assistant.onrender.com/api/chat';
 const API_URL = import.meta.env.VITE_API_URL || 
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8000/api/chat'
-    : '/api/chat');
+    : RENDER_BACKEND);
 
 // Mapping of checkbox keys to backend fund ID identifiers
 const fundIdMap = {
@@ -257,9 +258,9 @@ function App() {
       setSessions(prev => ({
         ...prev,
         [targetSession]: [...(prev[targetSession] || []), {
-          status: 'refused',
-          type: 'pii',
-          answer: 'Failed to communicate with RAG Assistant server. Please check that backend server is running on port 8000.'
+          status: 'error',
+          type: 'error',
+          answer: `Unable to reach the server. This may be a cold start on Render's free tier — please wait 30 seconds and try again. (${err.message})`
         }]
       }));
     } finally {
