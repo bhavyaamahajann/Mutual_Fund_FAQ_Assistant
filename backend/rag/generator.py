@@ -234,7 +234,35 @@ class RAGPipeline:
             "last_updated": last_scraped
         }
 
-    def generate_response(self, query: str, selected_funds: list[str] = None) -> dict:
+    def _rewrite_query(self, query: str, history: list[dict]) -> str:
+        if not self.groq_client or not history:
+            return query
+        try:
+            # Filter history to last 4 messages to avoid excessive context
+            recent_history = history[-4:]
+            messages = [{"role": "system", "content": "You are a helpful assistant. Given the following conversation history and a new user query, rewrite the user query into a fully standalone, self-contained factual query that can be used for semantic search. Do not answer the question. Only output the rewritten query. If the query is already standalone, just output it as is."}]
+            for msg in recent_history:
+                role = "assistant" if msg.get("role") == "assistant" else "user"
+                messages.append({"role": role, "content": str(msg.get("content", ""))})
+            messages.append({"role": "user", "content": f"Rewrite this query: {query}"})
+            
+            completion = self.groq_client.chat.completions.create(
+                model=settings.llm_model,
+                messages=messages,
+                temperature=0.0,
+                max_tokens=100
+            )
+            rewritten = completion.choices[0].message.content.strip()
+            # Strip quotes if any
+            if rewritten.startswith('"') and rewritten.endswith('"'):
+                rewritten = rewritten[1:-1]
+            logger.info(f"Query rewritten from '{query}' to '{rewritten}'")
+            return rewritten
+        except Exception as e:
+            logger.warning(f"Failed to rewrite query: {e}")
+            return query
+
+    def generate_response(self, query: str, selected_funds: list[str] = None, history: list[dict] = None) -> dict:
         """
         Processes a user query through the RAG pipeline.
         Returns a dict: {
@@ -245,6 +273,10 @@ class RAGPipeline:
             "last_updated": str | None
         }
         """
+        # 0. Rewrite query based on conversational history if provided
+        if history and len(history) > 0:
+            query = self._rewrite_query(query, history)
+
         # 1. Classify query
         classification = self.classifier.classify(query)
         q_type = classification["type"]
@@ -337,7 +369,9 @@ class RAGPipeline:
 
         # Missing Scheme Check
         requires_scheme, metric = self.check_requires_scheme_name(query)
-        if requires_scheme and not matched_funds:
+        # Bypass refusal if the user has checked funds in the UI, or explicitly says "all"
+        has_context_or_intent = selected_funds or "all" in query_lower or "compare" in query_lower
+        if requires_scheme and not matched_funds and not has_context_or_intent:
             if metric == "expense_ratio":
                 ans = "Please specify the mutual fund scheme for which you would like the expense ratio."
             elif metric == "cagr":

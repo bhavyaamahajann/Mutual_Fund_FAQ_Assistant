@@ -230,12 +230,17 @@ function App() {
     const userMsg = { sender: 'user', text: queryText };
     
     let targetSession = activeSession;
+    let historyPayload = [];
     if (!targetSession) {
       targetSession = `session-${Date.now()}`;
       setActiveSession(targetSession);
       setSessionNames(prev => ({ ...prev, [targetSession]: `Chat ${Object.keys(sessions).length + 1}` }));
       setSessions(prev => ({ ...prev, [targetSession]: [userMsg] }));
     } else {
+      historyPayload = (sessions[targetSession] || []).map(msg => ({
+        role: msg.sender === 'user' ? 'user' : 'assistant',
+        content: msg.sender === 'user' ? msg.text : (msg.answer || '')
+      }));
       setSessions(prev => ({ ...prev, [targetSession]: [...(prev[targetSession] || []), userMsg] }));
     }
     
@@ -246,7 +251,12 @@ function App() {
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queryText, session_id: targetSession, selected_funds: selectedFunds })
+        body: JSON.stringify({ 
+          query: queryText, 
+          session_id: targetSession, 
+          selected_funds: selectedFunds,
+          history: historyPayload
+        })
       });
       
       if (!response.ok) throw new Error(`Server returned HTTP ${response.status}`);

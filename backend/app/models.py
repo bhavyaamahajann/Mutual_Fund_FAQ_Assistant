@@ -5,6 +5,7 @@ class ChatRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=500, description="The user query to be processed.")
     session_id: Optional[str] = Field(None, description="Optional UUID to identify the chat session.")
     selected_funds: Optional[List[str]] = Field(None, description="Optional list of fund IDs to restrict the RAG context.")
+    history: Optional[List[dict]] = Field(None, description="Optional list of previous messages in the format [{'role': 'user'|'assistant', 'content': '...'}]")
 
 
 class Citation(BaseModel):

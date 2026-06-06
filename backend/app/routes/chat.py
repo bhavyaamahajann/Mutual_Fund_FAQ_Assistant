@@ -46,7 +46,7 @@ async def chat_endpoint(request: ChatRequest):
 
     try:
         logger.info(f"Processing query: '{sanitized_query[:60]}' with selected_funds: {request.selected_funds}")
-        response_dict = pipeline.generate_response(sanitized_query, request.selected_funds)
+        response_dict = pipeline.generate_response(sanitized_query, request.selected_funds, request.history)
         return response_dict
         
     except Exception as e:
