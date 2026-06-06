@@ -133,13 +133,18 @@ export const ChatArea = ({
                               <span>{msg.citation.label || 'Factsheet Source'}</span>
                             </a>
                           )}
-                          {msg.last_updated && (
-                            <span className="message-last-updated">
-                              Updated: {new Date(msg.last_updated).toLocaleDateString('en-US', {
-                                year: 'numeric', month: 'short', day: 'numeric'
-                              })}
-                            </span>
-                          )}
+                          {msg.last_updated && msg.last_updated !== 'Not available' && (() => {
+                              const d = new Date(msg.last_updated);
+                              const label = isNaN(d.getTime())
+                                ? msg.last_updated          // show raw string if unparseable
+                                : d.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+                              return (
+                                <span className="message-last-updated">
+                                  Updated: {label}
+                                </span>
+                              );
+                            })()
+                          }
                         </div>
                       )}
                     </div>
