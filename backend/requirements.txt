@@ -14,5 +14,3 @@ lxml>=4.9.0
 html5lib>=1.1
 sentence-transformers>=2.2.2
 curl-cffi>=0.13.0
-
-
