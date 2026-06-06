@@ -1,34 +1,53 @@
-name: Daily Corpus Ingestion
+name: Daily Corpus Refresh
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # Runs daily at 02:00 UTC (07:30 IST)
-  workflow_dispatch:        # Allows manual trigger from GitHub UI
+    - cron: '30 4 * * *'   # Runs daily at 04:30 UTC = 10:00 AM IST
+  workflow_dispatch:         # Allows manual trigger from GitHub UI
 
 jobs:
-  ingest:
+  scrape-and-ingest:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write        # Required to push updated fund_metadata.json back to repo
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Python
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
 
-      - name: Run ingestion pipeline
+      - name: Scrape fresh data from IndMoney URLs
+        env:
+          PYTHONPATH: .
+        run: python scripts/scrape_and_update.py
+
+      - name: Run ingestion pipeline (metadata → ChromaDB)
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          PYTHONPATH: .
         run: python scripts/ingest.py
 
-      - name: Commit updated data
+      - name: Commit updated fund metadata back to repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add backend/data/
-          git diff --cached --quiet || git commit -m "chore: daily corpus refresh $(date +%Y-%m-%d)"
+          git add backend/data/fund_metadata.json
+          git diff --cached --quiet || git commit -m "chore: daily corpus refresh $(date +'%Y-%m-%d %H:%M UTC')"
           git push

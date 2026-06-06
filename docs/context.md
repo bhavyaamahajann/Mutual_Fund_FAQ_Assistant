@@ -119,11 +119,12 @@ Refusal responses must:
 
 ---
 
-## 8. User Interface (Minimal)
+## 8. User Interface
 
-- Welcome message
-- Three example questions
+- 3-column desktop dashboard (sidebar left → chat area → sidebar right)
+- Landing screen with 6 suggestive question cards (collapsed fund filter on load)
 - Visible disclaimer: **"Facts-only. No investment advice."**
+- Chat sessions created only when the user starts a conversation
 
 ---
 
@@ -151,14 +152,30 @@ Do **not** collect, store, or process:
 
 ---
 
-## 10. Expected Deliverables
+## 10. Deployment Architecture (Current — as of June 2026)
+
+| Layer | Platform | URL |
+|---|---|---|
+| **Frontend** | Vercel (React + Vite) | Vercel-assigned domain |
+| **Backend API** | Render (Docker container) | https://mutual-fund-faq-assistant.onrender.com |
+| **Vector Store** | ChromaDB (baked into Docker image at build time) | — |
+| **Data Refresh** | GitHub Actions (daily 10:00 AM IST) | Commits updated `fund_metadata.json` to repo |
+
+### Data Flow
+1. **GitHub Actions** runs daily at 10:00 AM IST → scrapes IndMoney URLs → updates `fund_metadata.json` → commits to repo
+2. **Render** auto-deploys on every commit → rebuilds Docker image → re-embeds metadata into ChromaDB
+3. **Frontend** on Vercel calls `https://mutual-fund-faq-assistant.onrender.com/api/chat` via `VITE_API_URL` env var
+
+---
+
+## 11. Expected Deliverables
 
 - **README** — Setup instructions, selected AMC & schemes, architecture overview (RAG approach), known limitations
 - **Disclaimer Snippet** — `"Facts-only. No investment advice."`
 
 ---
 
-## 11. Success Criteria
+## 12. Success Criteria
 
 | Criterion | Description |
 |---|---|
@@ -167,28 +184,30 @@ Do **not** collect, store, or process:
 | Citations | Consistent inclusion of valid source citations |
 | Refusal | Proper refusal of advisory queries |
 | UI/UX | Clean, minimal, and user-friendly interface |
+| Data Freshness | Fund data refreshed automatically every day at 10:00 AM IST |
 
 ---
 
-## 12. Summary
+## 13. Summary
 
 > The goal is to build a **trustworthy, transparent, and compliant** mutual fund FAQ assistant that prioritizes **accuracy over intelligence**. The system ensures users receive only verified, source-backed financial information — without any advisory bias or speculative content.
 
 ---
 
-## 13. Technical Implementation Details
+## 14. Technical Implementation Details
 
 ### API Usage
 - **Groq API**: The system uses exactly **one** external API (Groq API) at runtime for LLM response generation.
-- **Local Components**: Embedding generation (`BAAI/bge-large-en-v1.5`) and vector search (ChromaDB) run completely locally in-memory, requiring no external APIs.
+- **Local Components**: Embedding generation (`BAAI/bge-small-en-v1.5`) and vector search (ChromaDB) run completely locally inside the Docker container, requiring no external APIs.
 
 ### Data Ingestion & Sourcing
-- **Scraper**: A custom Python script (`scraper.py`) scrapes mutual fund web pages using `curl_cffi` browser impersonation to fetch data directly. No external scraping or web extraction APIs are utilized.
+- **Scraper** (`scraper.py`): A custom Python script scrapes mutual fund web pages using `curl_cffi` browser impersonation to fetch data. No external scraping APIs are used.
+- **Anti-403 Strategy**: IndMoney blocks requests from cloud/Docker IPs. The daily refresh (`scrape_and_update.py`) runs on GitHub Actions (residential/GitHub IPs) which can reach IndMoney. The Docker image build uses pre-scraped `fund_metadata.json` from the repo — **no live scraping at Docker build time**.
+- **Daily Scheduler** (`scrape_and_update.py`): Runs at 10:00 AM IST via GitHub Actions, fetches fresh data, updates `fund_metadata.json`, and commits back to the repo. Render auto-deploys the new commit.
 
 ### Chunking Strategy
-- **Recursive Chunking**: Text is split using LangChain's `RecursiveCharacterTextSplitter` with a `chunk_size` of 500 characters and a `chunk_overlap` of 50 characters, splitting hierarchically (paragraphs `\n\n`, newlines `\n`, sentence endings `. ? !`, words `" "`, then characters `""`).
+- **Recursive Chunking**: Text is split using LangChain's `RecursiveCharacterTextSplitter` with a `chunk_size` of 500 characters and a `chunk_overlap` of 50 characters.
 - **Why Recursive Chunking is Used**:
-  - **Structure & Coherence**: It preserves paragraph and sentence structures, ensuring complete facts and related context are not severed or split mid-sentence.
-  - **Improved Retrieval (RAG)**: Keeping semantic units whole guarantees that when a chunk is retrieved, it contains the full information required to answer the query, reducing LLM hallucinations.
-  - **Strict Size Guardrails**: It enforces size limits gracefully by falling back to smaller boundaries only when necessary.
-
+  - **Structure & Coherence**: Preserves paragraph and sentence structures.
+  - **Improved Retrieval (RAG)**: Keeping semantic units whole guarantees that retrieved chunks contain complete information.
+  - **Strict Size Guardrails**: Enforces size limits gracefully.

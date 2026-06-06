@@ -351,25 +351,29 @@ block-beta
 
 ## Phase 6 — Scheduler, Testing & Polish
 
-> **Goal:** Set up GitHub Actions for daily ingestion, write test queries, finalize README, and polish.
+> **Goal:** Set up GitHub Actions for daily scrape + ingestion, write test queries, finalize README, and deploy to Render + Vercel.
 
-### Files to Create
+### Files Created
 
 | # | File | Purpose |
 |---|---|---|
-| 1 | `.github/workflows/daily-ingestion.yml` | Daily cron workflow |
-| 2 | `scripts/test_queries.py` | Automated test suite |
-| 3 | `README.md` | Final documentation |
+| 1 | `.github/workflows/daily-ingestion.yml` | Daily cron workflow — **10:00 AM IST (04:30 UTC)** |
+| 2 | `scripts/scrape_and_update.py` | Stage 1: scrape IndMoney → update `fund_metadata.json` |
+| 3 | `scripts/ingest.py` | Stage 2: metadata → ChromaDB embeddings (no live scraping) |
+| 4 | `scripts/test_queries.py` | Automated test suite |
+| 5 | `README.md` | Final documentation |
 
 ### Tasks
 
 #### 6.1 GitHub Actions Workflow
-- [x] Create `.github/workflows/daily-ingestion.yml` (from architecture spec)
-- [x] Configure cron: `0 2 * * *` (daily at 02:00 UTC)
+- [x] Create `.github/workflows/daily-ingestion.yml`
+- [x] Configure cron: `30 4 * * *` (daily at **04:30 UTC = 10:00 AM IST**)
 - [x] Add `workflow_dispatch` for manual triggers
-- [x] Steps: checkout → setup Python → install deps → run ingestion → commit data
+- [x] Two-stage pipeline:
+  1. `scrape_and_update.py` — scrapes all 15 URLs, updates `fund_metadata.json`, commits to repo
+  2. `ingest.py` — reads metadata, embeds into ChromaDB (called during Render Docker build)
 - [x] Add `GROQ_API_KEY` as GitHub Actions secret
-- [x] Test workflow with manual dispatch
+- [x] Failure fallback: if URL fails, last good metadata is kept
 
 #### 6.2 Test Suite (`scripts/test_queries.py`)
 - [x] **Factual query tests** (expect success):
@@ -422,6 +426,36 @@ block-beta
 - [x] Response time < 3 seconds for all queries
 
 ### Estimated Effort: **2 days**
+
+---
+
+## Phase 7 — Production Deployment (Completed)
+
+> **Goal:** Deploy backend on Render (Docker), frontend on Vercel, wire them together, and verify end-to-end.
+
+### Deployment Architecture
+
+| Layer | Platform | Status |
+|---|---|---|
+| **Backend** | Render (Docker container) | ✅ Live — `https://mutual-fund-faq-assistant.onrender.com` |
+| **Frontend** | Vercel (React + Vite) | ✅ Live — Vercel-assigned domain |
+| **Scheduler** | GitHub Actions (cron) | ✅ Active — daily 10:00 AM IST |
+
+### Key Fixes Applied
+
+| Issue | Fix |
+|---|---|
+| `HTTP 403` during Docker build | Moved live scraping to GitHub Actions (not blocked). Docker build reads from pre-scraped `fund_metadata.json`. |
+| `curl_cffi` impersonation failing in CI | Playwright fallback disabled in CI (`use_playwright_fallback=False`). GH Actions IPs can reach IndMoney directly. |
+| Embedding model too large (1.3 GB) | Switched from `BAAI/bge-large-en-v1.5` → `BAAI/bge-small-en-v1.5` (90 MB). Fits Render free tier. |
+| Frontend not hitting backend | Added `VITE_API_URL=https://mutual-fund-faq-assistant.onrender.com/api/chat` as Vercel environment variable. |
+
+### Environment Variables Required
+
+| Variable | Where Set | Value |
+|---|---|---|
+| `GROQ_API_KEY` | Render + GitHub Secrets | Groq API key |
+| `VITE_API_URL` | Vercel Environment Variables | `https://mutual-fund-faq-assistant.onrender.com/api/chat` |
 
 ---
 
