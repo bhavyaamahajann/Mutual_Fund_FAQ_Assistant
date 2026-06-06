@@ -6,6 +6,7 @@ export const SidebarLeft = ({
   expandedCategories,
   checkboxes,
   handleCheckboxChange,
+  handleDeselectAll,
   activeSelectedKeys
 }) => {
   return (
@@ -25,14 +26,32 @@ export const SidebarLeft = ({
       </div>
 
       <div className="sidebar-selected-summary" style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: '15px',
         borderBottom: '1px solid var(--border-color)',
         paddingBottom: '12px',
         paddingLeft: '4px'
       }}>
-        <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-navy)', textTransform: 'uppercase', display: 'block' }}>
+        <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-navy)', textTransform: 'uppercase' }}>
           Selected ({activeSelectedKeys.length > 0 ? activeSelectedKeys.length : 'All 15'})
         </span>
+        {activeSelectedKeys.length > 0 && (
+          <button 
+            onClick={handleDeselectAll}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--text-muted)',
+              fontSize: '0.7rem',
+              cursor: 'pointer',
+              textDecoration: 'underline'
+            }}
+          >
+            Clear
+          </button>
+        )}
       </div>
 
       <div style={{

@@ -106,6 +106,12 @@ function App() {
     indexEtfTax: false
   });
 
+  const handleDeselectAll = () => {
+    const newCheckboxes = { ...checkboxes };
+    Object.keys(newCheckboxes).forEach(key => newCheckboxes[key] = false);
+    setCheckboxes(newCheckboxes);
+  };
+
   const toggleCategory = (cat) => {
     setExpandedCategories(prev => ({
       ...prev,
@@ -332,6 +338,7 @@ function App() {
         expandedCategories={expandedCategories}
         checkboxes={checkboxes}
         handleCheckboxChange={handleCheckboxChange}
+        handleDeselectAll={handleDeselectAll}
         activeSelectedKeys={activeSelectedKeys}
       />
 
