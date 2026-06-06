@@ -5,11 +5,12 @@ Scrapes fresh fund data from each IndMoney URL in corpus_urls.json,
 extracts structured metadata via parser.py, and overwrites
 backend/data/fund_metadata.json with the latest values.
 
-This script is called by the GitHub Actions daily workflow BEFORE
-ingest.py so that ingest.py always reads up-to-date metadata.
+This script runs in GitHub Actions (daily 10:00 AM IST) — it only needs
+lightweight scraping dependencies (curl_cffi, beautifulsoup4).
+It does NOT need Groq, ChromaDB, or sentence-transformers.
 
 Usage:
-    python scripts/scrape_and_update.py
+    PYTHONPATH=. python scripts/scrape_and_update.py
 """
 
 import sys
@@ -19,10 +20,17 @@ import hashlib
 from pathlib import Path
 from datetime import datetime, timezone
 
-# Ensure backend package is importable
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+# ---------------------------------------------------------------------------
+# Resolve paths relative to this script — works in any working directory
+# ---------------------------------------------------------------------------
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+CORPUS_URLS_PATH = PROJECT_ROOT / "backend" / "data" / "corpus_urls.json"
+FUND_METADATA_PATH = PROJECT_ROOT / "backend" / "data" / "fund_metadata.json"
 
-from backend.app.config import settings
+# Ensure backend package is importable (for scraper.py and parser.py)
+sys.path.insert(0, str(PROJECT_ROOT))
+
 from backend.ingestion.scraper import IndMoneyScraper
 from backend.ingestion.parser import HtmlParser
 
@@ -41,26 +49,34 @@ def run_scrape_and_update():
     logger.info("Starting scrape-and-update pipeline (10:00 AM IST daily refresh)...")
 
     # 1. Load corpus URL list
-    with open(settings.corpus_urls_path, "r") as f:
+    if not CORPUS_URLS_PATH.exists():
+        logger.error(f"corpus_urls.json not found at {CORPUS_URLS_PATH}. Aborting.")
+        sys.exit(1)
+
+    with open(CORPUS_URLS_PATH, "r") as f:
         corpus = json.load(f)
 
     funds = corpus.get("funds", [])
     logger.info(f"Loaded {len(funds)} fund URLs from corpus.")
 
-    # 2. Load existing metadata (for hash-based change detection)
+    # 2. Load existing metadata for hash-based change detection
     existing_metadata: dict[str, dict] = {}
-    if settings.fund_metadata_path.exists():
+    if FUND_METADATA_PATH.exists():
         try:
-            with open(settings.fund_metadata_path, "r") as f:
+            with open(FUND_METADATA_PATH, "r") as f:
                 existing_list = json.load(f)
-            existing_metadata = {item["source_url"]: item for item in existing_list if "source_url" in item}
+            existing_metadata = {
+                item["source_url"]: item
+                for item in existing_list
+                if "source_url" in item
+            }
         except Exception as e:
             logger.warning(f"Could not load existing fund_metadata.json: {e}")
 
     scraper = IndMoneyScraper(
         max_retries=3,
         delay_between_requests=1.5,
-        use_playwright_fallback=False,   # CI runner has no display; skip Playwright
+        use_playwright_fallback=False,  # No display in CI
     )
     parser = HtmlParser()
 
@@ -76,8 +92,10 @@ def run_scrape_and_update():
         _, html, success = scraper.fetch_url(url)
 
         if not success:
-            logger.error(f"Failed to fetch {url}. Keeping previous metadata if available.")
-            # Fall back to the last good metadata so we don't lose data
+            logger.error(
+                f"Failed to fetch {url}. "
+                f"{'Keeping previous metadata.' if url in existing_metadata else 'No fallback available.'}"
+            )
             if url in existing_metadata:
                 updated_metadata.append(existing_metadata[url])
             fail_count += 1
@@ -85,7 +103,6 @@ def run_scrape_and_update():
 
         content_hash = compute_hash(html)
 
-        # Build base metadata from corpus definition
         base_meta = {
             "fund_id": fund_info["id"],
             "fund_name": fund_info["name"],
@@ -98,25 +115,29 @@ def run_scrape_and_update():
         parsed_metadata["content_hash"] = content_hash
         parsed_metadata["last_scraped"] = datetime.now(timezone.utc).isoformat()
 
-        # Log whether content changed
         prev_hash = existing_metadata.get(url, {}).get("content_hash")
         if prev_hash == content_hash:
-            logger.info(f"  → No content change detected for {fund_info['name']}.")
+            logger.info(f"  → No content change for {fund_info['name']}.")
         else:
-            logger.info(f"  → Content updated for {fund_info['name']}.")
+            logger.info(f"  → Updated: {fund_info['name']}.")
 
         updated_metadata.append(parsed_metadata)
         success_count += 1
 
-    # 4. Write refreshed metadata to file
-    with open(settings.fund_metadata_path, "w") as f:
+    # 4. Write refreshed metadata
+    with open(FUND_METADATA_PATH, "w") as f:
         json.dump(updated_metadata, f, indent=2, ensure_ascii=False)
 
     logger.info(
         f"Scrape-and-update complete. "
-        f"Success: {success_count}, Failed: {fail_count}. "
-        f"Metadata written to {settings.fund_metadata_path}"
+        f"Success: {success_count}/{len(funds)}, Failed: {fail_count}. "
+        f"Written to {FUND_METADATA_PATH}"
     )
+
+    # Exit non-zero only if ALL funds failed (partial failure is acceptable)
+    if success_count == 0 and fail_count > 0:
+        logger.error("All fund URLs failed. Exiting with error.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
