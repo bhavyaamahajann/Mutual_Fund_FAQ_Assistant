@@ -234,6 +234,12 @@ export const ChatArea = ({
             <span>Last updated from official AMC sources.</span>
           </div>
           <div className="compliance-links">
+            <span style={{ color: 'var(--text-muted)' }}>Made by Bhavya</span>
+            <span className="divider">•</span>
+            <a href="https://www.linkedin.com/in/bhavyaamahajan/" target="_blank" rel="noopener noreferrer" className="footer-link-btn" style={{ textDecoration: 'none' }}>LinkedIn</a>
+            <span className="divider">•</span>
+            <a href="https://github.com/bhavyaamahajann" target="_blank" rel="noopener noreferrer" className="footer-link-btn" style={{ textDecoration: 'none' }}>GitHub</a>
+            <span className="divider">•</span>
             <span className="footer-link-btn" onClick={() => setIsArchModalOpen(true)}>System Architecture</span>
             <span className="divider">•</span>
             <span className="footer-link-btn" onClick={() => setIsPrivacyOpen(true)}>Privacy Policy</span>
