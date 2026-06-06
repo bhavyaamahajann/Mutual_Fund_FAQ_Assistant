@@ -583,7 +583,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Links / Scraper Row below input */
 .footer-links-row {
-  max-width: 640px;
+  max-width: 760px;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -609,6 +609,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  white-space: nowrap;
 }
 
 .footer-link-btn {
