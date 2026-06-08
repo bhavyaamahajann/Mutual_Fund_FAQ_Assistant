@@ -29,16 +29,17 @@ This assistant answers **factual, verifiable queries** about mutual fund schemes
   14. ICICI Prudential Gold ETF FoF
   15. ICICI Prudential Silver ETF FoF
 
-## Tech Stack
+## Tech Stack & Frameworks
 
-| Layer | Technology |
-|---|---|
-| Frontend | React + Vite + Vanilla CSS (Warm Cafe Light Theme) |
-| Backend | Python (FastAPI) |
-| Embeddings | `BAAI/bge-large-en-v1.5` (Local HuggingFace Transformers) |
-| Vector Store | ChromaDB (local persistence) |
-| LLM | Groq LLaMA-3.3-70b-versatile |
-| Scheduler | GitHub Actions (daily cron) |
+We use a custom, lightweight RAG approach without relying on heavy orchestration libraries (like LangChain or LlamaIndex) for maximum performance and simplicity:
+
+- **Frontend Framework:** React + Vite (Vanilla CSS)
+- **Backend Framework:** FastAPI (Python)
+- **Vector Database:** ChromaDB (local persistence)
+- **Embeddings:** `BAAI/bge-large-en-v1.5` via HuggingFace `sentence-transformers`
+- **LLM Client:** Official `groq` Python library invoking `LLaMA-3.3-70b-versatile`
+- **Scraping:** `BeautifulSoup4`
+- **Scheduler:** GitHub Actions (daily cron)
 
 ## Setup
 

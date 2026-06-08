@@ -25,7 +25,18 @@ A lightweight RAG-based FAQ assistant for ICICI Prudential Mutual Fund schemes, 
   14. ICICI Prudential Gold ETF FoF
   15. ICICI Prudential Silver ETF FoF
 
-## 2. Setup Steps
+## 2. Tech Stack & Frameworks
+
+We use a custom, lightweight RAG approach without relying on heavy orchestration libraries (like LangChain or LlamaIndex) for maximum performance and simplicity:
+
+- **Frontend Framework:** React + Vite (Vanilla CSS)
+- **Backend Framework:** FastAPI (Python)
+- **Vector Database:** ChromaDB (local persistence)
+- **Embeddings:** `BAAI/bge-large-en-v1.5` via HuggingFace `sentence-transformers`
+- **LLM Client:** Official `groq` Python library invoking `LLaMA-3.3-70b-versatile`
+- **Scraping:** `BeautifulSoup4`
+
+## 3. Setup Steps
 
 If you are running the project locally:
 
