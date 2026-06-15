@@ -280,16 +280,16 @@
     "riskometer": "High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Manish Banthia",
       "Akhil Kakkar",
       "Roshan Chutkey",
-      "Sharmila D’mello"
+      "Sharmila D’mello",
+      "Manish Banthia"
     ],
     "aum": "₹3302 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-regular-savings-fund-direct-plan-growth-4394",
-    "content_hash": "fe4a02f320107baead6bcef94b3f9e14",
-    "last_scraped": "2026-06-14T08:33:03.219173+00:00"
+    "content_hash": "5ab0ce069cbab51cbb0234196184bc67",
+    "last_scraped": "2026-06-15T10:43:48.555453+00:00"
   },
   {
     "fund_id": "icici-pru-multi-asset-direct-growth",
