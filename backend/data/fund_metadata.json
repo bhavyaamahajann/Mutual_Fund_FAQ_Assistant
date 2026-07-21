@@ -135,8 +135,8 @@
     "fund_category": "Multi Cap Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹953.53",
-    "nav_date": "17 Jul 2026",
+    "nav": "₹958.01",
+    "nav_date": "20 Jul 2026",
     "expense_ratio": "0.78%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -151,8 +151,8 @@
     "aum": "₹18194 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-multicap-fund-direct-plan-growth-3194",
-    "content_hash": "1504ce4ebfc9e2fb62fce088dae7ada1",
-    "last_scraped": "2026-07-18T06:27:32.908150+00:00"
+    "content_hash": "9fdb7624a7fcfd4ea4142c10048195a9",
+    "last_scraped": "2026-07-21T07:05:30.990209+00:00"
   },
   {
     "fund_id": "icici-pru-largecap-direct-growth",
@@ -242,8 +242,8 @@
     "fund_category": "Aggressive Hybrid Fund",
     "fund_group": "Hybrid Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹455.61",
-    "nav_date": "17 Jul 2026",
+    "nav": "₹454.20",
+    "nav_date": "20 Jul 2026",
     "expense_ratio": "0.77%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -252,19 +252,19 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Sri Sharma",
-      "Sankaran Naren",
-      "Nitya Mishra",
       "Mittul Kalawadia",
       "Manish Banthia",
+      "Sri Sharma",
+      "Sankaran Naren",
       "Sharmila D’mello",
-      "Akhil Kakkar"
+      "Akhil Kakkar",
+      "Nitya Mishra"
     ],
     "aum": "₹51481 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-equity-debt-fund-direct-plan-growth-4108",
-    "content_hash": "40dd626d18e43bc0e7441d498107ce50",
-    "last_scraped": "2026-07-20T07:40:49.714932+00:00"
+    "content_hash": "1d40591af159215e08a9faff5a418855",
+    "last_scraped": "2026-07-21T07:05:49.326597+00:00"
   },
   {
     "fund_id": "icici-pru-regular-savings-direct-growth",
