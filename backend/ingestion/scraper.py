@@ -57,11 +57,16 @@ class IndMoneyScraper:
         for attempt in range(self.max_retries):
             try:
                 headers = self._build_headers(url)
+                
+                # Rotate impersonations to avoid fingerprint blocks
+                impersonate_targets = ["chrome120", "chrome116", "safari15_3", "chrome110"]
+                target = random.choice(impersonate_targets)
+                
                 response = requests.get(
                     url,
                     headers=headers,
-                    timeout=15,
-                    impersonate="chrome",
+                    timeout=20,
+                    impersonate=target,
                 )
                 response.raise_for_status()
 
