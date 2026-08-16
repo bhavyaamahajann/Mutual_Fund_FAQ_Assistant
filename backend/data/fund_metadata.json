@@ -15,17 +15,17 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Rajat Chandak",
       "Sakshat Goel",
       "Gaurav Jain",
+      "Sharmila D’mello",
       "Aatur Shah",
-      "Sharmila D’mello"
+      "Rajat Chandak"
     ],
     "aum": "₹9533 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-smallcap-fund-direct-plan-growth-3588",
-    "content_hash": "fe5d687961b575477255cc3cc9be700f",
-    "last_scraped": "2026-08-15T04:55:03.095224+00:00"
+    "content_hash": "80070dbe1cb02cff03b371482c84ffbb",
+    "last_scraped": "2026-08-16T04:58:51.366002+00:00"
   },
   {
     "fund_id": "icici-pru-large-midcap-direct-growth",
@@ -43,15 +43,15 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Sharmila D’mello",
       "Gaurav Jain",
-      "Lalit Kumar"
+      "Lalit Kumar",
+      "Sharmila D’mello"
     ],
     "aum": "₹32706 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-large-mid-cap-fund-direct-plan-growth-2878",
-    "content_hash": "a7df32609ce2d5de47a8ff6838c685ff",
-    "last_scraped": "2026-08-15T04:55:06.322150+00:00"
+    "content_hash": "ecfb345a16740644c0714800de736d01",
+    "last_scraped": "2026-08-16T04:58:54.811233+00:00"
   },
   {
     "fund_id": "icici-pru-flexicap-direct-growth",
@@ -75,8 +75,8 @@
     "aum": "₹24100 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-flexicap-fund-direct-growth-1006609",
-    "content_hash": "a62253492cdf3ba24b10805162cfb956",
-    "last_scraped": "2026-08-15T04:55:09.223569+00:00"
+    "content_hash": "2a7991a420e95a4c997ff1fa92f31c7e",
+    "last_scraped": "2026-08-16T04:58:59.933345+00:00"
   },
   {
     "fund_id": "icici-pru-focused-equity-direct-growth",
@@ -100,8 +100,8 @@
     "aum": "₹17764 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-focused-equity-fund-direct-plan-growth-2797",
-    "content_hash": "e044c16ead1b91e897cac12bcf161035",
-    "last_scraped": "2026-08-15T04:55:12.258201+00:00"
+    "content_hash": "fe9a77fdba15948f1856d1f3e2922a8d",
+    "last_scraped": "2026-08-16T04:59:03.874456+00:00"
   },
   {
     "fund_id": "icici-pru-midcap-direct-growth",
@@ -119,14 +119,14 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Lalit Kumar",
-      "Sharmila D’mello"
+      "Sharmila D’mello",
+      "Lalit Kumar"
     ],
     "aum": "₹7954 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-midcap-fund-direct-plan-growth-3190",
-    "content_hash": "9e6e6da1e009f0b27c2f584c98650364",
-    "last_scraped": "2026-08-15T04:55:15.634799+00:00"
+    "content_hash": "3a13011fd6df7734f8729f56a5865dfd",
+    "last_scraped": "2026-08-16T04:59:06.739666+00:00"
   },
   {
     "fund_id": "icici-pru-multicap-direct-growth",
@@ -144,14 +144,14 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Lalit Kumar",
-      "Sharmila D’mello"
+      "Sharmila D’mello",
+      "Lalit Kumar"
     ],
     "aum": "₹18769 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-multicap-fund-direct-plan-growth-3194",
-    "content_hash": "12bc74e2694a910236398096cc550405",
-    "last_scraped": "2026-08-15T04:55:19.936645+00:00"
+    "content_hash": "61ac7e7a990203c6c72f3ebd897e09d2",
+    "last_scraped": "2026-08-16T04:59:11.083961+00:00"
   },
   {
     "fund_id": "icici-pru-largecap-direct-growth",
@@ -169,15 +169,15 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Sharmila D’mello",
+      "Vaibhav Dusad",
       "Sankaran Naren",
-      "Vaibhav Dusad"
+      "Sharmila D’mello"
     ],
     "aum": "₹80962 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-large-cap-fund-direct-plan-growth-2995",
-    "content_hash": "54067b059c1c9a7a05be1c43257088f0",
-    "last_scraped": "2026-08-15T04:55:23.443080+00:00"
+    "content_hash": "4a986ea1ff7ab9a1ec68abe6be6715a6",
+    "last_scraped": "2026-08-16T04:59:14.497586+00:00"
   },
   {
     "fund_id": "icici-pru-elss-direct-growth",
@@ -195,15 +195,15 @@
     "riskometer": "Very High Risk",
     "lock_in": "3 Years",
     "fund_managers": [
-      "Sharmila D’mello",
+      "Priyanka Khandelwal",
       "Mittul Kalawadia",
-      "Priyanka Khandelwal"
+      "Sharmila D’mello"
     ],
     "aum": "₹14292 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-elss-tax-saver-fund-direct-plan-growth-2693",
-    "content_hash": "2b0fc1a3c474ebdbd63b674cf318e81f",
-    "last_scraped": "2026-08-15T04:55:27.098406+00:00"
+    "content_hash": "9567ad84240d23520c0645379530714a",
+    "last_scraped": "2026-08-16T04:59:18.275480+00:00"
   },
   {
     "fund_id": "icici-pru-equity-savings-direct-growth",
@@ -221,19 +221,19 @@
     "riskometer": "Low to Moderate Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Ritesh Lunawat",
-      "Archana Nair",
       "Manish Banthia",
-      "Sharmila D’mello",
+      "Archana Nair",
       "Dharmesh Kakkad",
       "Ajaykumar Solanki",
-      "Sri Sharma"
+      "Sharmila D’mello",
+      "Sri Sharma",
+      "Ritesh Lunawat"
     ],
     "aum": "₹16179 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-equity-savings-fund-direct-growth-4572",
-    "content_hash": "a4295f6d52db9f306e056bb0eea95996",
-    "last_scraped": "2026-08-15T04:55:29.893778+00:00"
+    "content_hash": "619427085eea09b23d111cb6876a6fdb",
+    "last_scraped": "2026-08-16T04:59:21.819380+00:00"
   },
   {
     "fund_id": "icici-pru-equity-debt-direct-growth",
@@ -251,19 +251,19 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Nitya Mishra",
-      "Sharmila D’mello",
-      "Mittul Kalawadia",
-      "Sri Sharma",
-      "Sankaran Naren",
       "Akhil Kakkar",
-      "Manish Banthia"
+      "Sankaran Naren",
+      "Manish Banthia",
+      "Sharmila D’mello",
+      "Sri Sharma",
+      "Mittul Kalawadia",
+      "Nitya Mishra"
     ],
     "aum": "₹52433 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-equity-debt-fund-direct-plan-growth-4108",
-    "content_hash": "041927d9f1991711078f1105eabac07a",
-    "last_scraped": "2026-08-15T04:55:33.205471+00:00"
+    "content_hash": "fde57c1dc3b406676bd0c03b0748254d",
+    "last_scraped": "2026-08-16T04:59:29.233694+00:00"
   },
   {
     "fund_id": "icici-pru-regular-savings-direct-growth",
@@ -281,16 +281,16 @@
     "riskometer": "High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Akhil Kakkar",
+      "Manish Banthia",
       "Roshan Chutkey",
       "Sharmila D’mello",
-      "Manish Banthia"
+      "Akhil Kakkar"
     ],
     "aum": "₹3356 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-regular-savings-fund-direct-plan-growth-4394",
-    "content_hash": "bb245d8a3b373745dc9a0fd9f45f5afb",
-    "last_scraped": "2026-08-15T04:55:35.924003+00:00"
+    "content_hash": "d58325fd95ebf5e3a0282c6e3e42423b",
+    "last_scraped": "2026-08-16T04:59:32.508179+00:00"
   },
   {
     "fund_id": "icici-pru-multi-asset-direct-growth",
@@ -298,8 +298,8 @@
     "fund_category": "Multi Asset Fund",
     "fund_group": "Hybrid Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹913.09",
-    "nav_date": "13 Aug 2026",
+    "nav": "₹911.03",
+    "nav_date": "14 Aug 2026",
     "expense_ratio": "0.54%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -308,20 +308,20 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Antariksha Banerjee",
-      "Masoomi Jhurmarvala",
+      "Manish Banthia",
+      "Sharmila D’mello",
+      "Gaurav Chikane",
       "Akhil Kakkar",
       "Sankaran Naren",
       "Sri Sharma",
-      "Gaurav Chikane",
-      "Sharmila D’mello",
-      "Manish Banthia"
+      "Antariksha Banerjee",
+      "Masoomi Jhurmarvala"
     ],
     "aum": "₹86785 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-multi-asset-fund-direct-plan-growth-4646",
-    "content_hash": "e79b416fafe38e7d941f92bf5e8e92da",
-    "last_scraped": "2026-08-15T04:55:39.079501+00:00"
+    "content_hash": "683c86b959e294e723d555393601fa0e",
+    "last_scraped": "2026-08-16T04:59:36.838803+00:00"
   },
   {
     "fund_id": "icici-pru-nifty50-index-direct-growth",
@@ -339,16 +339,16 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Nishit Patel",
       "Venus Ahuja",
+      "Ajaykumar Solanki",
       "Ashwini Shinde",
-      "Ajaykumar Solanki"
+      "Nishit Patel"
     ],
     "aum": "₹17353 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-nifty-50-index-plan-direct-growth-5536",
-    "content_hash": "439b718240545cbd89cbd557ef41f514",
-    "last_scraped": "2026-08-15T04:55:42.350115+00:00"
+    "content_hash": "22795004cc7fe548e8561bb4b57a66d6",
+    "last_scraped": "2026-08-16T04:59:40.014927+00:00"
   },
   {
     "fund_id": "icici-pru-gold-etf-fof-direct-growth",
@@ -366,16 +366,16 @@
     "riskometer": "High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Venus Ahuja",
       "Manish Banthia",
       "Nishit Patel",
-      "Ashwini Shinde"
+      "Ashwini Shinde",
+      "Venus Ahuja"
     ],
     "aum": "₹6398 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-gold-etf-fof-direct-plan-growth-5382",
-    "content_hash": "181725f93e8a47c6e4e3640d048bec31",
-    "last_scraped": "2026-08-15T04:55:45.317388+00:00"
+    "content_hash": "97e872d35db642dff3354b1b4e6d0e4b",
+    "last_scraped": "2026-08-16T04:59:43.296612+00:00"
   },
   {
     "fund_id": "icici-pru-silver-etf-fof-direct-growth",
@@ -393,15 +393,15 @@
     "riskometer": "Very High Risk",
     "lock_in": "No Lock-in",
     "fund_managers": [
-      "Nishit Patel",
-      "Manish Banthia",
+      "Venus Ahuja",
       "Ashwini Shinde",
-      "Venus Ahuja"
+      "Nishit Patel",
+      "Manish Banthia"
     ],
     "aum": "₹5960 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-silver-etf-fof-direct-growth-1040428",
-    "content_hash": "ef98b50531e597a99854519e656966b3",
-    "last_scraped": "2026-08-15T04:55:48.278421+00:00"
+    "content_hash": "41c9531e710e56a6e4269e352e56d661",
+    "last_scraped": "2026-08-16T04:59:47.963038+00:00"
   }
 ]
