@@ -1,12 +1,12 @@
 [
   {
     "fund_id": "icici-pru-smallcap-direct-growth",
-    "fund_name": "ICICI Prudential Smallcap Fund Direct Plan Growth",
+    "fund_name": "ICICI Prudential Small Cap Fund Direct Plan Growth",
     "fund_category": "Small Cap Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹104.22",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹103.81",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.18%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -24,8 +24,8 @@
     "aum": "₹9533 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-smallcap-fund-direct-plan-growth-3588",
-    "content_hash": "dd9bfa7fef91e9c0d6e98ac5c60dd61a",
-    "last_scraped": "2026-09-09T09:03:56.332248+00:00"
+    "content_hash": "30e7541f5a1fdeee72f1cc7301402007",
+    "last_scraped": "2026-09-10T09:02:42.550182+00:00"
   },
   {
     "fund_id": "icici-pru-large-midcap-direct-growth",
@@ -33,8 +33,8 @@
     "fund_category": "Large & Mid Cap Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹1173.62",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹1170.73",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.16%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -50,17 +50,17 @@
     "aum": "₹32706 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-large-mid-cap-fund-direct-plan-growth-2878",
-    "content_hash": "5a85c567103a37e403d8e9c21ad575f0",
-    "last_scraped": "2026-09-09T09:04:00.920050+00:00"
+    "content_hash": "4d1571aa44a1ac072b34b6657b145c87",
+    "last_scraped": "2026-09-10T09:02:47.620254+00:00"
   },
   {
     "fund_id": "icici-pru-flexicap-direct-growth",
-    "fund_name": "ICICI Prudential Flexicap Fund Direct Growth",
+    "fund_name": "ICICI Prudential Flexi Cap Fund Direct Growth",
     "fund_category": "Flexi Cap Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Growth",
-    "nav": "₹21.70",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹21.56",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "0.89%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -75,17 +75,17 @@
     "aum": "₹24100 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-flexicap-fund-direct-growth-1006609",
-    "content_hash": "dc5470421ba347246cdb884005db2786",
-    "last_scraped": "2026-09-09T09:04:03.580606+00:00"
+    "content_hash": "65fcf87e846db12240a9d7ed1ec7d909",
+    "last_scraped": "2026-09-10T09:02:54.028048+00:00"
   },
   {
     "fund_id": "icici-pru-focused-equity-direct-growth",
-    "fund_name": "ICICI Prudential Focused Equity Fund Direct Plan Growth",
+    "fund_name": "ICICI Prudential Focused Fund Direct Plan Growth",
     "fund_category": "Focused Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹108.78",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹108.41",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.22%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -100,8 +100,8 @@
     "aum": "₹17764 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-focused-equity-fund-direct-plan-growth-2797",
-    "content_hash": "ccbbb3c6ccc0be8c676304991d501beb",
-    "last_scraped": "2026-09-09T09:04:07.440702+00:00"
+    "content_hash": "14b3ef1baaaa79c3c9ae26586b2501d5",
+    "last_scraped": "2026-09-10T09:03:01.429982+00:00"
   },
   {
     "fund_id": "icici-pru-midcap-direct-growth",
@@ -109,8 +109,8 @@
     "fund_category": "Mid Cap Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹390.97",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹389.56",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.13%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -125,17 +125,17 @@
     "aum": "₹7954 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-midcap-fund-direct-plan-growth-3190",
-    "content_hash": "0aea53baae16193a3d3560f5b8356d8b",
-    "last_scraped": "2026-09-09T09:04:10.891469+00:00"
+    "content_hash": "ce65ad58d01a3daabe5f6d93763f23ab",
+    "last_scraped": "2026-09-10T09:03:06.646972+00:00"
   },
   {
     "fund_id": "icici-pru-multicap-direct-growth",
-    "fund_name": "ICICI Prudential Multicap Fund Direct Plan Growth",
+    "fund_name": "ICICI Prudential Multi Cap Fund Direct Plan Growth",
     "fund_category": "Multi Cap Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹971.20",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹967.15",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.03%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -150,8 +150,8 @@
     "aum": "₹18769 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-multicap-fund-direct-plan-growth-3194",
-    "content_hash": "8965d80762027c9fcc6db9b2a11c9c3e",
-    "last_scraped": "2026-09-09T09:04:13.632335+00:00"
+    "content_hash": "94f58c62af91936a9c2bb6155648e368",
+    "last_scraped": "2026-09-10T09:03:09.587833+00:00"
   },
   {
     "fund_id": "icici-pru-largecap-direct-growth",
@@ -159,8 +159,8 @@
     "fund_category": "Large Cap Fund",
     "fund_group": "Equity Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹117.56",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹116.62",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.02%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -176,17 +176,17 @@
     "aum": "₹80962 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-large-cap-fund-direct-plan-growth-2995",
-    "content_hash": "0974097d443b6840ede79a48314fd75e",
-    "last_scraped": "2026-09-09T09:04:17.481875+00:00"
+    "content_hash": "62b446150df9913b881ae9bdc6d3fa4f",
+    "last_scraped": "2026-09-10T09:03:13.171208+00:00"
   },
   {
     "fund_id": "icici-pru-elss-direct-growth",
-    "fund_name": "ICICI Prudential ELSS Tax Saver Fund Direct Plan Growth",
+    "fund_name": "ICICI Prudential ELSS - Tax Saver Fund Direct Plan Growth",
     "fund_category": "ELSS (Tax Saving Fund)",
     "fund_group": "Tax Saving Fund",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹1035.31",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹1028.62",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.21%",
     "exit_load": "0%",
     "min_sip": "₹500",
@@ -202,8 +202,8 @@
     "aum": "₹14292 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-elss-tax-saver-fund-direct-plan-growth-2693",
-    "content_hash": "fbacebc8072f8e2c0d3a37a2de5b8dcd",
-    "last_scraped": "2026-09-09T09:04:21.501647+00:00"
+    "content_hash": "779a7357ca8c8b32abacf7c9b8d1efc8",
+    "last_scraped": "2026-09-10T09:03:18.313854+00:00"
   },
   {
     "fund_id": "icici-pru-equity-savings-direct-growth",
@@ -211,8 +211,8 @@
     "fund_category": "Equity Savings Fund",
     "fund_group": "Hybrid Funds",
     "fund_plan": "Direct Growth",
-    "nav": "₹25.14",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹25.06",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.1%",
     "exit_load": "0.2%",
     "min_sip": "₹100",
@@ -232,8 +232,8 @@
     "aum": "₹16179 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-equity-savings-fund-direct-growth-4572",
-    "content_hash": "5e746645a98b9778d91ff1eef5be9ced",
-    "last_scraped": "2026-09-09T09:04:26.296822+00:00"
+    "content_hash": "110b9e57348e72ecf7a2cc62b6266cb6",
+    "last_scraped": "2026-09-10T09:03:21.414049+00:00"
   },
   {
     "fund_id": "icici-pru-equity-debt-direct-growth",
@@ -241,8 +241,8 @@
     "fund_category": "Aggressive Hybrid Fund",
     "fund_group": "Hybrid Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹449.12",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹447.36",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.05%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -261,8 +261,8 @@
     "aum": "₹52433 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-equity-debt-fund-direct-plan-growth-4108",
-    "content_hash": "7e3be5a57a957006857f0a5f19d10446",
-    "last_scraped": "2026-09-09T09:04:29.271811+00:00"
+    "content_hash": "e6b5eeb111a6b4aa88219174489929eb",
+    "last_scraped": "2026-09-10T09:03:24.943851+00:00"
   },
   {
     "fund_id": "icici-pru-regular-savings-direct-growth",
@@ -270,8 +270,8 @@
     "fund_category": "Regular Savings Fund",
     "fund_group": "Hybrid Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹87.58",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹87.39",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "1.03%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -288,8 +288,8 @@
     "aum": "₹3356 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-regular-savings-fund-direct-plan-growth-4394",
-    "content_hash": "a78dc8b4dc14431b14fe12780742f2ae",
-    "last_scraped": "2026-09-09T09:04:32.024009+00:00"
+    "content_hash": "dd20b1bd70f544e970050e9feca5ae61",
+    "last_scraped": "2026-09-10T09:03:27.894715+00:00"
   },
   {
     "fund_id": "icici-pru-multi-asset-direct-growth",
@@ -297,8 +297,8 @@
     "fund_category": "Multi Asset Fund",
     "fund_group": "Hybrid Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹897.38",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹892.50",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "0.82%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -318,8 +318,8 @@
     "aum": "₹86785 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-multi-asset-fund-direct-plan-growth-4646",
-    "content_hash": "69c5b734bff22cbc872a86da1fb7ce11",
-    "last_scraped": "2026-09-09T09:04:35.499649+00:00"
+    "content_hash": "8be050a0f59251b2725386943d8b9fcb",
+    "last_scraped": "2026-09-10T09:03:32.138410+00:00"
   },
   {
     "fund_id": "icici-pru-nifty50-index-direct-growth",
@@ -327,8 +327,8 @@
     "fund_category": "Index Fund",
     "fund_group": "Index Fund",
     "fund_plan": "Direct Growth",
-    "nav": "₹250.22",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹248.06",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "0.25%",
     "exit_load": "0%",
     "min_sip": "₹100",
@@ -345,8 +345,8 @@
     "aum": "₹17353 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-nifty-50-index-plan-direct-growth-5536",
-    "content_hash": "e46a06238a697cff987cc02ab0813b2a",
-    "last_scraped": "2026-09-09T09:04:39.019135+00:00"
+    "content_hash": "f7916bcaadb6ca8da87664d52efdd1d9",
+    "last_scraped": "2026-09-10T09:03:35.141423+00:00"
   },
   {
     "fund_id": "icici-pru-gold-etf-fof-direct-growth",
@@ -354,8 +354,8 @@
     "fund_category": "Gold Fund of Funds",
     "fund_group": "ETF Fund of Funds",
     "fund_plan": "Direct Plan Growth",
-    "nav": "₹48.66",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹48.65",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "0.6%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -372,8 +372,8 @@
     "aum": "₹6398 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-gold-etf-fof-direct-plan-growth-5382",
-    "content_hash": "35f57370a0ba1e6bf428af52969d8066",
-    "last_scraped": "2026-09-09T09:04:42.287770+00:00"
+    "content_hash": "35e81a85546244cc43023f31dee86024",
+    "last_scraped": "2026-09-10T09:03:38.517365+00:00"
   },
   {
     "fund_id": "icici-pru-silver-etf-fof-direct-growth",
@@ -381,8 +381,8 @@
     "fund_category": "Silver Fund of Funds",
     "fund_group": "ETF Fund of Funds",
     "fund_plan": "Direct Growth",
-    "nav": "₹35.41",
-    "nav_date": "08 Sep 2026",
+    "nav": "₹35.64",
+    "nav_date": "09 Sep 2026",
     "expense_ratio": "0.54%",
     "exit_load": "1.0%",
     "min_sip": "₹100",
@@ -399,7 +399,7 @@
     "aum": "₹5960 Cr",
     "fund_house": "ICICI Mutual Fund",
     "source_url": "https://www.indmoney.com/mutual-funds/icici-prudential-silver-etf-fof-direct-growth-1040428",
-    "content_hash": "6676f82d8ab9db05059b0e17d7c88b6d",
-    "last_scraped": "2026-09-09T09:04:44.947009+00:00"
+    "content_hash": "0c34e39047a5df2a3e9ebf224ab219d4",
+    "last_scraped": "2026-09-10T09:03:41.748129+00:00"
   }
 ]
